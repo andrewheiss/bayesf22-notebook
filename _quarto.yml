@@ -1,0 +1,44 @@
+project:
+  type: website
+  execute-dir: project
+
+website:
+  title: "`bayesf22` Notebook"
+  navbar:
+    pinned: true
+    background: "#931e18"
+    right:
+      - text: "Main bayesf22 class"
+        href: https://bayesf22.classes.andrewheiss.com/
+      - text: "Statistical Rethinking"
+        file: rethinking/index.qmd
+      - text: "Bayes Rules!"
+        file: bayes-rules/index.qmd
+  
+  sidebar:
+    - title: "Statistical Rethinking"
+      style: "floating"
+      # background: primary
+      contents: 
+        - rethinking/index.qmd
+        - rethinking/rethinking-lecture-02.qmd
+    
+    - title: "Bayes Rules!"
+      contents:
+        - bayes-rules/index.qmd
+
+format:
+  html:
+    theme:
+      - litera
+      - html/custom.scss
+    highlight-style: monokai
+    toc: true
+    toc-depth: 4
+    retina: 3
+    fig-width: 6
+    fig-height: 3.7
+    fig-align: center
+    knitr:
+      opts_chunk:
+        collapse: true

@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:wght@400..700&family=Raleway:wght@100..900&display=swap');
+
+/*-- scss:defaults --*/
+$white:    #fff !default;
+$gray-100: #f8f9fa !default;
+$gray-200: #e9ecef !default;
+$gray-300: #ddd !default;
+$gray-400: #ced4da !default;
+$gray-500: #adb5bd !default;
+$gray-600: #868e96 !default;
+$gray-700: #495057 !default;
+$gray-800: #343a40 !default;
+$gray-900: #212529 !default;
+$black:    #000 !default;
+
+// Lakota colors from MetBrewer
+// MetBrewer::met.brewer("Lakota", 6)
+$blue:    #20235b !default;  // Custom
+$indigo:  #771C6D !default;
+$purple:  #480B6A !default;
+$pink:    #A52C60 !default;
+$red:     #931e18 !default;  // Custom
+$orange:  #da7901 !default;  // Custom
+$yellow:  #f0be3d !default;  // Custom
+$green:   #247d3f !default;  // Custom
+$teal:    #20c997 !default;
+$cyan:    #04a3bd !default;  // Custom
+
+$primary:       $blue !default;
+$secondary:     $gray-500 !default;
+$success:       $green !default;
+$info:          $cyan !default;
+$warning:       $yellow !default;
+$danger:        $red !default;
+$light:         $gray-100 !default;
+$dark:          $gray-800 !default;
+
+$font-family-sans-serif:      Raleway, sans-serif !default;
+$font-family-serif:           Lora, serif !default;
+
+$font-size-base:              1.25rem !default;
+$headings-font-weight:        700 !default;
+
+$h1-font-size: $font-size-base * 2.45;
+$h2-font-size: $font-size-base * 1.85;
+$h3-font-size: $font-size-base * 1.5;
+$h4-font-size: $font-size-base * 1.2;
+$h5-font-size: $font-size-base * 1;
+$h6-font-size: $font-size-base * 0.8;
+
+$toc-font-size: 1.1rem;
+$sidebar-font-size: 1.1rem;
+$sidebar-font-size-section: 0.9rem;
+
+$link-color: $orange;
+$link-hover-color: $yellow;
+
+$monokai-bg: #2e3440;
+
+/*-- scss:rules --*/
+// Code stuff
+// Shrink blocks of code
+pre.text, pre.sourceCode, .cell-output pre {
+  font-size: 0.775em;
+}
+
+// Slight bottom margin to output
+.cell-output {
+  margin: 0 0 1em;
+}
+
+// Remove margin on pre in output
+.cell-output pre {
+  margin-bottom: 0;
+  color: #ffffff;
+}
+
+// Format output and plain text blocks like code
+.cell-output, pre.text {
+  border: none;
+  padding: .4em;
+  background-color: $monokai-bg;
+  border: 1px solid $monokai-bg;
+  border-radius: .25rem;
+}
+
+pre.text {
+  color: #ffffff;
+}

@@ -1,0 +1,5 @@
+---
+title: "`bayesf22` Notebook"
+---
+
+My notebook for working through the readings and exercises in my [Bayesian Statistics readings class in Fall 2022](https://bayesf22.classes.andrewheiss.com/)
