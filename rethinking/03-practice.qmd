@@ -267,3 +267,10 @@ model_births_first_girls %>%
   geom_vline(xintercept = n_boys_after_girls, color = "red") +
   labs(caption = glue("Red line shows actual observed number of boys born after girls ({n_boys_after_girls})"))
 ```
+
+```{r include=FALSE, eval=FALSE}
+# See also 
+# https://sr2-solutions.wjakethompson.com/bayesian-inference.html#chapter-3
+# https://gregor-mathes.netlify.app/2020/07/31/rethinking-chapter-3/#hard-practices
+# https://www.samples-of-thoughts.com/projects/statistical-rethinking/chapter_3/chp3-ex/#hard.
+```
