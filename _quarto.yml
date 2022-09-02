@@ -39,10 +39,12 @@ website:
   sidebar:
     - title: "Statistical Rethinking"
       style: "floating"
-      # background: primary
       contents: 
         - rethinking/index.qmd
-        - rethinking/rethinking-lecture-02.qmd
+        - section: "3: Sampling and grid approximation"
+          contents:
+            - rethinking/03-chapter.qmd
+            - rethinking/03-practice.qmd
     
     - title: "Bayes Rules!"
       contents:
@@ -57,8 +59,8 @@ format:
     toc: true
     toc-depth: 4
     retina: 3
-    fig-width: 6
-    fig-height: 3.7
+    fig-width: 7
+    fig-height: 4.5
     fig-align: center
     knitr:
       opts_chunk:
