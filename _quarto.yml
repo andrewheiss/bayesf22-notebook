@@ -1,9 +1,27 @@
 project:
   type: website
-  execute-dir: project
+  render:
+    - "*.qmd"
+    - "*.md"
+    - "!README.md"
+    - "!LICENSE.md"
+  resources:
+    - "files/"
+
+execute:
+  # Re-render only when source changes
+  freeze: auto
 
 website:
   title: "`bayesf22` Notebook"
+  
+  favicon: "/files/favicon.png"
+  
+  repo-url: "https://github.com/andrewheiss/bayesf22-notebook"
+  repo-actions: [edit, issue]
+  
+  page-navigation: true
+  
   navbar:
     pinned: true
     background: "#931e18"
@@ -14,6 +32,9 @@ website:
         file: rethinking/index.qmd
       - text: "Bayes Rules!"
         file: bayes-rules/index.qmd
+      - icon: github
+        href: "https://github.com/andrewheiss/bayesf22-notebook"
+        aria-label: GitHub
   
   sidebar:
     - title: "Statistical Rethinking"

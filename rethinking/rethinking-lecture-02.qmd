@@ -1,0 +1,414 @@
+---
+title: "*Rethinking* lecture 2"
+---
+
+```{r libraries, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(brms)
+library(tidybayes)
+library(patchwork)
+library(posterior)
+library(broom.mixed)
+
+set.seed(1234)
+```
+
+Assuming 9 globe tosses, 6 are water:
+
+```
+W L W W W L W L W
+```
+
+Or in code:
+
+```{r}
+tosses <- c("W", "L", "W", "W", "W", "L", "W", "L", "W")
+table(tosses)
+```
+
+
+Given this data, what's the proportion of water on the globe?
+
+- Make a list of all possible proportions, ranging from 0 to 1
+- Calculate the number of possible pathways to get to that proportion
+
+## Grid approximation
+
+For each possible value of $p$, compute the product $\operatorname{Pr}(W, L \mid p) \times \operatorname{Pr}(p)$. The relative sizes of each of those products are the posterior probabilities.
+
+### Base R with *Rethinking*
+
+#### Uniform flat prior
+
+```{r}
+#| layout-ncol: 2
+#| layout-nrow: 2
+#| column: page
+
+# List of possible explanations of p to consider
+p_grid <- seq(from = 0, to = 1, length.out = 10)
+plot(p_grid, main = "Possible proportions (p)")
+#
+
+# Probability of each value of p
+# Super vague uniform prior: just 1 at each possible p
+prob_p_uniform <- rep(1, 10)
+plot(prob_p_uniform, main = "Uniform flat prior")
+#
+
+# Probability of each proportion, given 6/9 water draws
+prob_data <- dbinom(6, size = 9, prob = p_grid)
+
+# Unnormalized posterior
+posterior_raw <- prob_data * prob_p_uniform
+plot(posterior_raw, main = "Unnormalized posterior")
+#
+
+# Normalized posterior that sums to 1
+posterior_normalized <- posterior_raw / sum(posterior_raw)
+plot(posterior_normalized, main = "Normalized posterior")
+```
+
+#### Beta prior
+
+```{r}
+#| layout-ncol: 2
+#| column: page
+
+# Beta distribution with 3 / (3 + 1)
+prob_p_beta <- dbeta(p_grid, shape1 = 3, shape2 = 1)
+plot(prob_p_beta, main = "Beta(3, 1) prior")
+#
+# Posterior that sums to 1
+posterior_normalized_beta <- (prob_data * prob_p_beta) / sum(posterior_raw)
+plot(posterior_normalized_beta, main = "Normalized postiorior with beta prior")
+```
+
+### Tidyverse style from Solomon Kurz
+
+```{r}
+globe_tossing <- tibble(p_grid = seq(from = 0, to = 1, length.out = 1001),
+                        prior_uniform = 1) %>%  # prob_p_uniform from earlier
+  mutate(prior_beta = dbeta(p_grid, shape1 = 3, shape2 = 1)) %>%  # prob_p_beta from earlier
+  mutate(likelihood = dbinom(6, size = 9, prob = p_grid)) %>%   # prob_data from earlier
+  mutate(posterior_uniform = (likelihood * prior_uniform) / sum(likelihood * prior_uniform),
+         posterior_beta = (likelihood * prior_beta) / sum(likelihood * prior_beta))
+globe_tossing
+```
+
+```{r}
+globe_tossing %>% 
+  pivot_longer(starts_with("posterior")) %>% 
+  ggplot(aes(x = p_grid, y = value, fill = name)) +
+  geom_area(position = position_identity(), alpha = 0.5)
+```
+
+
+## Working with the posterior
+
+We now have a posterior! We typically can't use the posterior alone. We have to average any inference across the entire posterior. This requires calculus, which is (1) hard, and (2) often impossible. So instead, we can use samples from the distribution and make inferences based on those.
+
+### 3.2: Sampling to summarize
+
+Here are 10,000 samples from the posterior (based on the uniform flat prior). These are the **sampling distributions**.
+
+```{r}
+#| layout-ncol: 2
+#| column: page
+samples <- sample(p_grid, prob = posterior_normalized, size = 10000, replace = TRUE)
+plot(samples, main = "10,000 posterior samples")
+#
+
+plot(density(samples), main = "Distribution of 10,000 posterior samples")
+```
+
+```{r}
+samples_tidy <- globe_tossing %>% 
+  slice_sample(n = 10000, weight_by = posterior_uniform, replace = T)
+```
+
+
+#### 3.2.1: Intervals of defined boundaries
+
+::: {.panel-tabset}
+##### Base R
+
+What's the probability that the proportion of water is less than 50%?
+
+```{r}
+sum(samples < 0.5) / 10000
+```
+
+How much of the posterior is between 50% and 75%?
+
+```{r}
+sum(samples > 0.5 & samples < 0.75) / 10000
+```
+
+
+##### Tidyverse
+
+What's the probability that the proportion of water is less than 50%?
+
+```{r}
+globe_tossing %>% 
+  ggplot(aes(x = p_grid, y = posterior_uniform)) +
+  geom_line() +
+  geom_area(data = filter(globe_tossing, p_grid < 0.5))
+
+samples_tidy %>% 
+  count(p_grid < 0.5) %>% 
+  mutate(probability = n / sum(n))
+```
+
+How much of the posterior is between 50% and 75%?
+
+```{r}
+globe_tossing %>% 
+  ggplot(aes(x = p_grid, y = posterior_uniform)) +
+  geom_line() +
+  geom_area(data = filter(globe_tossing, p_grid > 0.5 & p_grid < 0.75))
+
+samples_tidy %>% 
+  count(p_grid > 0.5 & p_grid < 0.75) %>% 
+  mutate(probability = n / sum(n))
+```
+:::
+
+#### 3.2.2: Intervals of defined mass
+
+::: {.panel-tabset}
+##### Base R
+
+Lower 80% posterior probability lies below this number:
+
+```{r}
+quantile(samples, 0.8)
+```
+
+Middle 80% posterior probability lies between these numbers:
+
+```{r}
+quantile(samples, c(0.1, 0.9))
+```
+
+50% percentile interval vs. 50% HPDI
+
+```{r}
+quantile(samples, c(0.25, 0.75))
+rethinking::HPDI(samples, prob = 0.5)
+```
+
+
+##### Tidyverse
+
+Lower 80% posterior probability lies below this number:
+
+```{r}
+samples_tidy %>% 
+  summarize(`80th percentile` = quantile(p_grid, 0.8))
+```
+
+Middle 80% posterior probability lies between these numbers:
+
+```{r}
+samples_tidy %>% 
+  summarize(q = c(0.1, 0.9), percentile = quantile(p_grid, q)) %>% 
+  pivot_wider(names_from = q, values_from = percentile)
+```
+
+50% percentile interval vs. 50% HPDI
+
+```{r}
+samples_tidy %>% 
+  summarize(q = c(0.25, 0.75), 
+            percentile = quantile(p_grid, q),
+            hpdi = HDInterval::hdi(p_grid, 0.5))
+```
+:::
+
+#### 3.2.3: Point estimates
+
+::: {.panel-tabset}
+##### Base R
+
+```{r}
+mean(samples)
+median(samples)
+```
+
+##### Tidyverse
+
+```{r}
+samples_tidy %>% 
+  summarize(mean = mean(p_grid),
+            median = median(p_grid))
+```
+:::
+
+### 3.3: Sampling to simulate prediction
+
+#### Base R
+
+We can use the uncertainty inherent in the sampling distributions from above to generate a **posterior predictive distribution**, based on a 9-toss situation:
+
+```{r}
+# Posterior predictive distribution
+posterior_predictive_dist <- rbinom(10000, size = 9, prob = samples)
+hist(posterior_predictive_dist, breaks = 0:9)
+```
+
+
+#### Tidyverse style
+
+```{r}
+#| layout-ncol: 2
+#| column: page
+# Generate 100,000 samples from the posterior
+samples_tidy <- globe_tossing %>% 
+  slice_sample(n = 100000, weight_by = posterior_uniform, replace = T)
+#
+samples_tidy %>% 
+  mutate(sample_number = 1:n()) %>% 
+  ggplot(aes(x = sample_number, y = p_grid)) +
+  geom_point(alpha = 0.05) +
+  labs(title = "100,000 posterior samples", x = "Sample number")
+#
+samples_tidy %>% 
+  ggplot(aes(x = p_grid)) +
+  geom_density(fill = "grey50", color = NA) +
+  labs(title = "Distribution of 100,000 posterior samples")
+```
+
+Figure 3.6 with ggplot
+
+```{r}
+#| fig-width: 10
+#| fig-height: 6
+#| out-width: 100%
+#| column: page
+
+# Posterior probability
+globe_smaller <- globe_tossing %>% 
+  filter(p_grid %in% c(seq(0.1, 0.9, 0.1), 0.3))
+
+panel_top <- globe_tossing %>% 
+  ggplot(aes(x = p_grid, y = posterior_uniform)) + 
+  geom_area(fill = "grey50", color = NA) +
+  geom_segment(data = globe_smaller, aes(xend = p_grid, yend = 0, size = posterior_uniform)) +
+  geom_point(data = globe_smaller) +
+  scale_size_continuous(range = c(0, 1), guide = "none") +
+  scale_x_continuous(breaks = seq(0, 1, 0.1)) +
+  scale_y_continuous(NULL, breaks = NULL) +
+  labs(x = "Proportion/probability of water",
+       title = "Posterior probability") +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(face = "bold"))
+
+# Sampling distributions
+globe_sample_dists <- tibble(probability = seq(0.1, 0.9, 0.1)) %>% 
+  mutate(draws = map(probability, ~{
+    set.seed(1234)
+    rbinom(10000, size = 9, prob = .x)
+  })) %>% 
+  unnest(draws) %>% 
+  mutate(label = paste0("p = ", probability))
+
+panel_middle <- ggplot(globe_sample_dists, aes(x = draws)) +
+  geom_histogram(binwidth = 1, center = 0, color = "white", size = 0.1) +
+  scale_x_continuous(breaks = seq(0, 9, 3)) +
+  scale_y_continuous(breaks = NULL) +
+  coord_cartesian(xlim = c(0, 9)) +
+  labs(x = NULL, y = NULL, title = "Sampling distributions") +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(face = "bold")) +
+  facet_wrap(vars(label), ncol = 9)
+
+# Posterior predictive distribution
+globe_samples <- globe_tossing %>% 
+  slice_sample(n = 10000, weight_by = posterior_uniform, replace = TRUE) %>% 
+  mutate(prediction = map_dbl(p_grid, rbinom, n = 1, size = 9))
+
+panel_bottom <- globe_samples %>% 
+  ggplot(aes(x = prediction)) +
+  geom_histogram(binwidth = 1, center = 0, color = "white", size = 0.5) +
+  scale_x_continuous(breaks = seq(0, 9, 3)) +
+  scale_y_continuous(breaks = NULL) +
+  coord_cartesian(xlim = c(0, 9)) +
+  labs(x = "Number of water samples", y = NULL, title = "Posterior predictive distribution") +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(face = "bold"))
+
+layout <- "
+AAAAAAAAAAA
+#BBBBBBBBB#
+###CCCCC###
+"
+
+panel_top / panel_middle / panel_bottom +
+  plot_layout(design = layout)
+```
+
+# brms and tidybayes version of all this
+
+Ooh neat, you can pass single values as data instead of a data frame! Everything else here looks like regular **brms** stuff.
+
+```{r model-brms, cache=TRUE, results="hide"}
+model_globe <- brm(
+  bf(water | trials(9) ~ 0 + Intercept),
+  data = list(water = 6),
+  family = binomial(link = "identity"),
+  # Flat uniform prior
+  prior(beta(1, 1), class = b, lb = 0, ub = 1),
+  iter = 5000, warmup = 1000, seed = 1234,
+  # TODO: Eventually switch to cmdstanr once this issue is fixed
+  # https://github.com/quarto-dev/quarto-cli/issues/2258
+  backend = "rstan", cores = 4
+)
+```
+
+Credible intervals / HPDI / etc.
+
+```{r warning=FALSE}
+# Using broom.mixed
+tidy(model_globe, effects = "fixed",
+     conf.level = 0.5, conf.method = "HPDinterval")
+
+# Using the posterior package
+draws <- as_draws_array(model_globe)
+summarize_draws(draws, default_summary_measures()) %>% 
+  filter(variable == "b_Intercept")
+
+# Using tidybayes
+# get_variables(model_globe)
+model_globe %>% 
+  spread_draws(b_Intercept) %>% 
+  median_hdci(b_Intercept, .width = c(0.5, 0.89, 0.95))
+
+model_globe %>% 
+  gather_draws(b_Intercept) %>% 
+  ggplot(aes(x = .value, y = .variable)) +
+  stat_halfeye()
+```
+
+Predictions
+
+```{r}
+model_globe %>% 
+  predicted_draws(newdata = tibble(nothing = 1)) %>% 
+  ggplot(aes(x = .prediction)) +
+  geom_histogram(binwidth = 1, center = 0, color = "white", size = 0.5) +
+  scale_x_continuous(breaks = seq(0, 9, 3)) +
+  scale_y_continuous(breaks = NULL) +
+  coord_cartesian(xlim = c(0, 9)) +
+  labs(x = "Number of water samples", y = NULL, title = "Posterior predictive distribution") +
+  theme(panel.grid = element_blank(),
+        plot.title = element_text(face = "bold"))
+```
+
+
+# Homework
+
+```{r}
+data(homeworkch3, package = "rethinking")
+```
