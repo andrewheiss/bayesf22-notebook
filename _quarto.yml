@@ -49,6 +49,12 @@ website:
     - title: "Bayes Rules!"
       contents:
         - bayes-rules/index.qmd
+        - section: "2: Bayes' rule"
+          contents:
+            - bayes-rules/02-chapter.qmd
+        - section: "3: The Beta-Binomial Bayesian model"
+          contents:
+            - bayes-rules/03-chapter.qmd
 
 format:
   html:
