@@ -52,7 +52,7 @@ total_births <- nrow(births)
 n_girls <- total_births - n_boys
 ```
 
-## 3H1
+# 3H1
 
 > Using grid approximation, compute the posterior distribution for the probability of being a boy. Assume a uniform prior probability. Which parameter value maximizes the posterior probability?
 
@@ -77,7 +77,7 @@ birth_grid %>%
   filter(posterior_uniform == max(posterior_uniform))
 ```
 
-### With brms
+## With brms
 
 ```{r births-model, cache=TRUE, results="hide"}
 model_births <- brm(
@@ -102,7 +102,7 @@ model_births %>%
   summarize(median = median(.value))
 ```
 
-## 3H2
+# 3H2
 
 > Using the `sample` function, draw 10,000 random parameter values from the posterior distribution you calculated above. Use these samples to estimate the 50%, 89%, and 97% highest posterior density intervals.
 
@@ -124,7 +124,7 @@ HDInterval::hdi(birth_samples, credMass = 0.89)
 HDInterval::hdi(birth_samples, credMass = 0.97)
 ```
 
-### With brms
+## With brms
 
 ```{r}
 model_births %>% 
@@ -144,7 +144,7 @@ model_births %>%
   scale_fill_ramp_discrete(range = c(0.2, 1), guide = "none")
 ```
 
-## 3H3
+# 3H3
 
 > Use `rbinom` to simulate 10,000 replicates of 200 births. You should end up with 10,000 numbers, each one a acount of boyts out of 200 births. Compare the distribution of predicted numbers of boys to the actual count in the data (111 boys out of 200 births). … Does it look like the model fits the data well? That is, does the distribution of predcitions include the actual observation as a central, likely outcome?
 
@@ -162,7 +162,7 @@ posterior_pred_births %>%
   labs(caption = glue("Red line shows actual observed number of boys ({n_boys})"))
 ```
 
-### With brms
+## With brms
 
 ```{r}
 model_births %>% 
@@ -173,7 +173,7 @@ model_births %>%
   labs(caption = glue("Red line shows actual observed number of boys ({n_boys})"))
 ```
 
-## 3H4
+# 3H4
 
 > Now compare 10,000 counts of boys from 100 simulated first borns only to the number of boys in the first births, `birth1`. How does the model look in this light?
 
@@ -213,7 +213,7 @@ model_births_first <- brm(
 )
 ```
 
-### With brms
+## With brms
 
 Looks the same with brms too:
 
@@ -226,7 +226,7 @@ model_births_first %>%
   labs(caption = glue("Red line shows actual observed number of firstborn boys ({n_boys_first})"))
 ```
 
-## 3H5
+# 3H5
 
 > The model assumes that sex of first and second births are independent. To check this assumption, focus now on second births that followed female first borns. Compare 10,000 simulated conts of boys to only those second births that followed girls. To do this correctly, you need to count the number of first borns who were girls and simulate that many births, 10,000 times. Compare the counts of boys in your simulations to the actual observed count of boys following girls. How does the model look in this light? Any guesses what is going on in these data?
 
@@ -247,7 +247,7 @@ posterior_pred_first_girl %>%
   labs(caption = glue("Red line shows actual observed number of boys born after girls ({n_boys_after_girls})"))
 ```
 
-### With brms
+## With brms
 
 ```{r births-model-first-girls, cache=TRUE, results="hide"}
 model_births_first_girls <- brm(

@@ -52,6 +52,7 @@ website:
 
 format:
   html:
+    shift-heading-level-by: 1
     theme:
       - litera
       - html/custom.scss
