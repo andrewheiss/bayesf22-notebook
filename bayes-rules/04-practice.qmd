@@ -424,7 +424,7 @@ posteriors_manual_summary <- posteriors_manual %>%
 
 posteriors_manual_summary %>% 
   select(-coworker) %>% 
-  kableExtra::kbl() %>% 
+  kableExtra::kbl(digits = 3) %>% 
   kableExtra::pack_rows(index = table(posteriors_manual_summary$coworker)) %>% 
   kableExtra::kable_styling()
 ```
