@@ -58,6 +58,9 @@ website:
         - section: "4: Balance and sequentiality"
           contents:
             - bayes-rules/04-practice.qmd
+        - section: "5: Conjugate families"
+          contents:
+            - bayes-rules/05-chapter.qmd
 
 format:
   html:
