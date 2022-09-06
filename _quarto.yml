@@ -55,6 +55,9 @@ website:
         - section: "3: The Beta-Binomial Bayesian model"
           contents:
             - bayes-rules/03-chapter.qmd
+        - section: "4: Balance and sequentiality"
+          contents:
+            - bayes-rules/04-practice.qmd
 
 format:
   html:
