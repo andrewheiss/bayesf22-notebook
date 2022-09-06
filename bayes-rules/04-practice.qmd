@@ -417,7 +417,7 @@ posteriors_manual_plot %>%
 ```{r}
 posteriors_manual_summary <- posteriors_manual %>% 
   group_by(coworker) %>% 
-  summarize(summary = map2(posterior_shape1, posterior_shape2, ~{
+  summarize(summary = map2(shape1, shape2, ~{
     summarize_beta_binomial(alpha = .x, beta = .y, y = lik_y, n = lik_n)
   })) %>% 
   unnest(summary) 
