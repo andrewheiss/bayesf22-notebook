@@ -61,6 +61,7 @@ website:
         - section: "5: Conjugate families"
           contents:
             - bayes-rules/05-chapter.qmd
+            - bayes-rules/05-practice.qmd
 
 format:
   html:
