@@ -45,6 +45,9 @@ website:
           contents:
             - rethinking/03-chapter.qmd
             - rethinking/03-practice.qmd
+        - section: "4: Geocentric models"
+          contents:
+            - rethinking/03-video.qmd
     
     - title: "Bayes Rules!"
       contents:
