@@ -6,6 +6,10 @@ editor_options:
   chunk_output_type: console
 ---
 
+<div class="ratio ratio-16x9">
+<iframe src="https://www.youtube.com/embed/zYYBtxHWE0A" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
 ```{r packages-data, warning=FALSE, message=FALSE}
 library(bayesrules)
 library(tidyverse)
@@ -244,13 +248,16 @@ height_weight_prior_only_normal <- brm(
 ```
 
 ```{r}
-draws_prior <- tibble(height_z = seq(min(d$height_z), max(d$height_z), length.out = 100)) %>% 
+draws_prior <- tibble(height_z = seq((130 - height_scale$scaled_center) / height_scale$scaled_scale, 
+                                     (170 - height_scale$scaled_center) / height_scale$scaled_scale, 
+                                     length.out = 100)) %>% 
   add_epred_draws(height_weight_prior_only_normal, ndraws = 100) %>% 
   mutate(height_unscaled = (height_z * height_scale$scaled_scale) + height_scale$scaled_center)
 
 draws_prior %>% 
   ggplot(aes(x = height_unscaled, y = .epred)) +
-  geom_line(aes(group = .draw), alpha = 0.2)
+  geom_line(aes(group = .draw), alpha = 0.2) +
+  coord_cartesian(xlim = c(130, 170), ylim = c(10, 100))
 ```
 
 :::
