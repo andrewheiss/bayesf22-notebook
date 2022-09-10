@@ -1,0 +1,2 @@
+#!/usr/bin/env sh
+quarto publish gh-pages --no-prompt
