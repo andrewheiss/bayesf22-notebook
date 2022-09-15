@@ -1,0 +1,788 @@
+---
+title: "Video #4 code"
+subtitle: "Categories, curves, and splines"
+date: "September 14, 2022"
+editor_options: 
+  chunk_output_type: inline
+---
+
+<div class="ratio ratio-16x9">
+<iframe src="https://www.youtube.com/embed/QiHKdvAbYII" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+```{r packages-data, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(broom)
+library(brms)
+library(tidybayes)
+library(ggdist)
+library(ggdag)
+
+# Plot stuff
+clrs <- MetBrewer::met.brewer("Lakota", 6)
+theme_set(theme_bw())
+
+# Seed stuff
+BAYES_SEED <- 1234
+set.seed(1234)
+
+# Data
+data(Howell1, package = "rethinking")
+
+d <- Howell1 %>% 
+  filter(age > 18) %>% 
+  # Stan doesn't like working with columns with attributes, but I want to keep
+  # the attributes for unscaling later, so there are two scaled height columns
+  mutate(height_scaled = scale(height),
+         height_z = as.numeric(height_scaled)) %>% 
+  mutate(sex = factor(male),
+         sex_nice = factor(male, labels = c("Female", "Male")))
+
+height_scale <- attributes(d$height_scaled) %>% 
+  set_names(janitor::make_clean_names(names(.)))
+```
+
+```{r explore-data}
+head(Howell1)
+
+ggplot(d, aes(x = height, y = weight, color = sex_nice)) +
+  geom_point() +
+  scale_color_manual(values = clrs[1:2]) +
+  labs(x = "Height (cm)", y = "Weight (kg)", color = NULL) +
+  theme(legend.position = "bottom")
+```
+
+## Sex only
+
+$$
+\begin{aligned}
+W_i &\sim \mathcal{N}(\mu_i, \sigma) \\
+\mu_i &= \alpha_{S[i]} \\
+\\
+\alpha_j &\sim \mathcal{N}(60, 10) \\
+\sigma &\sim \operatorname{Uniform}(0, 10)
+\end{aligned}
+$$
+
+::: {.panel-tabset}
+
+### brms
+
+Create a model with no intercept; use a factor version of `sex` to get the indexes like he does with $\alpha_{S[i]}$.
+
+```{r sex-only, cache=TRUE, results="hide"}
+priors <- c(prior(normal(60, 10), class = b),
+            prior(uniform(0, 10), class = sigma, lb = 0, ub = 10))
+
+sex_weight <- brm(
+  bf(weight ~ 0 + sex),
+  data = d,
+  family = gaussian(),
+  prior = priors,
+  chains = 4, cores = 4, seed = BAYES_SEED
+)
+```
+
+```{r show-sex-only}
+sex_weight
+```
+
+Posterior mean weights:
+
+```{r sex-only-post-mean}
+sw_post_means <- sex_weight %>% 
+  gather_draws(b_sex0, b_sex1)
+
+sw_post_means %>% 
+  mean_hdci()
+
+sw_post_means %>% 
+  ggplot(aes(x = .value, fill = .variable)) +
+  stat_halfeye() +
+  scale_fill_manual(values = clrs[1:2]) +
+  labs(x = "Posterior mean weight (kg)\n(Coefficient for sex)", y = "Density", fill = NULL) +
+  theme(legend.position = "bottom")
+```
+
+Posterior mean contrast in weights:
+
+```{r sex-only-post-mean-contrast}
+sw_post_means_wide <- sex_weight %>% 
+  spread_draws(b_sex0, b_sex1) %>% 
+  mutate(diff = b_sex1 - b_sex0)
+
+sw_post_means_wide %>% 
+  select(diff) %>% 
+  mean_hdci()
+
+sw_post_means_wide %>% 
+  ggplot(aes(x = diff)) +
+  stat_halfeye(fill = clrs[3]) +
+  labs(x = "Posterior mean weight contrast (kg)\nWomen − Men", y = "Density")
+```
+
+Posterior predicted weights:
+
+```{r sex-only-predict}
+sw_post_pred <- tibble(sex = c("0", "1")) %>% 
+  add_predicted_draws(sex_weight, ndraws = 1000)
+
+sw_post_pred %>% 
+  mean_hdci()
+
+sw_post_pred %>% 
+  ungroup() %>% 
+  mutate(sex_nice = factor(sex, labels = c("Female", "Male"))) %>% 
+  ggplot(aes(x = .prediction, fill = sex_nice)) +
+  stat_halfeye(alpha = 0.75) +
+  scale_fill_manual(values = clrs[1:2]) +
+  labs(x = "Posterior predicted weight (kg)", y = "Density", fill = NULL) +
+  theme(legend.position = "bottom")
+```
+
+Posterior predicted contrast in weights:
+
+```{r sex-only-predict-contrast}
+sw_post_pred_diff <- tibble(sex = c("0", "1")) %>% 
+  add_predicted_draws(sex_weight, ndraws = 1000) %>% 
+  compare_levels(variable = .prediction, by = sex)
+
+sw_post_pred_diff %>% 
+  mean_hdci()
+
+sw_post_pred_diff %>% 
+  ggplot(aes(x = .prediction)) +
+  stat_halfeye(aes(fill = stat(x > 0))) +
+  geom_vline(xintercept = 0) +
+  scale_fill_manual(values = c(colorspace::lighten(clrs[3], 0.5), clrs[3]),
+                    guide = "none") +
+  labs(x = "Posterior weight contrast (kg)\nWomen − Men", y = "Density")
+```
+
+
+### Stan
+
+**sw_stan.stan**
+
+```{stan sex-only-stan, cache=TRUE, output.var="sw_stan"}
+data {
+  // Stuff from R
+  int<lower=1> n;
+  vector[n] weight;
+  int sex[n];
+}
+
+parameters {
+  // Things to estimate
+  real<lower=0, upper=10> sigma;
+  vector[2] a;
+}
+
+transformed parameters {
+  vector[n] mu;
+  mu = a[sex];
+}
+
+model {
+  // Likelihood
+  weight ~ normal(mu, sigma);
+  
+  // Priors
+  sigma ~ uniform(0, 10);
+  a ~ normal(60, 10);
+}
+
+generated quantities {
+  real diff;
+  matrix[n, 2] weight_rep;
+  vector[n] diff_rep;
+  
+  // Calculate the contrasts / difference between group means
+  diff = a[2] - a[1];
+  
+  // Generate a posterior predictive distribution for each sex
+  // To do this we have to create a matrix, with a column per sex
+  for (j in 1:2) {
+    for (i in 1:n) {
+      weight_rep[i, j] = normal_rng(a[j], sigma);
+    }
+  }
+  
+  // Generate a posterior predictive distribution of group contrasts
+  for (i in 1:n) {
+    diff_rep[i] = normal_rng(a[2], sigma) - normal_rng(a[1], sigma);
+  }
+}
+```
+
+```{r sex-only-stan-samples, cache=TRUE, results="hide"}
+stan_data <- list(n = nrow(d),
+                  weight = d$weight,
+                  sex = d$male + 1)
+
+model_sw_stan <- rstan::sampling(
+  object = sw_stan,
+  data = stan_data,
+  iter = 5000, warmup = 1000, seed = BAYES_SEED, chains = 4, cores = 4
+)
+```
+
+```{r show-sex-only-stan-samples}
+print(model_sw_stan,
+      pars = c("sigma", "a[1]", "a[2]", "diff"))
+```
+
+Posterior mean weights:
+
+```{r sex-only-stan-post-mean}
+sw_stan_post_means <- model_sw_stan %>% 
+  gather_draws(a[i])
+
+sw_stan_post_means %>% 
+  mean_hdci()
+
+sw_stan_post_means %>% 
+  ungroup() %>% 
+  mutate(nice_i = factor(i, labels = c("a_female", "a_male"))) %>% 
+  ggplot(aes(x = .value, fill = nice_i)) +
+  stat_halfeye() +
+  scale_fill_manual(values = clrs[1:2]) +
+  labs(x = "Posterior mean weight (kg)\n(Coefficient for sex)", y = "Density", fill = NULL) +
+  theme(legend.position = "bottom")
+```
+
+Posterior mean contrast in weights:
+
+```{r sex-only-stan-post-mean-contrast}
+sw_stan_post_diff_means <- model_sw_stan %>% 
+  gather_draws(diff)
+
+sw_stan_post_diff_means %>% 
+  mean_hdci()
+
+sw_stan_post_diff_means %>% 
+  ggplot(aes(x = .value)) +
+  stat_halfeye(fill = clrs[3]) +
+  labs(x = "Posterior mean weight contrast (kg)\nWomen − Men", y = "Density")
+```
+
+Posterior predicted weights:
+
+```{r sex-only-stan-predict}
+predicted_weights_stan <- model_sw_stan %>% 
+  spread_draws(weight_rep[i, sex])
+
+predicted_weights_stan %>% 
+  group_by(sex) %>% 
+  mean_hdci()
+
+predicted_weights_stan %>% 
+  ungroup() %>% 
+  mutate(sex_nice = factor(sex, labels = c("Female", "Male"))) %>% 
+  ggplot(aes(x = weight_rep, fill = sex_nice)) +
+  stat_halfeye(alpha = 0.75) +
+  scale_fill_manual(values = clrs[1:2]) +
+  labs(x = "Posterior predicted weight (kg)", y = "Density", fill = NULL) +
+  theme(legend.position = "bottom")
+```
+
+Posterior predicted contrast in weights:
+
+```{r sex-only-stan-predict-contrast}
+sw_post_pred_diff_stan <- model_sw_stan %>% 
+  gather_draws(diff_rep[i])
+
+sw_post_pred_diff_stan %>%
+  group_by(.variable) %>%
+  mean_hdci() %>% 
+  select(-starts_with("i"))
+
+sw_post_pred_diff_stan %>% 
+  ggplot(aes(x = .value)) +
+  stat_halfeye(aes(fill = stat(x > 0))) +
+  geom_vline(xintercept = 0) +
+  scale_fill_manual(values = c(colorspace::lighten(clrs[3], 0.5), clrs[3]),
+                    guide = "none") +
+  labs(x = "Posterior weight contrast (kg)\nWomen − Men", y = "Density")
+```
+
+:::
+
+## Sex + height
+
+
+$$
+\begin{aligned}
+W_i &\sim \mathcal{N}(\mu_i, \sigma) \\
+\mu_i &= \alpha_{S[i]} + \beta_{S[i]}(H_i - \bar{H}) \\
+\\
+\alpha_j &\sim \mathcal{N}(60, 10) \\
+\beta_j &\sim \operatorname{LogNormal}(0, 1) \\
+\sigma &\sim \operatorname{Uniform}(0, 10)
+\end{aligned}
+$$
+
+::: {.panel-tabset}
+
+### brms
+
+This is the wonkiest syntax ever, but it works! We can hack the `nl` capabilities of **brms** to create indexed parameters.
+
+```{r sex-height, cache=TRUE, results="hide"}
+priors <- c(prior(normal(60, 10), class = b, nlpar = a),
+            prior(lognormal(0, 1), class = b, nlpar = b, lb = 0),
+            prior(uniform(0, 10), class = sigma, lb = 0, ub = 10))
+
+model_height_sex <- brm(
+  bf(weight ~ 0 + a + b * height_z,
+     a ~ 0 + sex,
+     b ~ 0 + sex,
+     nl = TRUE),
+  data = d,
+  family = gaussian(),
+  prior = priors,
+  chains = 4, cores = 4, seed = BAYES_SEED
+)
+```
+
+```{r show-sex-height}
+model_height_sex
+```
+
+
+```{r sex-heights-pred-contrasts}
+sex_height_weight_post_pred <- expand_grid(
+  height_z = seq(min(d$height_z), max(d$height_z), length.out = 50),
+  sex = 0:1
+) %>% 
+  add_predicted_draws(model_height_sex) %>%
+  compare_levels(variable = .prediction, by = sex, comparison = list(c("0", "1"))) %>% 
+  mutate(height_unscaled = (height_z * height_scale$scaled_scale) + height_scale$scaled_center)
+```
+
+Overall distribution of predictive posterior contrasts:
+
+```{r sex-heights-pred-contrasts-dist}
+ggplot(sex_height_weight_post_pred, aes(x = .prediction)) +
+  stat_halfeye(fill = clrs[3]) +
+  labs(x = "Posterior mean weight contrast (kg)\nWomen − Men", y = "Density")
+```
+
+Distribution of predictive posterior contrasts across range of heights:
+
+```{r sex-heights-pred-contrasts-range-height}
+ggplot(sex_height_weight_post_pred, aes(x = height_unscaled, y = .prediction)) +
+  stat_lineribbon(aes(fill_ramp = stat(.width)), .width = ppoints(50),
+                  fill = clrs[3], color = colorspace::darken(clrs[3], 0.5), 
+                  show.legend = FALSE) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  scale_fill_ramp_continuous(from = "transparent", range = c(1, 0)) +
+  labs(x = "Height (cm)", y = "Posterior weight contrast (kg)\nWomen − Men")
+```
+
+### Stan
+
+:::{.callout-note collapse="true"}
+
+#### Extracting Stan code from *Rethinking* models
+
+The `ulam()` function is super helpful for translating McElreath's `quap()` syntax into Stan!
+
+```{r quap-ulam}
+m_SHW <- rethinking::quap(
+  alist(
+    W ~ dnorm(mu, sigma),
+    mu <- a[S] + b[S] * (H - Hbar),
+    a[S] ~ dnorm(60, 10),
+    b[S] ~ dlnorm(0, 1),
+    sigma ~ dunif(0, 10)
+  ), 
+  data = list(
+    W = d$weight,
+    H = d$height,
+    Hbar = mean(d$height),
+    S = d$male + 1
+  )
+)
+
+cat(rethinking::ulam(m_SHW, sample = FALSE)$model)
+```
+
+:::
+
+**sex_height.stan**
+
+```{stan sex-height-stan, cache=TRUE, output.var="sex_height_stan"}
+data {
+  // Stuff from R
+  int<lower=1> n;
+  vector[n] weight;
+  vector[n] height;
+  int sex[n];
+}
+
+transformed data {
+  // Center and standardize height
+  vector[n] height_z;
+  height_z = (height - mean(height)) / sd(height);
+}
+
+parameters {
+  // Things to estimate
+  real<lower=0, upper=10> sigma;
+  vector[2] a;
+  vector<lower=0>[2] b;
+}
+
+model {
+  vector[n] mu;
+  
+  // Model for mu with intercepts (a) and coefficients (b) for each sex
+  for (i in 1:n) {
+    mu[i] = a[sex[i]] + b[sex[i]] * height_z[i];
+  }
+
+  // Likelihood
+  weight ~ normal(mu, sigma);
+  
+  // Priors
+  sigma ~ uniform(0, 10);
+  a ~ normal(60, 10);
+  b ~ lognormal(0, 1);
+}
+
+generated quantities {
+  matrix[n, 2] weight_rep;
+  vector[n] diff_rep;
+  
+  // Generate a posterior predictive distribution for each sex
+  // To do this we have to create a matrix, with a column per sex
+  for (j in 1:2) {
+    for (i in 1:n) {
+      real mu_hat_n = a[sex[i]] + b[sex[i]] * height_z[i];
+      weight_rep[i, j] = normal_rng(mu_hat_n, sigma);
+    }
+  }
+  
+  // Generate a posterior predictive distribution of group contrasts
+  for (i in 1:n) {
+    diff_rep[i] = weight_rep[i, 1] - weight_rep[i, 2];
+  }
+}
+```
+
+```{r sex-height-stan-samples, cache=TRUE, results="hide"}
+stan_data <- list(n = nrow(d),
+                  weight = d$weight,
+                  height = d$height,
+                  sex = d$male + 1)
+
+model_sex_height_stan <- rstan::sampling(
+  object = sex_height_stan,
+  data = stan_data,
+  iter = 5000, warmup = 1000, seed = BAYES_SEED, chains = 4, cores = 4
+)
+```
+
+```{r show-sex-height-stan-samples}
+print(model_sex_height_stan,
+      pars = c("sigma", "a[1]", "a[2]", "b[1]", "b[2]"))
+```
+
+```{r sex-heights-stan-pred-contrasts}
+original_hw <- tibble(height = d$height,
+                      weight = d$weight) %>% 
+  mutate(i = 1:n())
+
+predicted_diffs_sex_height_stan <- model_sex_height_stan %>% 
+  spread_draws(diff_rep[i]) %>% 
+  left_join(original_hw, by = "i")
+```
+
+Overall distribution of predictive posterior contrasts:
+
+```{r sex-heights-stan-pred-contrasts-dist}
+ggplot(predicted_diffs_sex_height_stan, aes(x = diff_rep)) +
+  stat_halfeye(fill = clrs[3]) +
+  labs(x = "Posterior mean weight contrast (kg)\nWomen − Men", y = "Density")
+```
+
+Distribution of predictive posterior contrasts across range of heights:
+
+(The y-values are way off from the video here :shrug:)
+
+```{r sex-heights-stan-pred-contrasts-range-height, message=FALSE}
+ggplot(predicted_diffs_sex_height_stan, aes(x = height, y = diff_rep)) +
+  stat_lineribbon(aes(fill_ramp = stat(.width)), .width = ppoints(50),
+                  fill = clrs[3], color = colorspace::darken(clrs[3], 0.5), 
+                  show.legend = FALSE) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  scale_fill_ramp_continuous(from = "transparent", range = c(1, 0)) +
+  labs(x = "Height (cm)", y = "Posterior weight contrast (kg)\nWomen − Men")
+```
+
+:::
+
+
+## Full luxury Bayes!
+
+Given this DAG:
+
+```{r full-dag, fig.height=3.5, fig.width=5, fig.align="center"}
+height_sex_dag <- dagify(
+  x ~ z,
+  y ~ x + z,
+  exposure = "x",
+  outcome = "y",
+  labels = c(x = "Height", y = "Weight", z = "Sex"),
+  coords = list(x = c(x = 1, y = 3, z = 2),
+                y = c(x = 1, y = 1, z = 2))) %>% 
+  tidy_dagitty() %>% 
+  node_status()
+
+ggplot(height_sex_dag, aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_dag_edges() +
+  geom_dag_point(aes(color = status)) +
+  geom_dag_text(aes(label = label), size = 3.5) +
+  scale_color_manual(values = clrs[c(1, 4)], guide = "none") +
+  theme_dag()
+```
+
+…what's the causal effect of sex on weight? Or:
+
+$$
+E(\text{Weight} \mid \operatorname{do}(\text{Sex}))
+$$
+
+It should look something like this:
+
+```{r original-w-do-s, fig.align="center", echo=FALSE}
+knitr::include_graphics("04-w-do-s.png")
+```
+
+::: {.panel-tabset}
+
+### brms
+
+```{r sex-height-luxury, cache=TRUE, results="hide", warning=FALSE}
+priors <- c(prior(normal(60, 10), resp = weight, class = b, nlpar = a),
+            prior(lognormal(0, 1), resp = weight, class = b, nlpar = b, lb = 0),
+            prior(uniform(0, 10), resp = weight, class = sigma, lb = 0, ub = 10),
+            # prior(normal(160, 10), resp = height, class = b),
+            prior(normal(0, 1), resp = heightz, class = b),
+            prior(uniform(0, 10), resp = heightz, class = sigma, lb = 0, ub = 10))
+
+model_luxury <- brm(
+  bf(weight ~ 0 + a + b * height_z,
+     a ~ 0 + sex,
+     b ~ 0 + sex,
+     nl = TRUE) + 
+    bf(height_z ~ 0 + sex) + 
+    set_rescor(TRUE),
+  data = d,
+  family = gaussian(),
+  prior = priors,
+  chains = 4, cores = 4, seed = BAYES_SEED
+)
+```
+
+```{r show-sex-height-luxury, warning=FALSE}
+model_luxury
+```
+
+Posterior mean contrast in weights:
+
+```{r luxury-mean-contrast}
+luxury_post_mean_diff <- expand_grid(
+  height_z = seq(min(d$height_z), max(d$height_z), length.out = 50),
+  sex = 0:1
+) %>% 
+  add_epred_draws(model_luxury) %>%
+  compare_levels(variable = .epred, by = sex, comparison = list(c("1", "0")))
+
+luxury_post_mean_diff %>% 
+  filter(.category == "weight") %>% 
+  ggplot(aes(x = .epred)) +
+  stat_halfeye(fill = clrs[3]) +
+  labs(x = "Posterior mean weight contrast (kg)\nWomen − Men", y = "Density")
+```
+
+Posterior predicted contrast in weights:
+
+```{r luxury-predict-contrast}
+luxury_post_pred_diff <- expand_grid(
+  height_z = seq(min(d$height_z), max(d$height_z), length.out = 50),
+  sex = 0:1
+) %>% 
+  add_predicted_draws(model_luxury) %>%
+  compare_levels(variable = .prediction, by = sex, comparison = list(c("1", "0")))
+
+luxury_post_pred_diff %>% 
+  filter(.category == "weight") %>% 
+  ggplot(aes(x = .prediction)) +
+  stat_halfeye(aes(fill = stat(x > 0))) +
+  geom_vline(xintercept = 0) +
+  scale_fill_manual(values = c(colorspace::lighten(clrs[3], 0.5), clrs[3]),
+                    guide = "none") +
+  labs(x = "Posterior weight contrast (kg)\nWomen − Men", y = "Density")
+```
+
+### Stan
+
+:::{.callout-note collapse="true"}
+
+#### Extracting Stan code from *Rethinking* models
+
+```{r show-luxury-quap-ulam, eval=FALSE}
+m_SHW_full <- rethinking::quap(
+  alist(
+    # Weight
+    W ~ dnorm(mu, sigma),
+    mu <- a[S] + b[S] * (H - Hbar),
+    a[S] ~ dnorm(60, 10),
+    b[S] ~ dlnorm(0, 1),
+    sigma ~ dunif(0, 10),
+    
+    # Height
+    H ~ dnorm(nu, tau),
+    nu <- h[S],
+    h[S] ~ dnorm(160, 10),
+    tau ~ dunif(0, 10)
+  ), data = list(
+    W = d$weight,
+    H = d$height,
+    Hbar = mean(d$height),
+    S = d$male + 1
+  )
+)
+
+cat(rethinking::ulam(m_SHW_full, sample = FALSE)$model)
+```
+
+:::
+
+**luxury_stan.stan**
+
+```{stan luxury-stan, cache=TRUE, output.var="luxury_stan"}
+data {
+  // Stuff from R
+  int<lower=1> n;
+  vector[n] weight;
+  real Hbar;
+  vector[n] height;
+  int sex[n];
+}
+
+parameters {
+  // Things to estimate
+  vector[2] a;
+  vector<lower=0>[2] b;
+  real<lower=0,upper=10> sigma;
+  vector[2] h;
+  real<lower=0,upper=10> tau;
+}
+
+model {
+  vector[n] mu;
+  vector[n] nu;
+  
+  // Height model
+  tau ~ uniform(0, 10);
+  h ~ normal(160, 10);
+  
+  for (i in 1:n) {
+    nu[i] = h[sex[i]];
+  }
+  
+  // Weight model
+  height ~ normal(nu , tau);
+  sigma ~ uniform(0, 10);
+  b ~ lognormal(0, 1);
+  a ~ normal(60, 10);
+  
+  for (i in 1:n) {
+    mu[i] = a[sex[i]] + b[sex[i]] * (height[i] - Hbar);
+  }
+  
+  weight ~ normal(mu, sigma);
+}
+
+generated quantities {
+  matrix[n, 2] weight_rep;
+  matrix[n, 2] height_rep;
+  vector[n] w_do_s;
+  vector[2] mu_sex;
+  real mu_diff;
+  
+  for (i in 1:2) {
+    mu_sex[i] = a[sex[i]] + b[sex[i]] * (h[sex[i]] - Hbar);
+  }
+  
+  mu_diff = mu_sex[1] - mu_sex[2];
+  
+  // Generate a posterior predictive distribution for each sex
+  // To do this we have to create a matrix, with a column per sex
+  for (j in 1:2) {
+    for (i in 1:n) {
+      height_rep[i, j] = normal_rng(h[sex[j]], tau);
+      weight_rep[i, j] = normal_rng(a[sex[j]] + b[sex[j]] * (height_rep[i, j] - Hbar), sigma);
+    }
+  }
+  
+  // Generate a posterior predictive distribution of group contrasts
+  for (i in 1:n) {
+    w_do_s[i] = weight_rep[i, 1] - weight_rep[i, 2];
+  }
+}
+```
+
+```{r luxury-stan-samples, cache=TRUE, results="hide"}
+stan_data <- list(n = nrow(d),
+                  weight = d$weight,
+                  height = d$height,
+                  Hbar = mean(d$height),
+                  sex = d$male + 1)
+
+model_luxury_stan <- rstan::sampling(
+  object = luxury_stan,
+  data = stan_data,
+  iter = 5000, warmup = 1000, seed = BAYES_SEED, chains = 4, cores = 4
+)
+```
+
+```{r show-luxury-stan-samples}
+print(model_luxury_stan,
+      pars = c("a[1]", "a[2]", "b[1]", "b[2]", "sigma", "h[1]", "h[2]", "tau", 
+               "mu_sex[1]", "mu_sex[2]", "mu_diff"))
+```
+
+Posterior mean contrast in weights:
+
+```{r luxury-stan-mean-contrast}
+luxury_post_mean_diff_stan <- model_luxury_stan %>% 
+  spread_draws(mu_diff)
+
+luxury_post_mean_diff_stan %>% 
+  mean_hdci()
+
+ggplot(luxury_post_mean_diff_stan, aes(x = mu_diff)) +
+  stat_halfeye(fill = clrs[3]) +
+  labs(x = "Posterior mean weight contrast (kg)\nWomen − Men", y = "Density")
+```
+
+```{r luxury-stan-predict-contrast}
+luxury_post_pred_diff_stan <- model_luxury_stan %>% 
+  spread_draws(w_do_s[i])
+
+luxury_post_pred_diff_stan %>% 
+  mean_hdci()
+
+ggplot(luxury_post_pred_diff_stan, aes(x = w_do_s)) +
+  stat_halfeye(aes(fill = stat(x > 0))) +
+  geom_vline(xintercept = 0) +
+  scale_fill_manual(values = c(colorspace::lighten(clrs[3], 0.5), clrs[3]),
+                    guide = "none") +
+  labs(x = "Posterior weight contrast (kg)\nWomen − Men", y = "Density")
+```
+
+:::
