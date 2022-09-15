@@ -973,7 +973,21 @@ Extracting Stan code from <em>Rethinking</em> models
 <p><span class="math display">\[
 E(\text{Weight} \mid \operatorname{do}(\text{Sex}))
 \]</span></p>
-<p>It should look something like this:</p>
+<p>Here’s the official model:</p>
+<p><span class="math display">\[
+\begin{aligned}
+H_i &amp;\sim \mathcal{N}(\nu_i, \tau) \\
+W_i &amp;\sim \mathcal{N}(\mu_i, \sigma) \\
+\nu_i &amp;= h_{S[i]} \\
+\mu_i &amp;= \alpha_{S[i]} + \beta_{S[i]}(H_i - \bar{H}) \\
+\\
+h_j &amp;\sim \mathcal{N}(160, 10) \\
+\alpha_j &amp;\sim \mathcal{N}(60, 10) \\
+\beta_j &amp;\sim \operatorname{LogNormal}(0, 1) \\
+\sigma, \tau &amp;\sim \operatorname{Uniform}(0, 10)
+\end{aligned}
+\]</span></p>
+<p>The results should look something like this, from the slides:</p>
 <div class="cell" data-layout-align="center">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
