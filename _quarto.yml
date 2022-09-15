@@ -48,6 +48,9 @@ website:
         - section: "4: Geocentric models"
           contents:
             - rethinking/03-video.qmd
+        - section: "5: The many variables & the spurious waffles"
+          contents:
+            - rethinking/04-video.qmd
     
     - title: "Bayes Rules!"
       contents:

@@ -328,6 +328,8 @@ $$
 
 This is the wonkiest syntax ever, but it works! We can hack the `nl` capabilities of **brms** to create indexed parameters.
 
+**Alternatively you can avoid this `nl` syntax!** Use `bf(weight ~ 0 + sex + sex:height_z),` instead. Note the `:` for the interaction term instead of the more standard `*`. If you use `*`, you'll get a more standard interaction term (i.e. the change in the slope when one group is active); if you use `:`, you'll get slopes for each group. [It's a little subtlety in R's formula syntax.](https://stackoverflow.com/questions/40567421/asterisk-vs-colon-in-r-formulas) The `*` is a shortcut for complete crossing of the terms, so `x * z` really turns into `x + z + x:z` behind the scenes. The `:` only does the interaction of the two terms, so that `x:z` is just $x \times z$.
+
 ```{r sex-height, cache=TRUE, results="hide"}
 priors <- c(prior(normal(60, 10), class = b, nlpar = a),
             prior(lognormal(0, 1), class = b, nlpar = b, lb = 0),
@@ -554,7 +556,23 @@ $$
 E(\text{Weight} \mid \operatorname{do}(\text{Sex}))
 $$
 
-It should look something like this:
+Here's the official model:
+
+$$
+\begin{aligned}
+H_i &\sim \mathcal{N}(\nu_i, \tau) \\
+W_i &\sim \mathcal{N}(\mu_i, \sigma) \\
+\nu_i &= h_{S[i]} \\
+\mu_i &= \alpha_{S[i]} + \beta_{S[i]}(H_i - \bar{H}) \\
+\\
+h_j &\sim \mathcal{N}(160, 10) \\
+\alpha_j &\sim \mathcal{N}(60, 10) \\
+\beta_j &\sim \operatorname{LogNormal}(0, 1) \\
+\sigma, \tau &\sim \operatorname{Uniform}(0, 10)
+\end{aligned}
+$$
+
+The results should look something like this, from the slides:
 
 ```{r original-w-do-s, fig.align="center", echo=FALSE}
 knitr::include_graphics("04-w-do-s.png")
