@@ -17,6 +17,9 @@ library(brms)
 library(tidybayes)
 library(ggdist)
 library(ggdag)
+library(splines)
+library(lubridate)
+library(patchwork)
 
 # Plot stuff
 clrs <- MetBrewer::met.brewer("Lakota", 6)
@@ -804,3 +807,159 @@ ggplot(luxury_post_pred_diff_stan, aes(x = w_do_s)) +
 ```
 
 :::
+
+
+## Curvy linear models
+
+The full data isn't linear, but linear models can be fit to curvy data, but in geocentric, purposely wrong ways
+
+```{r show-full-data}
+ggplot(Howell1, aes(x = height, y = weight)) +
+  geom_point()
+```
+
+### Polynomials
+
+We can use a squared term like:
+
+$$
+\mu_i = \alpha + \beta_1 H_i + \beta_2 H_i^2
+$$
+
+And that fits okay, but it does weird things on the edges of the data, like weight increasing when height gets really small
+
+```{r height-squared}
+ggplot(Howell1, aes(x = height, y = weight)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ poly(x, 2), fullrange = TRUE) +
+  xlim(c(40, 200))
+```
+
+We can throw in more terms too:
+
+$$
+\mu_i = \alpha + \beta_1 H_i + \beta_2 H_i^2 + \beta_3 H_i^3 + \beta_4 H_i^4
+$$
+
+And the line fits better, but it does really weird things on the edges, like dropping precipitously after the max height:
+
+```{r height-fourth}
+ggplot(Howell1, aes(x = height, y = weight)) +
+  geom_point() +
+  geom_smooth(method = "lm", formula = y ~ poly(x, 4), fullrange = TRUE) +
+  xlim(c(40, 200))
+```
+
+Weirdly, logging works really well because of biological reasons (that he'll explain in chapter 19)
+
+```{r height-log}
+ggplot(Howell1, aes(x = height, y = weight)) +
+  geom_point() +
+  geom_smooth(method = "glm", formula = y ~ x,
+              method.args = list(family = gaussian(link = "log"))) +
+  scale_x_log10()
+```
+
+### Splines
+
+```{r spline-basis}
+data(cherry_blossoms, package = "rethinking")
+
+cherry_blossoms <- cherry_blossoms %>% 
+  filter(complete.cases(doy)) %>% 
+  mutate(idx = 1:n()) %>% 
+  arrange(year)
+
+num_knots <- 3
+knot_list <- seq(from = min(cherry_blossoms$year), 
+                 to = max(cherry_blossoms$year), 
+                 length.out = num_knots)
+
+cherry_splines <- cherry_blossoms %>% 
+  nest(data = everything()) %>% 
+  mutate(basis_matrix = purrr::map(data, ~{
+    t(bs(.$year, knots = knot_list, degree = 2, intercept = FALSE))
+  })) %>% 
+  mutate(weights = purrr::map(basis_matrix, ~rep(c(1,-1), length = nrow(.)))) 
+
+cherry_splines_mu <- cherry_splines %>% 
+  mutate(mu = purrr::map2(weights, basis_matrix, ~as.vector(.x %*% .y))) %>% 
+  unnest(c(data, mu))
+
+cherry_basis <- cherry_splines %>% 
+  unnest(weights) %>% 
+  mutate(row = 1:n()) %>% 
+  filter(row != 5) %>% 
+  mutate(basis = purrr::pmap(list(basis_matrix, weights, row), ~{
+    ..1[..3,] * ..2
+  })) %>% 
+  mutate(row = glue::glue("Basis {row} (w = {weights})")) %>% 
+  unnest(c(data, basis)) 
+  
+ggplot(data = cherry_splines_mu, aes(x = year)) +
+  geom_line(aes(y = mu), size = 2) +
+  geom_line(data = cherry_basis, aes(y = basis, color = row), size = 1) +
+  labs(y = "Weighted basis function", color = NULL) +
+  theme(axis.text.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.x = element_blank(),
+        axis.line.x = element_blank())
+```
+
+Plot from book cover, for fun:
+
+```{r cherry-splines, cache=TRUE, results="hide", warning=FALSE, message=FALSE}
+model_doy <- brm(
+  bf(doy ~ 1 + s(year, bs = "bs", k = 30)),
+  family = gaussian(),
+  data = cherry_blossoms,
+  prior = c(prior(normal(100, 10), class = Intercept),
+                prior(normal(0, 10), class = b),
+                prior(student_t(3, 0, 5.9), class = sds),
+                prior(exponential(1), class = sigma)),
+  chains = 4, cores = 4, seed = BAYES_SEED
+)
+```
+
+```{r plot-blossom-spline, fig.width=7, fig.height=2, message=FALSE}
+plot_doy <- cherry_blossoms %>% 
+  add_epred_draws(model_doy) %>% 
+  summarize(mean_hdci(.epred, .width = 0.89)) %>% 
+  ungroup() %>% 
+  mutate(day_of_year = as.Date(doy, origin = "2021-12-31"))
+
+panel_bottom <- plot_doy %>% 
+  ggplot(aes(x = year)) +
+  geom_point(aes(y = doy), pch = 8, size = 3.5, color = "#FF4136", alpha = 0.5) +
+  geom_ribbon(aes(ymin = ymin, ymax = ymax), fill = "#111111", alpha = 0.5) +
+  scale_x_continuous(breaks = c(900, 1400, 2000),
+                     labels = function(x) paste(x, "CE")) +
+  scale_y_continuous(labels = function(y) format(as.Date(y, origin = "2021-12-31"), "%B %e"),
+                     breaks = yday(ymd(c("2022-04-01", "2022-05-01")))) +
+  labs(x = NULL, y = "Day of first blossom")
+panel_bottom
+```
+
+The cover uses imputed data for the missing values. I'm assuming that'll get covered later in the book, but in the meantime, here's a partial version of the top panel of the front cover plot:
+
+```{r plot-march-temps, fig.width=7, fig.height=2}
+panel_top <- cherry_blossoms %>% 
+  drop_na(temp) %>% 
+  ggplot(aes(x = year, y = temp)) +
+  geom_point(color = "#001f3f", size = 3, alpha = 0.3) +
+  scale_x_continuous(breaks = c(900, 1400, 2000),
+                     labels = function(x) paste(x, "CE")) +
+  scale_y_continuous(labels = function(y) paste0(y, "°C"),
+                     breaks = c(5, 8)) +
+  labs(x = NULL, y = "March temperature")
+panel_top
+```
+
+All together:
+
+```{r plot-blossom-temp, fig.width=7, fig.height=4.5}
+panel_top / 
+  (panel_bottom + 
+     theme(axis.text.x = element_blank(),
+           axis.ticks.x = element_blank()))
+```
