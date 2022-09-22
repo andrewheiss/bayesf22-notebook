@@ -1,0 +1,785 @@
+---
+title: "Video #5 code"
+subtitle: "Elemental confounds"
+date: "September 21, 2022"
+format:
+  html:
+    toc-depth: 5
+editor_options: 
+  chunk_output_type: inline
+---
+
+<div class="ratio ratio-16x9">
+<iframe src="https://www.youtube.com/embed/UpP-_mBvECI" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+```{r latex-stuff, eval=FALSE, include=FALSE}
+# John D. Book on conditional independence notation
+# https://www.johndcook.com/blog/2020/03/27/conditional-independence-notation/
+```
+
+$$
+\newcommand{\ind}{\perp\!\!\!\perp}
+\newcommand{\notind}{\not\!\perp\!\!\!\perp}
+$$
+
+```{r packages-data, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(brms)
+library(tidybayes)
+library(ggdag)
+library(ggrepel)
+library(patchwork)
+
+# Plot stuff
+clrs <- MetBrewer::met.brewer("Lakota", 6)
+theme_set(theme_bw())
+
+# Seed stuff
+BAYES_SEED <- 1234
+set.seed(1234)
+```
+
+## The fork (confounders)
+
+$$
+X \leftarrow Z \rightarrow Y
+$$
+
+$Z$ connects $X$ and $Y$ so that $Y \notind X$
+
+### Simulated example
+
+We can make some data to prove that they're connected:
+
+```{r fork-sim-binary}
+n <- 1000
+
+fork_sim <- tibble(Z = rbinom(n, 1, prob = 0.5)) %>% 
+  # When Z is 0, there's a 10% chance of X or Y being 1
+  # When Z is 1, there's a 90% chance of X or Y being 1
+  mutate(X = rbinom(n, 1, prob = ((1 - Z) * 0.1) + (Z * 0.9)),
+         Y = rbinom(n, 1, prob = ((1 - Z) * 0.1) + (Z * 0.9)))
+
+fork_sim %>% 
+  select(-Z) %>% 
+  table()
+
+fork_sim %>% 
+  summarize(cor = cor(X, Y))
+```
+
+But if we stratify by (or adjust for) $Z$, we can see that $Y \ind X \mid Z$:
+
+```{r fork-sim-binary-adjust}
+fork_sim %>% 
+  select(X, Y, Z) %>% 
+  table()
+
+fork_sim %>% 
+  group_by(Z) %>% 
+  summarize(cor = cor(X, Y))
+```
+
+Here's a continuous version too. When looking at all values of $Z$, there's a positive slope and relationship; when looking within each group, the relationship is 0 and flat.
+
+```{r fork-sim-continuous, message=FALSE}
+n <- 300
+
+fork_sim_cont <- tibble(Z = rbinom(n, 1, 0.5)) %>% 
+  mutate(X = rnorm(n, 2 * Z - 1),
+         Y = rnorm(n, 2 * Z - 1))
+
+ggplot(fork_sim_cont, aes(x = X, y = Y, color = factor(Z))) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  geom_smooth(aes(color = NULL), method = "lm")
+```
+
+### Waffle House example
+
+```{r load-clean-waffle-data}
+data(WaffleDivorce, package = "rethinking")
+
+WaffleDivorce <- WaffleDivorce %>% 
+  mutate(across(c(Marriage, Divorce, MedianAgeMarriage), ~scale(.), .names = "{col}_scaled")) %>% 
+  mutate(across(c(Marriage, Divorce, MedianAgeMarriage), ~as.numeric(scale(.)), .names = "{col}_z"))
+```
+
+What is the causal effect of marriage on divorce?
+
+```{r full-dag, fig.height=3.5, fig.width=5, fig.align="center"}
+height_sex_dag <- dagify(
+  x ~ z,
+  y ~ x + z,
+  exposure = "x",
+  outcome = "y",
+  labels = c(x = "Marriage", y = "Divorce", z = "Age"),
+  coords = list(x = c(x = 1, y = 3, z = 2),
+                y = c(x = 1, y = 1, z = 2))) %>% 
+  tidy_dagitty() %>% 
+  node_status()
+
+ggplot(height_sex_dag, aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_dag_edges() +
+  geom_dag_point(aes(color = status)) +
+  geom_dag_text(aes(label = label), size = 3.5, color = "black") +
+  scale_color_manual(values = clrs[c(1, 4)], guide = "none") +
+  theme_dag()
+```
+
+We can look at the relationship of all three of these arrows
+
+::: {.panel-tabset}
+#### Age → Marriage
+
+```{r plot-age-marriage, warning=FALSE, message=FALSE}
+ggplot(WaffleDivorce, aes(x = MedianAgeMarriage, y = Marriage)) +
+  geom_point(aes(fill = factor(South)), size = 4, pch = 21, color = "white") +
+  geom_smooth(method = "lm") +
+  geom_text_repel(aes(label = Loc), max.overlaps = 2) +
+  scale_fill_manual(values = clrs[c(1, 3)], guide = "none") +
+  labs(x = "Median age of marriage", y = "Marriage rate")
+```
+
+#### Age → Divorce
+
+```{r plot-age-divorce, warning=FALSE, message=FALSE}
+ggplot(WaffleDivorce, aes(x = MedianAgeMarriage, y = Divorce)) +
+  geom_point(aes(fill = factor(South)), size = 4, pch = 21, color = "white") +
+  geom_smooth(method = "lm") +
+  geom_text_repel(aes(label = Loc), max.overlaps = 2) +
+  scale_fill_manual(values = clrs[c(1, 3)], guide = "none") +
+  labs(x = "Median age of marriage", y = "Divorce rate")
+```
+
+#### Marriage → Divorce
+
+```{r plot-marriage-divorce, warning=FALSE, message=FALSE}
+ggplot(WaffleDivorce, aes(x = Marriage, y = Divorce)) +
+  geom_point(aes(fill = factor(South)), size = 4, pch = 21, color = "white") +
+  geom_smooth(method = "lm") +
+  geom_text_repel(aes(label = Loc), max.overlaps = 2) +
+  scale_fill_manual(values = clrs[c(1, 3)], guide = "none") +
+  labs(x = "Marriage rate", y = "Divorce rate")
+```
+
+:::
+
+How do we stratify by a continuous variable though? Regression!
+
+$$
+\begin{aligned}
+D_i &\sim \mathcal{N}(\mu_i, \sigma) \\
+\mu_i &= \alpha + \beta_M M_i + \beta_A A_i
+\end{aligned}
+$$
+
+#### Prior predictive simulation
+
+$$
+\begin{aligned}
+D_i &\sim \mathcal{N}(\mu_i, \sigma) \\
+\mu_i &= \alpha + \beta_M M_i + \beta_A A_i \\
+\\
+\alpha &\sim \mathcal{N}(0, 0.2) \\
+\beta_M &\sim \mathcal{N}(0, 0.5) \\
+\beta_A &\sim \mathcal{N}(0, 0.5) \\
+\sigma &\sim \operatorname{Exponential}(1)
+\end{aligned}
+$$
+
+```{r age-marriage-prior-only, cache=TRUE, results="hide", warning=FALSE}
+priors <- c(prior(normal(0, 0.2), class = Intercept),
+            prior(normal(0, 0.5), class = b, coef = "Marriage_z"),
+            prior(normal(0, 0.5), class = b, coef = "MedianAgeMarriage_z"),
+            prior(exponential(1), class = sigma))
+
+marriage_divorce_prior_only <- brm(
+  bf(Divorce_z ~ Marriage_z + MedianAgeMarriage_z),
+  data = WaffleDivorce,
+  family = gaussian(),
+  prior = priors,
+  sample_prior = "only",
+  chains = 4, cores = 4, seed = BAYES_SEED
+)
+```
+
+```{r plot-age-marriage-prior}
+draws_prior <- tibble(MedianAgeMarriage_z = seq(-2, 2, length.out = 100),
+                      Marriage_z = 0) %>% 
+  add_epred_draws(marriage_divorce_prior_only, ndraws = 100)
+
+draws_prior %>% 
+  ggplot(aes(x = MedianAgeMarriage_z, y = .epred)) +
+  geom_line(aes(group = .draw), alpha = 0.2) +
+  labs(x = "Median age of marriage (standardized)",
+       y = "Divorce rate (standardized)",
+       caption = "Standardized marriage rate held constant at 0")
+```
+
+#### Actual model
+
+Based on these models, 
+
+> Once we know median age at marriage for a state, there is little or no additional predictive power in also knowing the rate of marriage in that state. (p. 134)
+
+::: {.panel-tabset}
+##### brms
+
+```{r age-marriage-actual, cache=TRUE, results="hide", warning=FALSE}
+priors <- c(prior(normal(0, 0.2), class = Intercept),
+            prior(normal(0, 0.5), class = b, coef = "Marriage_z"),
+            prior(normal(0, 0.5), class = b, coef = "MedianAgeMarriage_z"),
+            prior(exponential(1), class = sigma))
+
+marriage_divorce_actual <- brm(
+  bf(Divorce_z ~ Marriage_z + MedianAgeMarriage_z),
+  data = WaffleDivorce,
+  family = gaussian(),
+  prior = priors,
+  chains = 4, cores = 4, seed = BAYES_SEED
+)
+```
+
+```{r show-age-marriage-actual}
+print(marriage_divorce_actual)
+```
+
+```{r plot-age-marriage-actual-coefs}
+# get_variables(marriage_divorce_actual)
+
+marriage_divorce_actual %>% 
+  gather_draws(b_Intercept, b_Marriage_z, b_MedianAgeMarriage_z, sigma) %>% 
+  ggplot(aes(x = .value, y = fct_rev(.variable))) +
+  stat_halfeye() +
+  coord_cartesian(xlim = c(-1, 1))
+```
+
+##### Stan
+
+**marriage_divorce_stan.stan**
+
+```{stan marriage-divorce-stan, cache=TRUE, output.var="marriage_divorce_stan"}
+data {
+  int<lower=1> n;  // Observations
+  vector[n] Divorce_z;  // Outcome: divorce rate
+  vector[n] Marriage_z;  // "Treatment": marriage rate
+  vector[n] MedianAgeMarriage_z;  // Confounder: age
+}
+
+parameters {
+  real a;
+  real bM;
+  real bA;
+  real<lower=0> sigma;
+}
+
+transformed parameters {
+  vector[n] mu;
+  mu = a + bM*Marriage_z + bA*MedianAgeMarriage_z;
+}
+
+model {
+  // Likelihood
+  Divorce_z ~ normal(mu, sigma);
+  
+  // Priors
+  a ~ normal(0, 0.2);
+  bM ~ normal(0, 0.5);
+  bA ~ normal(0, 0.5);
+  sigma ~ exponential(1);
+}
+
+generated quantities {
+  vector[n] Divorce_z_rep;
+  
+  for (i in 1:n) {
+    Divorce_z_rep[i] = normal_rng(mu[i], sigma);
+  }
+}
+```
+
+```{r marriage-divorce-stan-samples, cache=TRUE, results="hide"}
+stan_data <- WaffleDivorce %>% 
+  select(Divorce_z, Marriage_z, MedianAgeMarriage_z) %>% 
+  compose_data()
+
+model_marriage_divorce_stan <- rstan::sampling(
+  object = marriage_divorce_stan,
+  data = stan_data,
+  iter = 2000, warmup = 1000, seed = BAYES_SEED, chains = 4, cores = 4
+)
+```
+
+```{r show-marriage-divorce-stan-samples}
+print(model_marriage_divorce_stan,
+      pars = c("a", "bM", "bA", "sigma"))
+```
+
+```{r plot-age-marriage-stan-coefs}
+# get_variables(model_marriage_divorce_stan)
+
+model_marriage_divorce_stan %>% 
+  gather_draws(a, bM, bA, sigma) %>% 
+  mutate(.variable = factor(.variable, levels = c("a", "bM", "bA", "sigma"))) %>% 
+  ggplot(aes(x = .value, y = fct_rev(.variable))) +
+  stat_halfeye() +
+  coord_cartesian(xlim = c(-1, 1))
+```
+
+:::
+
+#### Simulating causal effects
+
+We can make counterfactual plots if we model the whole system, just like the ["full luxury Bayes" model from video 4](04-video.qmd#full-luxury-bayes).
+
+We want to know the causal effect of the marriage rate on the divorce rate, or:
+
+$$
+E(\text{Divorce rate} \mid \operatorname{do}(\text{Marriage rate}))
+$$
+
+Here's model for the whole system:
+
+$$
+\begin{aligned}
+M_i &\sim \mathcal{N}(\nu_i, \tau) \\
+D_i &\sim \mathcal{N}(\mu_i, \sigma) \\
+\nu_i &= \alpha_M + \beta_{AM} A_i \\
+\mu_i &= \alpha + \beta_M M_i + \beta_A A_i \\
+\\
+\alpha_M &\sim \mathcal{N}(0, 0.2) \\
+\alpha &\sim \mathcal{N}(0, 0.2) \\
+\beta_{AM} &\sim \mathcal{N}(0, 0.5) \\
+\beta_M &\sim \mathcal{N}(0, 0.5) \\
+\beta_A &\sim \mathcal{N}(0, 0.5) \\
+\tau &\sim \operatorname{Exponential}(1) \\
+\sigma &\sim \operatorname{Exponential}(1)
+\end{aligned}
+$$
+
+::: {.panel-tabset}
+##### brms
+
+```{r model-dag-full-brms, cache=TRUE, results="hide", warning=FALSE}
+priors <- c(prior(normal(0, 0.2), class = Intercept, resp = Divorcez),
+            prior(normal(0, 0.5), class = b, coef = "Marriage_z", resp = Divorcez),
+            prior(normal(0, 0.5), class = b, coef = "MedianAgeMarriage_z", resp = Divorcez),
+            prior(exponential(1), class = sigma, resp = Divorcez),
+            
+            prior(normal(0, 0.2), class = Intercept, resp = Marriagez),
+            prior(normal(0, 0.5), class = b, coef = "MedianAgeMarriage_z", resp = Marriagez),
+            prior(exponential(1), class = sigma, resp = Marriagez))
+
+model_dag_full <- brm(
+  bf(Divorce_z ~ Marriage_z + MedianAgeMarriage_z) +
+    bf(Marriage_z ~ MedianAgeMarriage_z) + 
+    set_rescor(FALSE),
+  data = WaffleDivorce,
+  family = gaussian(),
+  prior = priors,
+  chains = 4, cores = 4, seed = BAYES_SEED
+)
+```
+
+```{r show-model-dag-full-brms}
+print(model_dag_full)
+```
+
+
+```{r plot-sim-age-divorce}
+sim_age_divorce <- tibble(MedianAgeMarriage_z = seq(from = -2, to = 2, length.out = 40),
+                          Marriage_z = 0) %>% 
+  add_predicted_draws(model_dag_full, resp = "Divorcez")
+
+ggplot(sim_age_divorce, aes(x = MedianAgeMarriage_z, y = .prediction)) +
+  stat_lineribbon(.width = 0.89, color = clrs[5], fill = clrs[5], alpha = 0.5) +
+  labs(title = "Total counterfactual effect of age on divorce rate",
+       subtitle = "A → D in the DAG")
+```
+
+```{r plot-sim-age-marriage}
+sim_age_marriage <- tibble(MedianAgeMarriage_z = seq(from = -2, to = 2, length.out = 40)) %>% 
+  add_predicted_draws(model_dag_full, resp = "Marriagez")
+
+ggplot(sim_age_marriage, aes(x = MedianAgeMarriage_z, y = .prediction)) +
+  stat_lineribbon(.width = 0.89, color = clrs[6], fill = clrs[6], alpha = 0.5) +
+  labs(title = "Counterfactual effect of age on marriage rate",
+       subtitle = "A → M in the DAG")
+```
+
+```{r plot-sim-age-marriage-divorce}
+sim_age_marriage_divorce <- tibble(Marriage_z = seq(from = -2, to = 2, length.out = 40),
+                                   MedianAgeMarriage_z = 0) %>% 
+  add_predicted_draws(model_dag_full, resp = "Marriagez")
+
+ggplot(sim_age_marriage_divorce, aes(x = Marriage_z, y = .prediction)) +
+  stat_lineribbon(.width = 0.89, color = clrs[3], fill = clrs[3], alpha = 0.5) +
+  labs(title = "Total counterfactual effect of marriage rate on divorce rate",
+       subtitle = "M → D, after adjusting for A in the DAG, or E(D | do(M))")
+```
+
+##### Stan
+
+**marriage_dag_full_stan.stan**
+
+```{stan marriage-dag-full-stan, cache=TRUE, output.var="marriage_dag_full_stan"}
+data {
+  int<lower=1> n;  // Observations
+  vector[n] Divorce_z;  // Outcome: divorce rate
+  vector[n] Marriage_z;  // "Treatment": marriage rate
+  vector[n] MedianAgeMarriage_z;  // Confounder: age
+}
+
+parameters {
+  // Age -> Marriage
+  real aM;
+  real bAM;
+  real<lower=0> tau;
+
+  // Age -> Divorce <- Marriage
+  real a;
+  real bM;
+  real bA;
+  real<lower=0> sigma;
+}
+
+model {
+  vector[n] nu;
+  vector[n] mu;
+  
+  // Age -> Marriage
+  aM ~ normal(0, 0.2);
+  bAM ~ normal(0, 0.5);
+  tau ~ exponential(1);
+  
+  nu = aM + bAM*MedianAgeMarriage_z;
+  
+  Marriage_z ~ normal(nu, tau);
+
+  // Age -> Divorce <- Marriage
+  a ~ normal(0, 0.2);
+  bM ~ normal(0, 0.5);
+  bA ~ normal(0, 0.5);
+  sigma ~ exponential(1);
+  
+  mu = a + bM*Marriage_z + bA*MedianAgeMarriage_z;
+
+  Divorce_z ~ normal(mu, sigma);
+}
+
+generated quantities {
+  vector[n] Divorce_z_rep;
+  vector[n] Marriage_z_rep;
+  vector[n] divorce_do_marriage;
+  
+  for (i in 1:n) {
+    real nu_hat_n = aM + bAM*MedianAgeMarriage_z[i];
+    real mu_hat_n = a + bM*Marriage_z[i] + bA*MedianAgeMarriage_z[i];
+
+    Marriage_z_rep[i] = normal_rng(nu_hat_n, tau);
+    Divorce_z_rep[i] = normal_rng(mu_hat_n, sigma);
+    divorce_do_marriage[i] = normal_rng(a + bM*Marriage_z_rep[i] + bA*0, sigma);
+  }
+}
+```
+
+```{r marriage-dag-full-stan-samples, cache=TRUE, results="hide"}
+stan_data <- WaffleDivorce %>% 
+  select(Divorce_z, Marriage_z, MedianAgeMarriage_z) %>% 
+  compose_data()
+
+model_marriage_dag_full_stan <- rstan::sampling(
+  object = marriage_dag_full_stan,
+  data = stan_data,
+  iter = 2000, warmup = 1000, seed = BAYES_SEED, chains = 4, cores = 4
+)
+```
+
+```{r show-marriage-dag-full-stan}
+print(model_marriage_dag_full_stan,
+      pars = c("aM", "bAM", "tau", "a", "bM", "bA", "sigma"))
+```
+
+
+```{r plot-stan-age-divorce, warning=FALSE}
+stan_age_divorce <- model_marriage_dag_full_stan %>% 
+  spread_draws(Divorce_z_rep[i]) %>% 
+  mean_hdci() %>% 
+  mutate(age = WaffleDivorce$MedianAgeMarriage_z)
+
+ggplot(stan_age_divorce, aes(x = age, y = Divorce_z_rep)) +
+  geom_line(color = clrs[5]) +
+  geom_ribbon(aes(ymin = .lower, ymax = .upper), alpha = 0.2, fill = clrs[5]) +
+  coord_cartesian(xlim = c(-2, 2)) +
+  labs(title = "Total counterfactual effect of age on divorce rate",
+       subtitle = "A → D in the DAG")
+```
+
+```{r plot-stan-age-marriage, warning=FALSE}
+stan_age_marriage <- model_marriage_dag_full_stan %>% 
+  spread_draws(Marriage_z_rep[i]) %>% 
+  mean_hdci() %>% 
+  mutate(age = WaffleDivorce$MedianAgeMarriage_z)
+
+ggplot(stan_age_marriage, aes(x = age, y = Marriage_z_rep)) +
+  geom_line(color = clrs[6]) +
+  geom_ribbon(aes(ymin = .lower, ymax = .upper), alpha = 0.2, fill = clrs[6]) +
+  coord_cartesian(xlim = c(-2, 2)) +
+  labs(title = "Counterfactual effect of age on marriage rate",
+       subtitle = "A → M in the DAG")
+```
+
+```{r plot-stan-age-marriage-divorce, warning=FALSE}
+stan_age_marriage_divorce <- model_marriage_dag_full_stan %>% 
+  spread_draws(divorce_do_marriage[i]) %>% 
+  mean_hdci() %>% 
+  mutate(age = WaffleDivorce$MedianAgeMarriage_z)
+
+ggplot(stan_age_marriage_divorce, aes(x = age, y = divorce_do_marriage)) +
+  geom_line(color = clrs[3]) +
+  geom_ribbon(aes(ymin = .lower, ymax = .upper), alpha = 0.2, fill = clrs[3]) +
+  coord_cartesian(xlim = c(-2, 2)) +
+  labs(title = "Total counterfactual effect of marriage rate on divorce rate",
+       subtitle = "M → D, after adjusting for A in the DAG, or E(D | do(M))")
+```
+
+:::
+
+
+## The pipe (mediators)
+
+$$
+X \rightarrow Z \rightarrow Y
+$$
+
+$X$ and $Y$ are associated ($Y \notind X$) because influence of $X$ is passed to $Y$ through $Z$. After adjusting for $Z$, though, there's no association, or $Y \ind X \mid Z$.
+
+### Simulated example
+
+```{r pipe-sim-binary}
+n <- 1000
+
+pipe_sim <- tibble(X = rbinom(n, 1, prob = 0.5)) %>% 
+  # When X is 0, there's a 10% chance of Z being 1
+  # When X is 1, there's a 90% chance of Z being 1
+  # When Z is 0, there's a 10% chance of Y being 1
+  # When Z is 1, there's a 90% chance of Y being 1
+  mutate(Z = rbinom(n, 1, prob = ((1 - X) * 0.1) + (X * 0.9)),
+         Y = rbinom(n, 1, prob = ((1 - Z) * 0.1) + (Z * 0.9)))
+
+pipe_sim %>% 
+  select(-Z) %>% 
+  table()
+
+pipe_sim %>% 
+  summarize(cor = cor(X, Y))
+```
+
+But if we adjust for $Z$, $Y \ind X \mid Z$:
+
+```{r pipe-sim-binary-adjust}
+pipe_sim %>% 
+  select(X, Y, Z) %>%
+  table()
+
+pipe_sim %>% 
+  group_by(Z) %>% 
+  summarize(cor = cor(X, Y))
+```
+
+This also works with continuous data. When looking at all values of $Z$, there's a positive slope and relationship; when looking within each group, the relationship is 0 and flat.
+
+```{r pipe-sim-continuous, message=FALSE}
+n <- 300
+
+pipe_sim_cont <- tibble(X = rnorm(n, 0, 1)) %>% 
+  mutate(Z = rbinom(n, 1, plogis(X)),
+         Y = rnorm(n, (2 * Z - 1), 1))
+
+ggplot(pipe_sim_cont, aes(x = X, y = Y, color = factor(Z))) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  geom_smooth(aes(color = NULL), method = "lm")
+```
+
+### Fungus experiment example
+
+With this DAG, we shouldn't adjust for $F$, since that would block the effect of the fungus, which in this case is super important since the causal mechanism pretty much only flows through $F$. If we adjust for $F$, we'll get the causal effect of the treatment on height *without* the effect of the fungus, which is weird and probably 0.
+
+```{r plant-dag, fig.height=3.5, fig.width=6, fig.align="center"}
+plant_fungus_dag <- dagify(
+  h1 ~ t + f + h0,
+  f ~ t,
+  exposure = "t",
+  outcome = "h1",
+  labels = c(t = "Treatment", h1 = "Height, t=1", f = "Fungus", h0 = "Height, t=0"),
+  coords = list(x = c(t = 1, h1 = 3, f = 2, h0 = 3),
+                y = c(t = 1, h1 = 1, f = 2, h0 = 2))) %>% 
+  tidy_dagitty() %>% 
+  node_status()
+
+ggplot(plant_fungus_dag, aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_dag_edges() +
+  geom_dag_point(aes(color = status)) +
+  geom_dag_text(aes(label = label), size = 3.5, color = "black") +
+  scale_color_manual(values = clrs[c(1, 4)], guide = "none") +
+  theme_dag()
+```
+
+In general this is called **post-treatment bias** and it is bad.
+
+
+## The collider (colliders, obvs)
+
+$$
+X \rightarrow Z \leftarrow Y
+$$
+
+$X$ and $Y$ are not associated ($Y \ind X$), but they both influence $Z$. Once you adjust for $Z$, $X$ and $Y$ become associated and $Y \notind X \mid Z$.
+
+When we learn about $Z$ (or stratify by $Z$, or only look at specific values of $Z$), we necessarily learn something about $X$ and $Y$, since they helped generate $Z$
+
+### Simulated example
+
+```{r collider-sim-binary}
+n <- 1000
+
+collider_sim <- tibble(X = rbinom(n, 1, prob = 0.5),
+                       Y = rbinom(n, 1, prob = 0.5)) %>% 
+  # If either X and Y are 1, there's a 90% chance that Z will be 1
+  mutate(Z = rbinom(n, 1, prob = ifelse(X + Y > 0, 0.9, 0.2)))
+
+# These are independent
+collider_sim %>% 
+  select(-Z) %>% 
+  table()
+
+# No correlation
+collider_sim %>% 
+  summarize(cor = cor(X, Y))
+```
+
+When we adjust for $Z$, though, $Y \notind X \mid Z$:
+
+```{r collider-sim-binary-adjust}
+collider_sim %>% 
+  select(X, Y, Z) %>%
+  table()
+
+# They're correlated!
+collider_sim %>% 
+  group_by(Z) %>% 
+  summarize(cor = cor(X, Y))
+```
+
+As with the others, this works with continuous data too. When ignoring values of $Z$, there's no relationship between $X$ and $Y$. But once we adjust for or stratify by $Z$, there's a relationship within each group.
+
+```{r collider-sim-continuous, message=FALSE}
+n <- 300
+
+collider_sim_cont <- tibble(X = rnorm(n, 0, 1),
+                            Y = rnorm(n, 0, 1)) %>% 
+  mutate(Z = rbinom(n, 1, plogis(2*X + 2*Y - 2)))
+
+ggplot(collider_sim_cont, aes(x = X, y = Y, color = factor(Z))) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  geom_smooth(aes(color = NULL), method = "lm")
+```
+
+### Grant selection example
+
+```{r grant-collider, message=FALSE}
+set.seed(1914)
+
+n <- 200
+
+grants <- tibble(newsworthiness = rnorm(n, 0, 1),
+                 trustworthiness = rnorm(n, 0, 1)) %>% 
+  mutate(total = newsworthiness + trustworthiness) %>% 
+  # Select just the top 10%
+  mutate(q = quantile(total, 1 - 0.1)) %>% 
+  mutate(selected = total >= q)
+
+# No relationship
+grants %>% 
+  summarize(cor = cor(newsworthiness, trustworthiness))
+
+# Relationship!
+grants %>% 
+  group_by(selected) %>% 
+  summarize(cor = cor(newsworthiness, trustworthiness))
+
+ggplot(grants, aes(x = newsworthiness, y = trustworthiness, color = selected)) +
+  geom_point() +
+  geom_smooth(data = filter(grants, selected), method = "lm") +
+  geom_smooth(aes(color = "Full sample"), method = "lm")
+```
+
+
+## The descendant
+
+Like a confounder if it comes from a confounder; like a mediator if it comes from a mediator; like a collider if it comes from a collider.
+
+$X$ and $Y$ are causally associated through $Z$, which implies that $Y \notind X$. $A$ contains information about $Z$, so once we stratify by or adjust for $A$, $X$ and $Y$ become less associated (if $A$ is strong enough), implying $Y \ind X \mid A$
+
+That can be good (if $A$ is confounder-flavored) or bad (if $A$ is mediator- or collider-flavored).
+
+```{r descendant-dag, fig.height=2, fig.width=9.5, fig.align="center"}
+desc_confounder_dag <- dagify(
+  Y ~ Z,
+  X ~ Z,
+  A ~ Z,
+  coords = list(x = c(X = 1, Y = 3, Z = 2, A = 2),
+                y = c(X = 1, Y = 1, Z = 1, A = 0))) %>% 
+  tidy_dagitty()
+
+desc_mediator_dag <- dagify(
+  Y ~ Z,
+  Z ~ X,
+  A ~ Z,
+  coords = list(x = c(X = 1, Y = 3, Z = 2, A = 2),
+                y = c(X = 1, Y = 1, Z = 1, A = 0))) %>% 
+  tidy_dagitty()
+
+desc_collider_dag <- dagify(
+  Z ~ X + Y,
+  A ~ Z,
+  coords = list(x = c(X = 1, Y = 3, Z = 2, A = 2),
+                y = c(X = 1, Y = 1, Z = 1, A = 0))) %>% 
+  tidy_dagitty()
+
+plot_desc_confounder <- ggplot(desc_confounder_dag, 
+                               aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_dag_edges() +
+  geom_dag_point() +
+  geom_dag_text(aes(label = name), size = 3.5, color = "white") +
+  ylim(c(-0.25, 1.25)) +
+  labs(subtitle = "Confounder-flavored descendant") +
+  theme_dag() +
+  theme(plot.subtitle = element_text(hjust = 0.5, face = "bold"))
+
+plot_desc_mediator <- ggplot(desc_mediator_dag, 
+                             aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_dag_edges() +
+  geom_dag_point() +
+  geom_dag_text(aes(label = name), size = 3.5, color = "white") +
+  ylim(c(-0.25, 1.25)) +
+  labs(subtitle = "Mediator-flavored descendant") +
+  theme_dag() +
+  theme(plot.subtitle = element_text(hjust = 0.5, face = "bold"))
+
+plot_desc_collider <- ggplot(desc_collider_dag, 
+                             aes(x = x, y = y, xend = xend, yend = yend)) +
+  geom_dag_edges() +
+  geom_dag_point() +
+  geom_dag_text(aes(label = name), size = 3.5, color = "white") +
+  ylim(c(-0.25, 1.25)) +
+  labs(subtitle = "Collider-flavored descendant") +
+  theme_dag() +
+  theme(plot.subtitle = element_text(hjust = 0.5, face = "bold"))
+
+plot_desc_confounder + plot_desc_mediator + plot_desc_collider
+```

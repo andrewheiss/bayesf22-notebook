@@ -87,6 +87,14 @@ h3 {
   font-weight: 200;
 }
 
+// Sidebar line height
+.sidebar-navigation .sidebar-section .sidebar-item,
+.sidebar-navigation .sidebar-item{
+  line-height: 1.2;
+  padding-bottom: 0.2rem;
+}
+
+
 // Code stuff
 // Shrink blocks of code
 pre.text, pre.sourceCode, .cell-output pre {

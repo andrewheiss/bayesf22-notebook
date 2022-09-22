@@ -1,5 +1,5 @@
 ---
-title: "Exercises"
+title: "Chapter 3 exercises"
 subtitle: "Posteriors from grids"
 date: "September 2, 2022"
 ---

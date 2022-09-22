@@ -1,3 +1,18 @@
 ---
 title: "Statistical Rethinking"
 ---
+
+General schedule:
+
+| Week | Topic                            | Reading            | Videos |
+|------|----------------------------------|--------------------|--------|
+| 1    | Bayesian inference               | Chapters 1, 2, 3   | 1, 2   |
+| 2    | Linear models & causal inference | Chapter 4          | 3, 4   |
+| 3    | Causes, confounds, & colliders   | Chapters 5, 6      | 5, 6   |
+| 4    | Overfitting & interactions       | Chapters 7, 8      | 7, 8   |
+| 5    | MCMC & generalized linear models | Chapters 9, 10, 11 | 9, 10  |
+| 6    | Integers & other monsters        | Chapters 11, 12    | 11, 12 |
+| 7    | Multilevel models I              | Chapter 13         | 13, 14 |
+| 8    | Multilevel models II             | Chapter 14         | 15, 16 |
+| 9    | Measurement & missingness        | Chapter 15         | 17, 18 |
+| 10   | Generalized linear madness       | Chapter 16         | 19, 20 |

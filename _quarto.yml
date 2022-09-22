@@ -41,16 +41,25 @@ website:
       style: "floating"
       contents: 
         - rethinking/index.qmd
-        - section: "3: Sampling and grid approximation"
+        - section: "Week 1:<br>Bayesian inference"
           contents:
             - rethinking/03-chapter.qmd
             - rethinking/03-practice.qmd
-        - section: "4: Geocentric models"
+        - section: "Week 2:<br>Linear models & causal inference"
           contents:
             - rethinking/03-video.qmd
-        - section: "5: The many variables & the spurious waffles"
-          contents:
             - rethinking/04-video.qmd
+        - section: "Week 3:<br>Causes, confounds, and colliders"
+          contents:
+            - rethinking/05-video.qmd
+            - rethinking/06-video.qmd
+        - section: "Week 4:<br>Overfitting & interactions"
+        - section: "Week 5:<br>MCMC & generalized linear models"
+        - section: "Week 6:<br>Integers & other monsters"
+        - section: "Week 7:<br>Multilevel models I"
+        - section: "Week 8:<br>Multilevel models II"
+        - section: "Week 9:<br>Measurement & missingness"
+        - section: "Week 10:<br>Generalized linear madness"
     
     - title: "Bayes Rules!"
       contents:

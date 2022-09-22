@@ -1,5 +1,5 @@
 ---
-title: "Reading notes"
+title: "Chapter 3 notes"
 subtitle: "Posteriors from grids"
 date: "September 2, 2022"
 ---
