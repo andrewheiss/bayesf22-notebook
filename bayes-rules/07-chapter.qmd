@@ -1,0 +1,118 @@
+---
+title: "Reading notes"
+subtitle: "MCMC under the Hood"
+date: "September 27, 2022"
+---
+
+```{r warning=FALSE, message=FALSE}
+library(tidyverse)
+
+# Plot stuff
+clrs <- MetBrewer::met.brewer("Lakota", 6)
+theme_set(theme_bw())
+
+# Seed stuff
+set.seed(1234)
+```
+
+# 7.1: The Big Idea
+
+*(SO EXCITED FOR THIS)*
+
+Stan uses Hamiltonian Monte Carlo sampling; JAGS uses Gibbs sampling. Both of these are enhanced versions of the fundamental Metropolis-Hastings algorithm for sampling, which we'll implement here (yay!)
+
+Think of Markov chains as a tour around the range of posterior possible values of a parameter (like µ or π or whatever). The chains move around that parameter and hopefully converge around it, but the chains need a tour manager to do that properly.
+
+**Trace plots show the tour route; density plots show the relative amount of time spent at each stop or parameter region during the tour.**
+
+The tour manager's goal is "to ensure that the density of tour stops in each μ region is proportional to its posterior plausibility"
+
+We can automate the tour managing process with an algorithm, like the Metropolis-Hastings algorithm, which consists of two steps. 
+
+Assume the Markov chain is at location $\mu^{(i)}$ currently. In order to choose the next tour stop, or $\mu^{(i + 1)}$, follow this process:
+
+1. Propose a random location for the next tour stop: $\mu^\prime$
+2. Decide whether to go to $\mu^\prime$ or stay at the current location $\mu^{(i)}$ for another iteration
+
+That's it. This simplified special version of Metropolis-Hastings is called the Monte Carlo algorithm.
+
+Here's how to implement it. Assume we have a *posterior* (calculated with magical conjugate prior families) like this:
+
+$$
+\mu \sim \mathcal{N}(4, 0.6^2)
+$$
+
+We can draw random values from that distribution and tour it:
+
+```{r}
+mc_tour <- tibble(
+  mu = rnorm(5000, mean = 4, sd = 0.6)
+) |> 
+  mutate(.iteration = 1:n())
+
+# Trace plot
+mc_tour |> 
+  ggplot(aes(x = .iteration, y = mu)) +
+  geom_line(size = 0.1, alpha = 0.75)
+
+# Density plot
+mc_tour |> 
+  ggplot(aes(x = mu)) +
+  geom_histogram(aes(y = ..density..),binwidth = 0.25, 
+                  color = "white", fill = clrs[2]) +
+  geom_function(fun = ~dnorm(., 4, 0.6), color = clrs[3])
+```
+
+Neat! The trace plot shows that the tour was stable and had good coverage; the density plot shows that most of the time was spent around 4.
+
+But this Monte Carlo algorithm is way too easy. We already know the posterior here! MCMC is great for approximating the posterior when math is too hard; if we can get the posterior through conjugate magic, there's no need to then randomly sample and tour the posterior. 
+
+So what do we do if we don't know the true posterior? We *do* know *some* of the posterior—the whole point of Bayes' rule is that the posterior is proportional to the prior and the likelihood:
+
+$$
+\begin{aligned}
+\text{Posterior} &\propto \text{Prior} \times \text{Likelihood} \\
+f(\mu \mid y = 6.25) &\propto f(\mu) \times L(\mu \mid y = 6.25)
+\end{aligned}
+$$
+
+```{r}
+plot_data <- tibble(mu = seq(1, 7, length.out = 101)) |> 
+  mutate(likelihood = map_dbl(mu, ~{
+    prod(dnorm(6.25, mean = ., sd = 0.75))
+  })) |> 
+  mutate(prior = dnorm(mu, 0, 1)) |> 
+  mutate(unnormalized = likelihood * prior)
+
+ggplot(plot_data, aes(x = mu, y = unnormalized)) + 
+  geom_area(fill = clrs[1]) +
+  labs(x = "µ", y = NULL,
+       title = "Unnormalized posterior distribution",
+       subtitle = "Prior × L(µ | y = 6.25)")
+```
+
+This distribution isn't quite correct—it's not scaled correctly—but it does "preserve the shape, central tendency, and variability of the actual posterior". So we know *something* about the posterior that we can work with, and that can influence the sampling procedure.
+
+Metropolis-Hastings also does another neat thing. Instead of just choosing a new stop at random, it uses a proposal model to propose possible stops. There are lots of possible proposal models—in Bayes Rules they use a uniform proposal model with a half-width parameter $w$ that adds a window, or range, or neighborhood around the current µ location in the chain, or the current stop.
+
+So if we're currently at $\mu^{\text{(i)}}$, the proposal for the next stop will be drawn from a window of $\mu^{\text{(i)}} \pm w$, or more formally:
+
+$$
+\mu^\prime \sim \operatorname{Uniform}(\mu^{\text{(i)}} - w, \mu^{\text{(i)}} + w)
+$$
+
+If we're currently at µ = 3, for instance, and we're using a half-width $w$ of 1, the proposal for the next draw will come from `runif(n = 1, min = 2, max = 4)`:
+
+```{r}
+ggplot(plot_data, aes(x = mu, y = unnormalized)) + 
+  geom_area(fill = clrs[1]) +
+  labs(x = "µ", y = NULL,
+       title = "Unnormalized posterior distribution",
+       subtitle = "Prior × L(µ | y = 6.25)") +
+  scale_x_continuous(breaks = 1:7) +
+  annotate(geom = "segment", x = 2, xend = 4, y = 2e-7, yend = 2e-7) + 
+  annotate(geom = "segment", x = 3, xend = 3, y = 2e-7, yend = 0, linetype = "21")
+```
+
+The second step in the algorithm then decides if the proposal should be accepted or rejected. If the proposed $\mu^\prime$ is bad, the chain will hang out for a round before making another proposal, checking if it's good, and then maybe moving on.
+

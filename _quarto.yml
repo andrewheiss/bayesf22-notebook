@@ -77,6 +77,9 @@ website:
           contents:
             - bayes-rules/05-chapter.qmd
             - bayes-rules/05-practice.qmd
+        - section: "6: Approximating the posterior"
+          contents:
+            - bayes-rules/06-chapter.qmd
 
 format:
   html:
