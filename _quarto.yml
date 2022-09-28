@@ -80,6 +80,9 @@ website:
         - section: "6: Approximating the posterior"
           contents:
             - bayes-rules/06-chapter.qmd
+        - section: "7: MCMC under the Hood"
+          contents:
+            - bayes-rules/07-chapter.qmd
 
 format:
   html:
