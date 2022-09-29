@@ -11,3 +11,4 @@ _site/
 # (I wish there was a better way to detect these ¯\_(ツ)_/¯ )
 bayes-rules/06-stan/bb_sim
 bayes-rules/06-stan/gp_sim
+bayes-rules/08-stan/genx
