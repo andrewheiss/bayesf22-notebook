@@ -494,8 +494,11 @@ Y &amp;\sim \operatorname{Binomial}(100, \pi) \\
 </div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<p><strong>08-stan/genx.stan</strong></p>
 <div class="cell" data-file="08-stan/genx.stan" data-output.var="">
+<div class="code-with-filename">
+<div class="code-with-filename-file">
+<pre><strong>08-stan/genx.stan</strong></pre>
+</div>
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Things coming in from R</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; artworks;</span>
@@ -515,6 +518,7 @@ Y &amp;\sim \operatorname{Binomial}(100, \pi) \\
 <span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Likelihood</span></span>
 <span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  num_genx ~ binomial(artworks, pi);</span>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </div>
 <div class="cell" data-hash="08-chapter_cache/html/compile-genx-model_266d0a5f4d682a0b013e748a2278007e">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model_pi_stan <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="st">"08-stan/genx.stan"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -548,7 +552,7 @@ Y &amp;\sim \operatorname{Binomial}(100, \pi) \\
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qbeta</span>(<span class="fu">c</span>(<span class="fl">0.025</span>, <span class="fl">0.975</span>), <span class="dv">18</span>, <span class="dv">92</span>)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.1009084 0.2379286</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>There’s a 95% posterior probability that somewhere between 10% and 24$ of museum artists are Gen X or younger:</p>
+<p>There’s a 95% posterior probability that somewhere between 10% and 24% of museum artists are Gen X or younger:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>post_mean <span class="ot">&lt;-</span> <span class="dv">18</span> <span class="sc">/</span> (<span class="dv">18</span> <span class="sc">+</span> <span class="dv">92</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>post_median <span class="ot">&lt;-</span> <span class="fu">qbeta</span>(<span class="fl">0.5</span>, <span class="dv">18</span>, <span class="dv">92</span>)</span>
@@ -1002,44 +1006,61 @@ H_a: &amp; \; \; \pi \ne 0.3 \\
 <div class="cell">
 <div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>predicted_genx_after_20_stan <span class="ot">&lt;-</span> pi_stan_samples <span class="sc">|&gt;</span> </span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(pi) <span class="sc">|&gt;</span> </span>
-<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">.prediction =</span> <span class="fu">rbinom</span>(<span class="fu">n</span>(), <span class="at">size =</span> <span class="dv">20</span>, <span class="at">prob =</span> pi)) <span class="sc">|&gt;</span> </span>
-<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(.prediction) <span class="sc">|&gt;</span> </span>
-<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
-<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span>
-<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>predicted_genx_after_20_stan</span>
-<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 12 × 3</span></span>
-<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a><span class="do">##    .prediction     n   prop</span></span>
-<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="do">##          &lt;int&gt; &lt;int&gt;  &lt;dbl&gt;</span></span>
-<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  1           0   403 0.0403</span></span>
-<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  2           1  1214 0.121 </span></span>
-<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="do">##  3           2  2042 0.204 </span></span>
-<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  4           3  2250 0.225 </span></span>
-<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  5           4  1765 0.176 </span></span>
-<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  6           5  1215 0.122 </span></span>
-<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  7           6   642 0.0642</span></span>
-<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  8           7   291 0.0291</span></span>
-<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  9           8   116 0.0116</span></span>
-<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a><span class="do">## 10           9    44 0.0044</span></span>
-<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a><span class="do">## 11          10    13 0.0013</span></span>
-<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a><span class="do">## 12          11     5 0.0005</span></span>
-<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(predicted_genx_after_20_stan, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(.prediction), <span class="at">y =</span> prop)) <span class="sc">+</span> </span>
-<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">.prediction =</span> <span class="fu">rbinom</span>(<span class="fu">n</span>(), <span class="at">size =</span> <span class="dv">20</span>, <span class="at">prob =</span> pi)) </span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>predicted_genx_after_20_stan_summarized <span class="ot">&lt;-</span> predicted_genx_after_20_stan <span class="sc">|&gt;</span> </span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(.prediction) <span class="sc">|&gt;</span> </span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a>predicted_genx_after_20_stan</span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 10,000 × 5</span></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="do">##    .chain .iteration .draw    pi .prediction</span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a><span class="do">##     &lt;int&gt;      &lt;int&gt; &lt;int&gt; &lt;dbl&gt;       &lt;int&gt;</span></span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="do">##  1      1          1     1 0.157           4</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  2      1          2     2 0.151           1</span></span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  3      1          3     3 0.189           5</span></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  4      1          4     4 0.226           6</span></span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  5      1          5     5 0.192           3</span></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  6      1          6     6 0.210           5</span></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  7      1          7     7 0.210           4</span></span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a><span class="do">##  8      1          8     8 0.174           5</span></span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a><span class="do">##  9      1          9     9 0.157           5</span></span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a><span class="do">## 10      1         10    10 0.153           3</span></span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a><span class="do">## # … with 9,990 more rows</span></span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(predicted_genx_after_20_stan_summarized, </span>
+<span id="cb39-26"><a href="#cb39-26" aria-hidden="true" tabindex="-1"></a>       <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(.prediction), <span class="at">y =</span> prop)) <span class="sc">+</span> </span>
+<span id="cb39-27"><a href="#cb39-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="08-chapter_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Posterior predictive probability that 3/20 will be Gen X is roughly the same</span></span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co"># as 0.2217!</span></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>predicted_genx_after_20_stan <span class="sc">|&gt;</span> </span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>predicted_genx_after_20_stan_summarized <span class="sc">|&gt;</span> </span>
 <span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(.prediction <span class="sc">==</span> <span class="dv">3</span>) <span class="sc">|&gt;</span> </span>
 <span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(prop)</span>
 <span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.225</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<p>We can also get the equivalent of <code>posterior_epred()</code> by calculating the average of the predictive posterior:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>epred <span class="ot">&lt;-</span> predicted_genx_after_20_stan <span class="sc">|&gt;</span> </span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">epred =</span> <span class="fu">mean</span>(.prediction)) <span class="sc">|&gt;</span> </span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pull</span>(epred)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>epred</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 3.2581</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(predicted_genx_after_20_stan, <span class="fu">aes</span>(<span class="at">x =</span> .prediction)) <span class="sc">+</span> </span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_count</span>() <span class="sc">+</span></span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> epred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="08-chapter_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>I haven’t figured out a way to get <code>posterior_linpred()</code> (the variability of just π) with raw Stan like this though. :(</p>
 </div>
 </div>
 </div>
-<p>I haven’t figured out a way to get <code>posterior_linpred()</code> and <code>posterior_epred()</code> with raw Stan like this though. :(</p>
 </section>
 <section id="posterior-analysis-with-mcmc" class="level2">
 <h2 class="anchored" data-anchor-id="posterior-analysis-with-mcmc">8.4: Posterior analysis with MCMC</h2>
