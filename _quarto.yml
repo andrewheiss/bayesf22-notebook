@@ -92,6 +92,9 @@ website:
         - section: "10: Evaluating regression models"
           contents:
             - bayes-rules/10-chapter.qmd
+        - section: "11: Extending the normal regression model"
+          contents:
+            - bayes-rules/11-chapter.qmd
 
 format:
   html:
