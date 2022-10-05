@@ -114,9 +114,7 @@ model_pi_brms
 
 ### Stan
 
-**08-stan/genx.stan**
-
-```{stan, file="08-stan/genx.stan", eval=FALSE, output.var=""}
+```{stan, file="08-stan/genx.stan", eval=FALSE, output.var="", filename="08-stan/genx.stan"}
 ```
 
 ```{r compile-genx-model, cache=TRUE}
@@ -144,7 +142,7 @@ We can calculate a 95% credible interval around the median using quantiles:
 qbeta(c(0.025, 0.975), 18, 92)
 ```
 
-There's a 95% posterior probability that somewhere between 10% and 24$ of museum artists are Gen X or younger:
+There's a 95% posterior probability that somewhere between 10% and 24% of museum artists are Gen X or younger:
 
 ```{r}
 post_mean <- 18 / (18 + 92)
@@ -302,7 +300,7 @@ H_a: & \; \; \pi < 0.2
 \end{split}
 $$
 
-We already know the probability of $H_a$ (`r round(post_prob, 3)`), so the probability of $H_0$ is 1 minus tuat, or `r round(1 - post_prob, 3)`. The posterior odds is the ratio of those two probabilities
+We already know the probability of $H_a$ (`r round(post_prob, 3)`), so the probability of $H_0$ is 1 minus that, or `r round(1 - post_prob, 3)`. The posterior odds is the ratio of those two probabilities
 
 $$
 \text{posterior odds} = \frac{P(H_a \mid Y = 14)}{P(H_0 \mid Y = 14)} = \frac{0.849}{0.151} \approx 5.622
@@ -561,25 +559,41 @@ So instead we can use R to build the posterior predictions, since we have all th
 ```{r}
 predicted_genx_after_20_stan <- pi_stan_samples |> 
   spread_draws(pi) |> 
-  mutate(.prediction = rbinom(n(), size = 20, prob = pi)) |> 
+  mutate(.prediction = rbinom(n(), size = 20, prob = pi)) 
+
+predicted_genx_after_20_stan_summarized <- predicted_genx_after_20_stan |> 
   group_by(.prediction) |> 
   summarize(n = n()) |> 
   mutate(prop = n / sum(n))
 predicted_genx_after_20_stan
 
-ggplot(predicted_genx_after_20_stan, aes(x = factor(.prediction), y = prop)) + 
+ggplot(predicted_genx_after_20_stan_summarized, 
+       aes(x = factor(.prediction), y = prop)) + 
   geom_col()
 
 # Posterior predictive probability that 3/20 will be Gen X is roughly the same
 # as 0.2217!
-predicted_genx_after_20_stan |> 
+predicted_genx_after_20_stan_summarized |> 
   filter(.prediction == 3) |> 
   pull(prop)
 ```
 
-:::
+We can also get the equivalent of `posterior_epred()` by calculating the average of the predictive posterior:
 
-I haven't figured out a way to get `posterior_linpred()` and `posterior_epred()` with raw Stan like this though. :(
+```{r}
+epred <- predicted_genx_after_20_stan |> 
+  summarize(epred = mean(.prediction)) |> 
+  pull(epred)
+epred
+
+ggplot(predicted_genx_after_20_stan, aes(x = .prediction)) + 
+  stat_count() +
+  geom_vline(xintercept = epred)
+```
+
+I haven't figured out a way to get `posterior_linpred()` (the variability of just π) with raw Stan like this though. :(
+
+:::
 
 
 # 8.4: Posterior analysis with MCMC

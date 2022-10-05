@@ -155,29 +155,12 @@ Y &\sim \operatorname{Binomial}(10, π) \\
 \end{aligned}
 $$
 
-```{stan bb_sim, output.var="bb_sim", engine="cmdstan", eval=FALSE}
-// Step 1: Define the model
-// Stuff from R
-data {
-  int<lower=0, upper=10> Y;
-}
-
-// Thing to estimate
-parameters {
-  real<lower=0, upper=1> pi;
-}
-
-// Prior and likelihood
-model {
-  Y ~ binomial(10, pi);
-  pi ~ beta(2, 2);
-}
+```{stan, file="06-stan/bb_sim.stan", eval=FALSE, output.var="", filename="06-stan/bb_sim.stan"}
 ```
 
-```{r include=FALSE}
+```{r compile-bb-model, cache=TRUE}
 bb_sim <- cmdstan_model("06-stan/bb_sim.stan")
 ```
-
 
 ```{r}
 # Step 2: Simulate the posterior
@@ -266,26 +249,10 @@ Y_i &\sim \operatorname{Poisson}(\lambda) \\
 \end{aligned}
 $$
 
-```{stan gp_sim, output.var="gp_sim", engine="cmdstan", eval=FALSE}
-// Step 1: Define the model
-// Stuff from R
-data {
-  array[2] int Y;
-}
-
-// Thing to estimate
-parameters {
-  real<lower=0, upper=15> lambda;
-}
-
-// Prior and likelihood
-model {
-  Y ~ poisson(lambda);
-  lambda ~ gamma(3, 1);
-}
+```{stan, file="06-stan/gp_sim.stan", eval=FALSE, output.var="", filename="06-stan/gp_sim.stan"}
 ```
 
-```{r include=FALSE}
+```{r compile-gp-model, cache=TRUE}
 gp_sim <- cmdstan_model("06-stan/gp_sim.stan")
 ```
 

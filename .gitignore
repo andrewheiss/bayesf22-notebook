@@ -12,3 +12,5 @@ _site/
 bayes-rules/06-stan/bb_sim
 bayes-rules/06-stan/gp_sim
 bayes-rules/08-stan/genx
+bayes-rules/09-stan/bike-simple
+bayes-rules/10-stan/bike-better

@@ -86,6 +86,12 @@ website:
         - section: "8: Posterior inference and prediction"
           contents:
             - bayes-rules/08-chapter.qmd
+        - section: "9: Simple normal regression"
+          contents:
+            - bayes-rules/09-chapter.qmd
+        - section: "10: Evaluating regression models"
+          contents:
+            - bayes-rules/10-chapter.qmd
 
 format:
   html:
