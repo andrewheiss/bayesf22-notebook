@@ -93,6 +93,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../bayes-rules/10-chapter.html" rel="next">
 <link href="../bayes-rules/08-chapter.html" rel="prev">
 <link href="..//files/favicon.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
@@ -311,6 +312,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">10: Evaluating regression models</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/10-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -444,7 +460,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>More formally, we can write out the whole model like this:</p>
 <p><span class="math display">\[
 \begin{aligned}
-Y_i &amp;\sim \mathcal{N}(\mu_i, \sigma^2) \text{, or}  &amp; \text{[McElreath's syntax]} \\
+Y_i &amp;\sim \mathcal{N}(\mu_i, \sigma) \text{, or}  &amp; \text{[McElreath's syntax]} \\
 Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\mu_i, \sigma^2) &amp; \text{[Bayes Rules!'s syntax]}
 \\
 \mu_i &amp;= \beta_{0c} + \beta_1 X_i \\
@@ -578,7 +594,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <div class="cell" data-hash="09-chapter_cache/html/compile-bike-model_05e8f96ab71d101de2d5293f67dff8dc">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>bike_stan <span class="ot">&lt;-</span> <span class="fu">cmdstan_model</span>(<span class="st">"09-stan/bike-simple.stan"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell">
+<div class="cell" data-hash="09-chapter_cache/html/stan-bike-model_d086fd4529fed4891edb092ff9fb5754">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>bike_stan_samples <span class="ot">&lt;-</span> bike_stan<span class="sc">$</span><span class="fu">sample</span>(</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="fu">list</span>(<span class="at">n =</span> <span class="fu">nrow</span>(bikes), <span class="at">Y =</span> bikes<span class="sc">$</span>rides, <span class="at">X =</span> bikes<span class="sc">$</span>temp_feel_c),</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">parallel_chains =</span> <span class="dv">4</span>, <span class="at">iter_warmup =</span> <span class="dv">5000</span>, <span class="at">iter_sampling =</span> <span class="dv">5000</span>, </span>
@@ -586,14 +602,14 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Running MCMC with 4 parallel chains...</span></span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1 finished in 2.0 seconds.</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2 finished in 2.0 seconds.</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3 finished in 2.0 seconds.</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4 finished in 2.0 seconds.</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3 finished in 2.0 seconds.</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4 finished in 2.0 seconds.</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1 finished in 2.0 seconds.</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2 finished in 2.0 seconds.</span></span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="do">## All 4 chains finished successfully.</span></span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Mean chain execution time: 2.0 seconds.</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Total execution time: 2.0 seconds.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Total execution time: 2.1 seconds.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
 </div>
@@ -629,7 +645,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(.variable), <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
 <span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -650,7 +666,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
 <span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -667,7 +683,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(.variable), <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -699,7 +715,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(.variable), <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
 <span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -718,7 +734,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
 <span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -733,7 +749,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(.variable), <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -761,7 +777,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(.variable), <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -780,7 +796,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
 <span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>        <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -795,7 +811,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(.variable), <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -835,7 +851,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Parameter posterior"</span>) <span class="sc">+</span></span>
 <span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </div>
@@ -860,7 +876,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Parameter posterior"</span>) <span class="sc">+</span></span>
 <span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </div>
@@ -883,7 +899,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Parameter posterior"</span>) <span class="sc">+</span></span>
 <span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -904,7 +920,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> .linpred, <span class="at">group =</span> .draw), <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">color =</span> clrs[<span class="dv">6</span>]) <span class="sc">+</span></span>
 <span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Temperature"</span>, <span class="at">y =</span> <span class="st">"Rides"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -917,7 +933,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> .linpred, <span class="at">group =</span> .draw), <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">size =</span> <span class="fl">0.5</span>, <span class="at">color =</span> clrs[<span class="dv">6</span>]) <span class="sc">+</span></span>
 <span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Temperature"</span>, <span class="at">y =</span> <span class="st">"Rides"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </div>
@@ -933,7 +949,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> .lower, <span class="at">ymax =</span> .upper), <span class="at">fill =</span> clrs[<span class="dv">6</span>], <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
 <span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Temperature"</span>, <span class="at">y =</span> <span class="st">"Rides"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>There’s no easy way to replicate <code>add_linpred_draws(..., ndraws = BLAH)</code> with raw Stan like this without running the model again and generating a bunch of simulated <code>mu</code>s based on some variable like <code>n_sim</code> that we build into the Stan model, but we can use the original 500 rows of data and use <code>geom_lineribbon()</code> instead of a spaghetti plot.</p>
@@ -1030,7 +1046,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb35-16"><a href="#cb35-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb35-17"><a href="#cb35-17" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">|</span> p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </div>
@@ -1054,7 +1070,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">|</span> p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </div>
@@ -1082,7 +1098,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb37-19"><a href="#cb37-19" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb37-20"><a href="#cb37-20" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">|</span> p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="768"></p>
 </div>
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>predict_75 <span class="sc">|&gt;</span> </span>
@@ -1139,7 +1155,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="fu">wrap_plots</span>(phases_coefs<span class="sc">$</span>coef_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <div class="cell">
@@ -1162,7 +1178,7 @@ Y_i \mid \beta_0, \beta_1, \sigma &amp;\stackrel{\text{ind}}{\sim} \mathcal{N}(\
 <span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a><span class="fu">wrap_plots</span>(phases_preds<span class="sc">$</span>pred_plot)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="09-chapter_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="768"></p>
+<p><img src="09-chapter_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 
@@ -1310,6 +1326,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../bayes-rules/10-chapter.html" class="pagination-link">
+        <span class="nav-page-text">Reading notes</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
