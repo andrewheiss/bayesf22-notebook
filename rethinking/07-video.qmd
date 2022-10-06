@@ -1,0 +1,200 @@
+---
+title: "Video #7 code"
+subtitle: "Overfitting"
+date: "October 5, 2022"
+---
+
+<div class="ratio ratio-16x9">
+<iframe src="https://www.youtube.com/embed/odGAAJDlgp8" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+</div>
+
+```{r packages-data, warning=FALSE, message=FALSE}
+library(tidyverse)
+library(brms)
+library(loo)
+library(tidybayes)
+
+# Plot stuff
+clrs <- MetBrewer::met.brewer("Lakota", 6)
+theme_set(theme_bw())
+
+# Seed stuff
+set.seed(1234)
+BAYES_SEED <- 1234
+
+data(WaffleDivorce, package = "rethinking")
+
+WaffleDivorce <- WaffleDivorce %>% 
+  mutate(across(c(Marriage, Divorce, MedianAgeMarriage), ~scale(.), .names = "{col}_scaled")) %>% 
+  mutate(across(c(Marriage, Divorce, MedianAgeMarriage), ~as.numeric(scale(.)), .names = "{col}_z"))
+```
+
+
+# Finding outliers with PSIS and WAIC
+
+```{r fig.width=5, fig.height=3.5, out.width="100%"}
+ggplot(WaffleDivorce, aes(x = MedianAgeMarriage_z, y = Divorce_z)) +
+  geom_point(aes(color = Loc %in% c("ME", "ID")), size = 2) +
+  geom_text(data = filter(WaffleDivorce, Loc %in% c("ME", "ID")), 
+            aes(label = Location), hjust = -0.25) +
+  scale_color_manual(values = c("grey40", clrs[4]), guide = "none") +
+  labs(x = "Age at marriage (standardized)", y = "Divorce rate (standardized)")
+```
+Run a model:
+
+```{r age-marriage-normal, cache=TRUE, results="hide", warning=FALSE}
+priors <- c(prior(normal(0, 0.2), class = Intercept),
+            prior(normal(0, 0.5), class = b, coef = "Marriage_z"),
+            prior(normal(0, 0.5), class = b, coef = "MedianAgeMarriage_z"),
+            prior(exponential(1), class = sigma))
+
+marriage_divorce_normal <- brm(
+  bf(Divorce_z ~ Marriage_z + MedianAgeMarriage_z),
+  data = WaffleDivorce,
+  family = gaussian(),
+  prior = priors,
+  chains = 4, cores = 4, seed = BAYES_SEED, 
+  backend = "cmdstanr", refresh = 0
+)
+```
+
+Check the LOO stats. One value is fairly influential with k > 0.5, but the others are okay:
+
+```{r}
+loo(marriage_divorce_normal)
+```
+
+Which observation has the high PSIS k value?
+
+```{r}
+loo(marriage_divorce_normal) |> 
+  pareto_k_ids()
+```
+
+Row 13! Which is…
+
+```{r}
+WaffleDivorce |> 
+  slice(13) |> 
+  select(Location)
+```
+
+Idaho.
+
+How big is the actual k value?
+
+```{r}
+loo(marriage_divorce_normal) |> 
+  pareto_k_values() |> 
+  pluck(13)
+```
+
+We can embed these diagnostics into the brms object with `add_criterion()`:
+
+```{r}
+marriage_divorce_normal <- add_criterion(marriage_divorce_normal, criterion = "loo")
+marriage_divorce_normal <- add_criterion(marriage_divorce_normal, criterion = "waic")
+```
+
+And that lets us access things in deeply nested lists, like the 13th Pareto k value:
+
+```{r}
+marriage_divorce_normal$criteria$loo$diagnostics$pareto_k[13]
+```
+
+Neat. Now we can plot these k values and WAIC values and recreate Figure 7.10 from the book and from 1:03:00 in lecture video 7.
+
+```{r}
+tibble(psis = marriage_divorce_normal$criteria$loo$diagnostics$pareto_k,
+       p_waic = marriage_divorce_normal$criteria$waic$pointwise[, "p_waic"],
+       Location = pull(WaffleDivorce, Location),
+       Loc = pull(WaffleDivorce, Loc)) %>%
+  ggplot(aes(x = psis, y = p_waic)) +
+  geom_point(aes(color = Loc %in% c("ME", "ID")), size = 2) +
+  geom_text(data = . %>% filter(Loc %in% c("ME", "ID")), 
+            aes(label = Location), hjust = 1.25) +
+  geom_vline(xintercept = 0.5, linetype = 32) +
+  scale_color_manual(values = c("grey40", clrs[4]), guide = "none") +
+  labs(x = "PSIS Pareto k", y = "WAIC penalty")
+```
+
+
+# Robust regression
+
+We can do robust regression with `family = student()`, which has thicker tails and expects larger values out in the tails
+
+```{r age-marriage-t, cache=TRUE, results="hide", warning=FALSE}
+priors <- c(prior(normal(0, 0.2), class = Intercept),
+            prior(normal(0, 0.5), class = b, coef = "Marriage_z"),
+            prior(normal(0, 0.5), class = b, coef = "MedianAgeMarriage_z"),
+            prior(exponential(1), class = sigma))
+
+marriage_divorce_student <- brm(
+  bf(Divorce_z ~ Marriage_z + MedianAgeMarriage_z,
+     nu = 2),  # Tail thickness
+  data = WaffleDivorce,
+  family = student(),
+  prior = priors,
+  chains = 4, cores = 4, seed = BAYES_SEED, 
+  backend = "cmdstanr", refresh = 0
+)
+```
+
+Add penalty statistics to the model object:
+
+```{r}
+marriage_divorce_student <- add_criterion(marriage_divorce_student, criterion = c("loo", "waic"))
+```
+
+```{r}
+plot_data <- tibble(psis = marriage_divorce_student$criteria$loo$diagnostics$pareto_k,
+                    p_waic = marriage_divorce_student$criteria$waic$pointwise[, "p_waic"],
+                    Location = pull(WaffleDivorce, Location),
+                    Loc = pull(WaffleDivorce, Loc)) 
+plot_data %>%
+  ggplot(aes(x = psis, y = p_waic)) +
+  geom_point(aes(color = Loc %in% c("ME", "ID")), size = 2) +
+  geom_text(data = . %>% filter(Loc %in% c("ME", "ID")), 
+            aes(label = Location), hjust = 1.25) +
+  geom_vline(xintercept = 0.5, linetype = 32) +
+  scale_color_manual(values = c("grey40", clrs[4]), guide = "none") +
+  labs(x = "PSIS Pareto k", y = "WAIC penalty")
+```
+
+Hey hey, Idaho and Maine have much lower PSIS k values now. There are some weird observations with really high WAIC values for some reason:
+
+```{r}
+plot_data |> 
+  arrange(desc(p_waic))
+```
+
+Wyoming and Utah! Why?> I don't know :(
+
+
+# Compare the models
+
+We can compare the two models' LOO statistics:
+
+```{r}
+loo_compare(marriage_divorce_normal, marriage_divorce_student, criterion = "loo")
+loo_compare(marriage_divorce_normal, marriage_divorce_student, criterion = "waic")
+```
+
+The normal model has the higher ELPD score (so it's better), but the standard error is huge and makes the models indistinguishable (so it's not necessarily better)
+
+We can also compare the posterior distributions for the effect of age on marriage. The coefficient for age in the Student-t model is more negative and more precise. Idaho was making the normal model too skeptical and too surprised; the Student-t model was less surprised by it.
+
+```{r}
+normal_coefs <- marriage_divorce_normal |> 
+  spread_draws(b_MedianAgeMarriage_z) |> 
+  mutate(model = "Gaussian model")
+
+student_coefs <- marriage_divorce_student |> 
+  spread_draws(b_MedianAgeMarriage_z) |> 
+  mutate(model = "Student-t model")
+
+bind_rows(normal_coefs, student_coefs) |> 
+  ggplot(aes(x = b_MedianAgeMarriage_z, fill = model)) +
+  stat_halfeye(slab_alpha = 0.75) +
+  scale_fill_manual(values = c(clrs[6], clrs[4]))
+```
