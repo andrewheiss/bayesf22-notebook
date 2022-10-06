@@ -168,7 +168,7 @@ plot_data |>
   arrange(desc(p_waic))
 ```
 
-Wyoming and Utah! Why?> I don't know :(
+Wyoming and Utah! Why? I don't know :(
 
 
 # Compare the models
