@@ -2,86 +2,90 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/bayes-rules/02-chapter.html</loc>
-    <lastmod>2022-10-06T05:30:41.889Z</lastmod>
+    <lastmod>2022-10-10T14:26:13.037Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/bayes-rules/03-chapter.html</loc>
-    <lastmod>2022-10-06T05:30:42.447Z</lastmod>
+    <lastmod>2022-10-10T14:26:13.588Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/bayes-rules/04-practice.html</loc>
-    <lastmod>2022-10-06T05:30:43.102Z</lastmod>
+    <lastmod>2022-10-10T14:26:14.266Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/bayes-rules/05-chapter.html</loc>
-    <lastmod>2022-10-06T05:30:43.750Z</lastmod>
+    <lastmod>2022-10-10T14:26:14.855Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/bayes-rules/05-practice.html</loc>
-    <lastmod>2022-10-06T05:30:44.306Z</lastmod>
+    <lastmod>2022-10-10T14:26:15.423Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/bayes-rules/06-chapter.html</loc>
-    <lastmod>2022-10-06T05:30:44.944Z</lastmod>
+    <lastmod>2022-10-10T14:26:16.102Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/bayes-rules/07-chapter.html</loc>
-    <lastmod>2022-10-06T05:30:45.595Z</lastmod>
+    <lastmod>2022-10-10T14:26:16.771Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/bayes-rules/08-chapter.html</loc>
-    <lastmod>2022-10-06T05:30:46.365Z</lastmod>
+    <lastmod>2022-10-10T14:26:17.501Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/bayes-rules/09-chapter.html</loc>
-    <lastmod>2022-10-06T05:30:47.079Z</lastmod>
+    <lastmod>2022-10-10T14:26:18.253Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/bayes-rules/10-chapter.html</loc>
-    <lastmod>2022-10-06T05:30:47.762Z</lastmod>
+    <lastmod>2022-10-10T14:26:18.961Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/bayes-rules/11-chapter.html</loc>
-    <lastmod>2022-10-06T05:30:48.729Z</lastmod>
+    <lastmod>2022-10-10T14:26:19.957Z</lastmod>
+  </url>
+  <url>
+    <loc>https://andrewheiss.github.io/bayesf22-notebook/bayes-rules/12-chapter.html</loc>
+    <lastmod>2022-10-10T14:27:39.547Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/index.html</loc>
-    <lastmod>2022-10-06T05:30:49.334Z</lastmod>
+    <lastmod>2022-10-10T14:27:40.169Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/rethinking/03-chapter.html</loc>
-    <lastmod>2022-10-06T05:30:50.023Z</lastmod>
+    <lastmod>2022-10-10T14:27:40.799Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/rethinking/03-practice.html</loc>
-    <lastmod>2022-10-06T05:30:50.635Z</lastmod>
+    <lastmod>2022-10-10T14:27:41.396Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/rethinking/03-video.html</loc>
-    <lastmod>2022-10-06T05:30:51.290Z</lastmod>
+    <lastmod>2022-10-10T14:27:42.099Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/rethinking/04-video.html</loc>
-    <lastmod>2022-10-06T05:30:52.117Z</lastmod>
+    <lastmod>2022-10-10T14:27:42.969Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/rethinking/05-video.html</loc>
-    <lastmod>2022-10-06T05:30:52.864Z</lastmod>
+    <lastmod>2022-10-10T14:27:43.766Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/rethinking/06-video.html</loc>
-    <lastmod>2022-10-06T05:30:53.456Z</lastmod>
+    <lastmod>2022-10-10T14:27:44.417Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/rethinking/07-video.html</loc>
-    <lastmod>2022-10-06T05:30:59.808Z</lastmod>
+    <lastmod>2022-10-10T14:27:45.031Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/rethinking/index.html</loc>
-    <lastmod>2022-10-06T05:31:00.139Z</lastmod>
+    <lastmod>2022-10-10T14:27:45.351Z</lastmod>
   </url>
   <url>
     <loc>https://andrewheiss.github.io/bayesf22-notebook/bayes-rules/06-stan/why.html</loc>
-    <lastmod>2022-10-06T05:31:00.688Z</lastmod>
+    <lastmod>2022-10-10T14:27:45.858Z</lastmod>
   </url>
 </urlset>
