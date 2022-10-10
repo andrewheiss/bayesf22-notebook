@@ -97,6 +97,9 @@ website:
         - section: "11: Extending the normal regression model"
           contents:
             - bayes-rules/11-chapter.qmd
+        - section: "12: Poisson and negative binomial regression"
+          contents:
+            - bayes-rules/12-chapter.qmd
 
 format:
   html:

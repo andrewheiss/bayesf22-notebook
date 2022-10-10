@@ -14,3 +14,5 @@ bayes-rules/06-stan/gp_sim
 bayes-rules/08-stan/genx
 bayes-rules/09-stan/bike-simple
 bayes-rules/10-stan/bike-better
+bayes-rules/12-stan/equality
+bayes-rules/12-stan/equality-manual
