@@ -100,6 +100,9 @@ website:
         - section: "12: Poisson and negative binomial regression"
           contents:
             - bayes-rules/12-chapter.qmd
+        - section: "13: Logistic regression"
+          contents:
+            - bayes-rules/13-chapter.qmd
 
 format:
   html:
