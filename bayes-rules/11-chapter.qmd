@@ -1096,8 +1096,8 @@ Phew. We have 5 (actually 10) different models predicting afternoon temperature:
 +-------------------------------------------------------------------+--------------------------------------------+
 | `weather_location_rstanarm` and `weather_location_brms`           |     temp3pm ~ temp9am + location           |
 +-------------------------------------------------------------------+--------------------------------------------+
-| `weather_interaction_rstanarm` and `weather_interaction_brms`     |     temp3pm ~ temp9am + location +         |
-|                                                                   |               temp9am:location             |
+| `weather_interaction_rstanarm` and `weather_interaction_brms`     |     temp3pm ~ humidity9am + location +         |
+|                                                                   |               humidity9am:location             |
 +-------------------------------------------------------------------+--------------------------------------------+
 | `weather_full_rstanarm` and `weather_full_brms`                   |     temp3pm ~ temp9am + humidity9am +      |
 |                                                                   |               windspeed9am + pressure9am + |
