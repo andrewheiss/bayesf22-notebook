@@ -1715,32 +1715,37 @@ Y_i \mid \beta_0, \beta_1, \beta_2, \beta_3, \beta_4, \beta_5, \sigma &amp;\stac
 <p>Phew. We have 5 (actually 10) different models predicting afternoon temperature:</p>
 <table class="table">
 <colgroup>
-<col style="width: 60%">
-<col style="width: 39%">
+<col style="width: 57%">
+<col style="width: 38%">
+<col style="width: 3%">
 </colgroup>
 <tbody>
 <tr class="odd">
 <td><code>weather_simple_rstanarm</code> and <code>weather_simple_brms</code></td>
 <td><pre><code>temp3pm ~ temp9am</code></pre></td>
+<td></td>
 </tr>
 <tr class="even">
 <td><code>weather_location_only_rstanarm</code> and <code>weather_location_only_brms</code></td>
 <td><pre><code>temp3pm ~ location</code></pre></td>
+<td></td>
 </tr>
 <tr class="odd">
 <td><code>weather_location_rstanarm</code> and <code>weather_location_brms</code></td>
 <td><pre><code>temp3pm ~ temp9am + location</code></pre></td>
+<td></td>
 </tr>
 <tr class="even">
 <td><code>weather_interaction_rstanarm</code> and <code>weather_interaction_brms</code></td>
-<td><pre><code>temp3pm ~ temp9am + location +
-          temp9am:location</code></pre></td>
+<td colspan="2"><pre><code>temp3pm ~ humidity9am + location +
+          humidity9am:location</code></pre></td>
 </tr>
 <tr class="odd">
 <td><code>weather_full_rstanarm</code> and <code>weather_full_brms</code></td>
 <td><pre><code>temp3pm ~ temp9am + humidity9am +
           windspeed9am + pressure9am +
           location</code></pre></td>
+<td></td>
 </tr>
 </tbody>
 </table>
