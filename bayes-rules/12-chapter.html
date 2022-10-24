@@ -860,7 +860,7 @@ E(\text{Laws} \mid \text{Percent urban}) = \operatorname{Var}(\text{Laws}\mid \t
 <p><span class="math display">\[
 \begin{aligned}
 \text{Laws}_i &amp;\sim \operatorname{Poisson}(\lambda_i) \\
-\lambda_i &amp;= \beta_0 + \beta_1\ \text{Percent urban}_i + \beta_2\ \text{GOP}_i + \beta_3\ \text{Swing}_i \\
+\log(\lambda_i) &amp;= \beta_0 + \beta_1\ \text{Percent urban}_i + \beta_2\ \text{GOP}_i + \beta_3\ \text{Swing}_i \\
 \\
 \beta_0 &amp;\sim \mathcal{N}(2, 0.5) \\
 \beta_1 &amp;\sim \operatorname{Student t}(\nu = 2, \mu = 0, \sigma = 1) \\
@@ -1080,14 +1080,14 @@ E(\text{Laws} \mid \text{Percent urban}) = \operatorname{Var}(\text{Laws}\mid \t
 <span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="do">## Running MCMC with 4 parallel chains...</span></span>
 <span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
-<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1 finished in 1.4 seconds.</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 1 finished in 1.5 seconds.</span></span>
 <span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 3 finished in 1.5 seconds.</span></span>
 <span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 2 finished in 1.9 seconds.</span></span>
-<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4 finished in 1.9 seconds.</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a><span class="do">## Chain 4 finished in 2.0 seconds.</span></span>
 <span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
 <span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="do">## All 4 chains finished successfully.</span></span>
 <span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a><span class="do">## Mean chain execution time: 1.7 seconds.</span></span>
-<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a><span class="do">## Total execution time: 2.0 seconds.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-21"><a href="#cb30-21" aria-hidden="true" tabindex="-1"></a><span class="do">## Total execution time: 2.1 seconds.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>I’m not going to work with these Stan models in the rest of the notebook here because it’s a hassle, but just to check that they worked, here are the coefficients, the LOO stats, and <code>pp_check()</code>:</p>
 <div class="cell">
