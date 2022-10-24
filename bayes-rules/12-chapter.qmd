@@ -394,7 +394,7 @@ PHEW OKAY so with all of that, here's our official model and priors:
 $$
 \begin{aligned}
 \text{Laws}_i &\sim \operatorname{Poisson}(\lambda_i) \\
-\lambda_i &= \beta_0 + \beta_1\ \text{Percent urban}_i + \beta_2\ \text{GOP}_i + \beta_3\ \text{Swing}_i \\
+\log(\lambda_i) &= \beta_0 + \beta_1\ \text{Percent urban}_i + \beta_2\ \text{GOP}_i + \beta_3\ \text{Swing}_i \\
 \\
 \beta_0 &\sim \mathcal{N}(2, 0.5) \\
 \beta_1 &\sim \operatorname{Student t}(\nu = 2, \mu = 0, \sigma = 1) \\
