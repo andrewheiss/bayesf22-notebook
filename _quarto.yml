@@ -58,6 +58,8 @@ website:
             - rethinking/07-video.qmd
         - section: "Week 5:<br>MCMC & generalized linear models"
         - section: "Week 6:<br>Integers & other monsters"
+          contents: 
+            - rethinking/10-video.qmd
         - section: "Week 7:<br>Multilevel models I"
         - section: "Week 8:<br>Multilevel models II"
         - section: "Week 9:<br>Measurement & missingness"

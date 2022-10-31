@@ -6,6 +6,7 @@
 /.quarto/
 _site/
 **_cache/
+**-cache/
 
 # Compiled Stan things
 # (I wish there was a better way to detect these ¯\_(ツ)_/¯ )
