@@ -490,7 +490,7 @@ y_i &amp;\sim \operatorname{Ordered\ logit}(\phi_i, \alpha) \\
 <span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">save_warmup =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">seed =</span> BAYES_SEED, <span class="at">cores =</span> <span class="dv">4</span>,</span>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"10-manual-cache/model-int-only"</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"11-manual-cache/model-int-only"</span></span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p><strong>tidybayes</strong> doesn’t have a way to extract warmup samples (I don’t think?), but we can look at them with <code>posterior::as_draws_df()</code>. We’ll look at the first 100 draws just to see how the custom <code>inits</code> worked. This is actually pretty neat—the chains for each of the intercepts start at <code>c(-2, -1, 0, 1, 2, 2.5)</code> respectively (the first draws aren’t any of those values precisely, since they’re the draws that come after starting at those values). After the first couple dozen draws, the chains start converging on the real posterior space and dance around it. But we helped the chains get there faster than if we had set all the intercepts to 0 or some random numbers.</p>
@@ -709,7 +709,7 @@ B_{1, 2, 3} &amp;\sim \mathcal{N}(0, 0.5) \\
 <span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">init =</span> <span class="fu">rep</span>(<span class="fu">list</span>(inits), <span class="dv">4</span>),</span>
 <span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">seed =</span> BAYES_SEED, <span class="at">cores =</span> <span class="dv">4</span>,</span>
 <span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">refresh =</span> <span class="dv">0</span>,</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"10-manual-cache/model-aci-only"</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"11-manual-cache/model-aci-only"</span></span>
 <span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>That takes a couple minutes to run, but it works great. To verify we can look at the trace plots and trank plots and see that everything converged.</p>
@@ -830,7 +830,7 @@ bA[2]        -0.53</code></pre>
 <span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">init =</span> <span class="fu">rep</span>(<span class="fu">list</span>(inits), <span class="dv">4</span>),</span>
 <span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">seed =</span> BAYES_SEED, <span class="at">cores =</span> <span class="dv">4</span>,</span>
 <span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">threads =</span> <span class="fu">threading</span>(<span class="dv">2</span>),</span>
-<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"10-manual-cache/model-aci-gender"</span>, <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"11-manual-cache/model-aci-gender"</span>, <span class="at">refresh =</span> <span class="dv">0</span></span>
 <span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>By default we get the offsets for <code>male</code>:</p>
@@ -869,7 +869,7 @@ bA[2]        -0.53</code></pre>
 <p>But we can wrangle the data a little to replicate what McElreath has with his <code>precis()</code> output:</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="10-aci-gender-precis.png" class="img-fluid" width="942"></p>
+<p><img src="11-aci-gender-precis.png" class="img-fluid" width="942"></p>
 </div>
 </div>
 <div class="cell">
@@ -952,7 +952,7 @@ bA[2]        -0.53</code></pre>
 </tr>
 <tr class="odd">
 <td>Some college</td>
-<td><span class="math inline">\(\phi = \delta_1 + \delta_2 + \delta_3 + + \delta_4\)</span></td>
+<td><span class="math inline">\(\phi = \delta_1 + \delta_2 + \delta_3 + \delta_4\)</span></td>
 </tr>
 <tr class="even">
 <td>College</td>
@@ -987,7 +987,7 @@ bA[2]        -0.53</code></pre>
 <span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> priors,</span>
 <span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">seed =</span> BAYES_SEED, <span class="at">cores =</span> <span class="dv">4</span>,</span>
 <span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">threads =</span> <span class="fu">threading</span>(<span class="dv">2</span>), </span>
-<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"10-manual-cache/model-monotonic"</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"11-manual-cache/model-monotonic"</span></span>
 <span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Oooh look at all these parameters now! We have a whole new section I’ve never seen before called “Simplex Parameters”</p>
@@ -1046,7 +1046,7 @@ bA[2]        -0.53</code></pre>
 <span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> priors,</span>
 <span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">2000</span>, <span class="at">seed =</span> BAYES_SEED, <span class="at">cores =</span> <span class="dv">4</span>,</span>
 <span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">threads =</span> <span class="fu">threading</span>(<span class="dv">2</span>), </span>
-<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"10-manual-cache/model-monotonic-age"</span></span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"11-manual-cache/model-monotonic-age"</span></span>
 <span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Though it takes a while to fit these <code>mo()</code> models! (This is on an 8-core 2021 M1 MacBook Pro)</p>
