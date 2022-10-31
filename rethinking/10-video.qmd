@@ -567,7 +567,7 @@ But there's a magical way of dealing with this that mostly goes over my head and
 | Middle school     | $\phi = \delta_1$                                                                   |
 | Some high school  | $\phi = \delta_1 + \delta_2$                                                        |
 | High school       | $\phi = \delta_1 + \delta_2 + \delta_3$                                             |
-| Some college      | $\phi = \delta_1 + \delta_2 + \delta_3 + + \delta_4$                                |
+| Some college      | $\phi = \delta_1 + \delta_2 + \delta_3 + \delta_4$                                |
 | College           | $\phi = \delta_1 + \delta_2 + \delta_3 + \delta_4 + \delta_5$                       |
 | Masters           | $\phi = \delta_1 + \delta_2 + \delta_3 + \delta_4 + \delta_5 + \delta_6$            |
 | Doctorate         | $\phi = \delta_1 + \delta_2 + \delta_3 + \delta_4 + \delta_5 + \delta_6 + \delta_7$ |
