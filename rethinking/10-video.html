@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2022-10-30">
+<meta name="dcterms.date" content="2022-10-31">
 
-<title>bayesf22 Notebook - Video #10 code</title>
+<title>bayesf22 Notebook - Video #11 code</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -168,7 +168,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     </nav>
   <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
     <div class="container-fluid d-flex justify-content-between">
-      <h1 class="quarto-secondary-nav-title">Video #10 code</h1>
+      <h1 class="quarto-secondary-nav-title">Video #11 code</h1>
       <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
         <i class="bi bi-chevron-right"></i>
       </button>
@@ -274,7 +274,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../rethinking/10-video.html" class="sidebar-item-text sidebar-link active">Video #10 code</a>
+  <a href="../rethinking/10-video.html" class="sidebar-item-text sidebar-link active">Video #11 code</a>
   </div>
 </li>
       </ul>
@@ -314,7 +314,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title d-none d-lg-block">Video #10 code</h1>
+<h1 class="title d-none d-lg-block">Video #11 code</h1>
 <p class="subtitle lead">Ordered categories</p>
 </div>
 
@@ -326,7 +326,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">October 30, 2022</p>
+      <p class="date">October 31, 2022</p>
     </div>
   </div>
   
@@ -956,15 +956,15 @@ bA[2]        -0.53</code></pre>
 </tr>
 <tr class="even">
 <td>College</td>
-<td><span class="math inline">\(\phi = \delta_1 + \delta_2 + + \delta_3 + \delta_4 + \delta_5\)</span></td>
+<td><span class="math inline">\(\phi = \delta_1 + \delta_2 + \delta_3 + \delta_4 + \delta_5\)</span></td>
 </tr>
 <tr class="odd">
 <td>Masters</td>
-<td><span class="math inline">\(\phi = \delta_1 + \delta_2 + + \delta_3 + \delta_4 + \delta_5 + \delta_6\)</span></td>
+<td><span class="math inline">\(\phi = \delta_1 + \delta_2 + \delta_3 + \delta_4 + \delta_5 + \delta_6\)</span></td>
 </tr>
 <tr class="even">
 <td>Doctorate</td>
-<td><span class="math inline">\(\phi = \delta_1 + \delta_2 + + \delta_3 + \delta_4 + \delta_5 + \delta_6 + \delta_7\)</span></td>
+<td><span class="math inline">\(\phi = \delta_1 + \delta_2 + \delta_3 + \delta_4 + \delta_5 + \delta_6 + \delta_7\)</span></td>
 </tr>
 </tbody>
 </table>
@@ -973,7 +973,7 @@ bA[2]        -0.53</code></pre>
 \phi_i = \beta_\text{E} \sum_{j = 0}^{\text{E}_i - 1} \delta_j
 \]</span></p>
 <p>Phew, that’s wild. This new term takes a new set of priors, both for the <span class="math inline">\(\beta\)</span> coefficient and for each of the <span class="math inline">\(\delta\)</span> cutpoints. In the video and book, McElreath uses a Dirichlet prior for these <span class="math inline">\(\delta\)</span> values.</p>
-<p>McElreath’s <code>ulam()</code> function requires manual construction of the the simplex parameter for education, but <strong>brms</strong> can do this all automatically if we put the education term inside <code>mo()</code>, which forces it to be a monotonic categorical variable.</p>
+<p>McElreath’s <code>ulam()</code> function requires manual construction of the simplex parameter for education, but <strong>brms</strong> can do this all automatically if we put the education term inside <code>mo()</code>, which forces it to be a monotonic categorical variable.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>priors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">1.5</span>), <span class="at">class =</span> Intercept),</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">0.5</span>), <span class="at">class =</span> b),</span>
