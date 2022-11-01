@@ -105,6 +105,15 @@ website:
         - section: "13: Logistic regression"
           contents:
             - bayes-rules/13-chapter.qmd
+        - section: "15: Hierarchical models are exciting"
+          contents:
+            - bayes-rules/15-chapter.qmd
+        - section: "16: Hierarchical models without predictors"
+          contents:
+            - bayes-rules/16-chapter.qmd
+        - section: "17: Hierarchical models with predictors"
+          contents:
+            - bayes-rules/17-chapter.qmd
 
 format:
   html:

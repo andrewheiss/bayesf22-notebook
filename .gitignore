@@ -7,6 +7,7 @@
 _site/
 **_cache/
 **-cache/
+*.log
 
 # Compiled Stan things
 # (I wish there was a better way to detect these ¯\_(ツ)_/¯ )

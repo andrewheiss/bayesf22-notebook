@@ -1,0 +1,16 @@
+{
+  "hash": "50fe797b266a82ab26e91cf2ee47fae4",
+  "result": {
+    "markdown": "---\ntitle: \"Reading notes\"\nsubtitle: \"blah\"\ndate: \"November 1, 2022\"\n---\n\n\n\n::: {.cell layout-align=\"center\" engine.opts='{\"dvisvgm.opts\":\"--font-format=woff\"}'}\n::: {.cell-output-display}\n![Complete pooling](16-chapter_files/figure-html/complete-pooling-1.svg){fig-align='center' width=100%}\n:::\n:::\n",
+    "supporting": [
+      "16-chapter_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}
