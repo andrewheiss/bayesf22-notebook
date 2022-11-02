@@ -21,6 +21,69 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1.6em;
   vertical-align: middle;
 }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
 </style>
 
 
@@ -61,6 +124,7 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -355,7 +419,33 @@ ul.task-list li input[type="checkbox"] {
 </nav>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#the-general-setup" id="toc-the-general-setup" class="nav-link active" data-scroll-target="#the-general-setup">The general setup</a></li>
+  <li><a href="#complete-pooled-model" id="toc-complete-pooled-model" class="nav-link" data-scroll-target="#complete-pooled-model">16.1: Complete pooled model</a></li>
+  <li><a href="#no-pooled-model" id="toc-no-pooled-model" class="nav-link" data-scroll-target="#no-pooled-model">16.2: No pooled model</a></li>
+  <li><a href="#building-the-hierarchical-model" id="toc-building-the-hierarchical-model" class="nav-link" data-scroll-target="#building-the-hierarchical-model">16.3: Building the hierarchical model</a>
+  <ul>
+  <li><a href="#layer-based-notation" id="toc-layer-based-notation" class="nav-link" data-scroll-target="#layer-based-notation">Layer-based notation</a></li>
+  <li><a href="#offset-based-notation" id="toc-offset-based-notation" class="nav-link" data-scroll-target="#offset-based-notation">Offset-based notation</a></li>
+  <li><a href="#within--vs-between-group-variability" id="toc-within--vs-between-group-variability" class="nav-link" data-scroll-target="#within--vs-between-group-variability">16.3.3: Within- vs between-group variability</a></li>
+  </ul></li>
+  <li><a href="#posterior-analysis" id="toc-posterior-analysis" class="nav-link" data-scroll-target="#posterior-analysis">16.4: Posterior analysis</a>
+  <ul>
+  <li><a href="#global-parameters-fixed-effects" id="toc-global-parameters-fixed-effects" class="nav-link" data-scroll-target="#global-parameters-fixed-effects">Global parameters (“fixed” effects)</a></li>
+  <li><a href="#group-parameters-random-effects" id="toc-group-parameters-random-effects" class="nav-link" data-scroll-target="#group-parameters-random-effects">Group parameters (“random” effects)</a></li>
+  </ul></li>
+  <li><a href="#posterior-prediction" id="toc-posterior-prediction" class="nav-link" data-scroll-target="#posterior-prediction">16.5: Posterior prediction</a>
+  <ul>
+  <li><a href="#predictions-for-existing-groups-artists" id="toc-predictions-for-existing-groups-artists" class="nav-link" data-scroll-target="#predictions-for-existing-groups-artists">Predictions for existing groups / artists</a></li>
+  <li><a href="#predictions-for-unseen-groups-artists" id="toc-predictions-for-unseen-groups-artists" class="nav-link" data-scroll-target="#predictions-for-unseen-groups-artists">Predictions for unseen groups / artists</a></li>
+  <li><a href="#comparisons" id="toc-comparisons" class="nav-link" data-scroll-target="#comparisons">Comparisons</a></li>
+  </ul></li>
+  <li><a href="#shrinkage-and-the-bias-variance-tradeoff" id="toc-shrinkage-and-the-bias-variance-tradeoff" class="nav-link" data-scroll-target="#shrinkage-and-the-bias-variance-tradeoff">16.6: Shrinkage and the bias-variance tradeoff</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/andrewheiss/bayesf22-notebook/edit/main/bayes-rules/16-chapter.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/andrewheiss/bayesf22-notebook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -363,7 +453,7 @@ ul.task-list li input[type="checkbox"] {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title d-none d-lg-block">Reading notes</h1>
-<p class="subtitle lead">blah</p>
+<p class="subtitle lead">Hierarchical models without predictors</p>
 </div>
 
 
@@ -384,8 +474,878 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<p><a href="https://www.bayesrulesbook.com/chapter-16.html">(Original chapter)</a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstanarm)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom.mixed)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># tikz stuff</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Necessary for using dvisvgm on macOS</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># See https://www.andrewheiss.com/blog/2021/08/27/tikz-knitr-html-svg-fun/</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">LIBGS =</span> <span class="st">"/usr/local/share/ghostscript/9.53.3/lib/libgs.dylib.9.53"</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>font_opts <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">dvisvgm.opts =</span> <span class="st">"--font-format=woff"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot stuff</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>clrs <span class="ot">&lt;-</span> MetBrewer<span class="sc">::</span><span class="fu">met.brewer</span>(<span class="st">"Lakota"</span>, <span class="dv">6</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Tell bayesplot to use the Lakota palette for things like pp_check()</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># bayesplot::color_scheme_set(clrs)</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Tell bayesplot to use the viridis rocket palette for things like pp_check()</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>viridisLite<span class="sc">::</span><span class="fu">viridis</span>(<span class="dv">6</span>, <span class="at">option =</span> <span class="st">"rocket"</span>, <span class="at">end =</span> <span class="fl">0.85</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Take off the trailing "FF" in the hex codes</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_chr</span>(<span class="sc">~</span><span class="fu">str_sub</span>(., <span class="dv">1</span>, <span class="dv">7</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  bayesplot<span class="sc">::</span><span class="fu">color_scheme_set</span>()</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Seed stuff</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>BAYES_SEED <span class="ot">&lt;-</span> <span class="dv">1234</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Data</span></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(spotify, <span class="at">package =</span> <span class="st">"bayesrules"</span>)</span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>spotify <span class="ot">&lt;-</span> spotify <span class="sc">%&gt;%</span> </span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(artist, title, popularity) <span class="sc">%&gt;%</span> </span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">artist =</span> <span class="fu">fct_reorder</span>(artist, popularity, <span class="at">.fun =</span> mean))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="the-general-setup" class="level2">
+<h2 class="anchored" data-anchor-id="the-general-setup">The general setup</h2>
+<p>The data in this example comes from a sample of music from Spotify. There are 350 songs by 44 different artists:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>spotify <span class="sc">|&gt;</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n_songs =</span> <span class="fu">n</span>(),</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">n_artists =</span> <span class="fu">n_distinct</span>(artist))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 2</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   n_songs n_artists</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">##     &lt;int&gt;     &lt;int&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1     350        44</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>spotify <span class="sc">|&gt;</span> </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(artist)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 44 × 2</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="do">##    artist            n</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;fct&gt;         &lt;int&gt;</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  1 Mia X             4</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  2 Chris Goldarg    10</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  3 Soul&amp;Roll         5</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  4 Honeywagon        3</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  5 Röyksopp          4</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  6 Freestyle         3</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="do">##  7 DA Image          3</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="do">##  8 Jean Juan         5</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="do">##  9 TV Noise         14</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="do">## 10 Kid Frost         3</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="do">## # … with 34 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The main thing we care about in this example is song popularity and its variation within and between artists. We’ll answer three different questions:</p>
+<ul>
+<li>What’s the typical popularity of a typical Spotify song?</li>
+<li>How much does popularity vary from artist to artist?</li>
+<li>For any single artist, how much does popularity vary from song to song?</li>
+</ul>
+<p>Popularity is measured on a scale of 0–100, with 100 representing the highest popularity:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>spotify <span class="sc">%&gt;%</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(artist) <span class="sc">%&gt;%</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">popularity =</span> <span class="fu">mean</span>(popularity)) <span class="sc">|&gt;</span> </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(popularity)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 44 × 3</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="do">##    artist        count popularity</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;fct&gt;         &lt;int&gt;      &lt;dbl&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="do">##  1 Mia X             4       13.2</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="do">##  2 Chris Goldarg    10       16.4</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="do">##  3 Soul&amp;Roll         5       24.2</span></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="do">##  4 Honeywagon        3       31.7</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="do">##  5 Röyksopp          4       33.2</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="do">##  6 Freestyle         3       33.7</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="do">##  7 DA Image          3       36.7</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  8 Jean Juan         5       36.8</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  9 TV Noise         14       38.1</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 10 Kid Frost         3       40.7</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="do">## # … with 34 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here’s how much these artists’ songs vary in popularity. Some are consistently popular with little variation within the artist, like Lil Skies and Sufjan Stevens; others like Kendrik Lamar have enormous variation. There are also patterns across/between artists—Beyoncé is clearly more popular than Honeywagon.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>spotify <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> artist, <span class="at">x =</span> popularity)) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">"grey70"</span>, <span class="at">size =</span> <span class="fl">0.75</span>) <span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">color =</span> clrs[<span class="dv">6</span>], <span class="at">point_interval =</span> <span class="st">"mean_qi"</span>) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Popularity"</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We’ll analyze these questions with three different approaches:</p>
+<ul>
+<li><strong>Complete pooling</strong>: Ignore artists and lump all songs together</li>
+<li><strong>No pooling</strong>: Analyze each artist separately and assume that data from one artist has no information about any other artist</li>
+<li><strong>Partial pooling</strong> (with multilevel models): Incorporate the grouping structure into the analysis “so that even though artists differ in popularity, they might share valuable information about each other <em>and</em> about the broader population of artists”</li>
+</ul>
+<p>To be super mathy and formal about the structure of the data, we’ll use <span class="math inline">\(i\)</span> to represent a song and <span class="math inline">\(j\)</span> to represent an artist, where <span class="math inline">\(j \in \{1, 2, \dots, 44\}\)</span>, and <span class="math inline">\(n_j\)</span> represents the number of songs each artist has (like Mia X is <span class="math inline">\(n_1 = 4\)</span>, Chris Goldarg is <span class="math inline">\(n_2 = 10\)</span>, and so on).</p>
+<p>We can calculate the total sample size by adding all the <span class="math inline">\(n_j\)</span>s together:</p>
+<p><span class="math display">\[
+n = \sum_{j = 1}^{44} n_j = n_1 + n_2 + \dots + n_{44} = 350
+\]</span></p>
+<p>That’s one level of the hierarchy—a count of artists with songs inside them.</p>
+<p>We can also think about the songs themselves. Each song <span class="math inline">\(Y\)</span> gets two subscripts for the song id and the artist id: <span class="math inline">\(Y_{i,j}\)</span>, where <span class="math inline">\(i \in \{1, 2, \dots, n_j\}\)</span> and <span class="math inline">\(j \in \{1, 2, \dots, 44\}\)</span></p>
+<p>When we look at the data at a song level, we can think of <span class="math inline">\(Y\)</span> as a collection of all the songs by the 44 different artists, or:</p>
+<p><span class="math display">\[
+Y = \Bigl( (Y_{1_1}, Y_{2_1}, Y_{n_{1_1}}), (Y_{1_2}, Y_{2_2}, Y_{n_{2_2}}), \dots, (Y_{1_{44}}, Y_{2_{44}}, Y_{n_{{44}_{44}}}) \Bigr)
+\]</span></p>
+<p>The data follows a hierarchical structure, with songs nested inside artists:</p>
+<div class="cell" data-layout-align="center" data-engine.opts="{&quot;dvisvgm.opts&quot;:&quot;--font-format=woff&quot;}">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="16-chapter_files/figure-html/partial-pooling-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Partial hierarchical pooling</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="complete-pooled-model" class="level2">
+<h2 class="anchored" data-anchor-id="complete-pooled-model">16.1: Complete pooled model</h2>
+<p>First we’ll do a pooled model where we ignore the fact that different (and often repeated) artists recorded these songs. We’ll pretend that these all came from 350 completely different independent artists. That means that instead of looking at the data like this:</p>
+<p><span class="math display">\[
+Y = \Bigl( (Y_{1_1}, Y_{2_1}, Y_{n_{1_1}}), (Y_{1_2}, Y_{2_2}, Y_{n_{2_2}}), \dots, (Y_{1_{44}}, Y_{2_{44}}, Y_{n_{{44}_{44}}}) \Bigr)
+\]</span></p>
+<p>…we’ll look at it like this:</p>
+<p><span class="math display">\[
+Y = ( Y_1, Y_2, \dots, Y_{350} )
+\]</span></p>
+<p>Lumping everything together, here’s what the distribution of popularity looks like:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>spotify <span class="sc">|&gt;</span> </span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> popularity)) <span class="sc">+</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill =</span> clrs[<span class="dv">1</span>], <span class="at">color =</span> <span class="cn">NA</span>) <span class="sc">+</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Popularity"</span>, <span class="at">y =</span> <span class="st">"Density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We’ll use an intercept-only model to estimate the mean and variance of this distribution based on this official model and these priors:</p>
+<ul>
+<li>For <span class="math inline">\(\mu\)</span>, we’ll assume that an average song will have a popularity score of 50, but it could be somewhere between 10 and 90</li>
+<li>For <span class="math inline">\(\sigma\)</span>, we’ll assume that for all songs, popularity will vary with a standard deviation of 25 popularity points</li>
+</ul>
+<p><span class="math display">\[
+\begin{aligned}
+\text{Popularity}_{i,j} &amp;\sim \mathcal{N}(\mu, \sigma) \\
+\\
+\mu &amp;\sim \mathcal{N}(50, 20) \\
+\sigma &amp;\sim \operatorname{Exponential}(1/25)
+\end{aligned}
+\]</span></p>
+<p>We’ll do it both with brms and rstanarm:</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">brms</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">rstanarm</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>priors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">50</span>, <span class="dv">20</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="fl">0.04</span>), <span class="at">class =</span> sigma))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>model_pooled_brms <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bf</span>(popularity <span class="sc">~</span> <span class="dv">1</span>),</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> spotify,</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> priors,</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">4000</span>, <span class="at">seed =</span> BAYES_SEED, </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"16-manual_cache/model-pooled-brms"</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>model_pooled_brms <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="fu">c</span>(<span class="st">"fixed"</span>, <span class="st">"ran_pars"</span>), <span class="at">conf.level =</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>component, <span class="sc">-</span>group)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 6</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   effect   term            estimate std.error conf.low conf.high</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 fixed    (Intercept)         58.4     1.12      56.9      59.8</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 ran_pars sd__Observation     20.7     0.782     19.7      21.7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<div class="cell" data-hash="16-chapter_cache/html/model-pooled-rstanarm_fe0e00b608a9e91f0e38be05fecdf7d6">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model_pooled_rstanarm <span class="ot">&lt;-</span> <span class="fu">stan_glm</span>(</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  popularity <span class="sc">~</span> <span class="dv">1</span>,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> spotify,</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> gaussian,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior_intercept =</span> <span class="fu">normal</span>(<span class="dv">50</span>, <span class="dv">20</span>),</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior_aux =</span> <span class="fu">exponential</span>(<span class="fl">0.04</span>),</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">5000</span><span class="sc">*</span><span class="dv">2</span>, <span class="at">seed =</span> BAYES_SEED, <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model_pooled_rstanarm <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="fu">c</span>(<span class="st">"fixed"</span>, <span class="st">"aux"</span>),</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">!=</span> <span class="st">"mean_PPD"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 5</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   term        estimate std.error conf.low conf.high</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)     58.4     1.09      57.0      59.8</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 sigma           20.7     0.785     19.7      21.7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>These results mean that Spotify songs have an average popularity rating (<span class="math inline">\(\mu\)</span>) of 58.36 points. The <span class="math inline">\(\sigma\)</span> implies that the score bounces around from song to song with a variance of 20.71 points.</p>
+<p>We can see how this model predicts popularity if we plug in the average popularities for each of the artists and see the predicted values. The point ranges here represent the posterior predictions for each artist; the red diamonds show the actual average popularity. This isn’t that great—the model treats every artist as the same, so there are no differences in predictions across artists.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>pooled_predictions <span class="ot">&lt;-</span> spotify <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(artist) <span class="sc">|&gt;</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">popularity =</span> <span class="fu">mean</span>(popularity)) <span class="sc">|&gt;</span> </span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_predicted_draws</span>(model_pooled_brms)</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>pooled_predictions <span class="sc">|&gt;</span> </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> artist, <span class="at">x =</span> .prediction)) <span class="sc">+</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">color =</span> clrs[<span class="dv">1</span>]) <span class="sc">+</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">data =</span> spotify, <span class="fu">aes</span>(<span class="at">x =</span> popularity), </span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">geom =</span> <span class="st">"point"</span>, <span class="at">fun =</span> mean, <span class="at">color =</span> clrs[<span class="dv">3</span>], <span class="at">size =</span> <span class="dv">3</span>, <span class="at">pch =</span> <span class="dv">18</span>) <span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Popularity"</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="no-pooled-model" class="level2">
+<h2 class="anchored" data-anchor-id="no-pooled-model">16.2: No pooled model</h2>
+<p>As we saw above, the pooled model isn’t great because it erases artist effects. Average popularity and variability in popularity vary substantially across artists. So instead of pretending that there’s a global mean popularity level, we’ll look at group/artist-specific averages instead. Rather than looking at the data like this:</p>
+<p><span class="math display">\[
+Y = \Bigl( (Y_{1_1}, Y_{2_1}, Y_{n_{1_1}}), (Y_{1_2}, Y_{2_2}, Y_{n_{2_2}}), \dots, (Y_{1_{44}}, Y_{2_{44}}, Y_{n_{{44}_{44}}}) \Bigr)
+\]</span></p>
+<p>…we’ll look at it like this:</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y_{j = 1} &amp;= ( Y_1, Y_2, \dots, Y_{n, j = 1} ) \\
+Y_{j = 2} &amp;= ( Y_1, Y_2, \dots, Y_{n, j = 2} ) \\
+&amp; \dots \\
+Y_{j = 44} &amp;= ( Y_1, Y_2, \dots, Y_{n, j = 44} ) \\
+\end{aligned}
+\]</span></p>
+<p>That gives us this formal model:</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y_{i, j} &amp;\sim \mathcal{N}(\mu_j, \sigma) \\
+\\
+\mu_j &amp;\sim \mathcal{N}(50, 20) \\
+\sigma &amp;\sim \operatorname{Exponential}(1/25)
+\end{aligned}
+\]</span></p>
+<p>This implies that the popularity of all songs <span class="math inline">\(i\)</span> is normally distributed around some group mean <span class="math inline">\(\mu_j\)</span> with standard deviation <span class="math inline">\(\sigma\)</span> within each artist.</p>
+<p>This also implies that</p>
+<ul>
+<li>every song <span class="math inline">\(i\)</span> by the same artist <span class="math inline">\(j\)</span> has the same mean <span class="math inline">\(\mu_j\)</span></li>
+<li>songs by different artists like <span class="math inline">\(j\)</span> and <span class="math inline">\(k\)</span> have different group averages <span class="math inline">\(\mu_j\)</span> and <span class="math inline">\(\mu_k\)</span>, so each artist’s <span class="math inline">\(\mu_j\)</span> is unique and doesn’t tell us anything about other artists’ <span class="math inline">\(\mu_j\)</span>s</li>
+<li>the <span class="math inline">\(\sigma\)</span> term is technically still pooled across all songs; we <em>could</em> use artist-specific <span class="math inline">\(\sigma_j\)</span> terms if we wanted, but that would make life too complex</li>
+</ul>
+<p>Modeling time. This time instead of estimating 44 separate models <a href="../bayes-rules/15-chapter.html#no-pooling">like we did in the previous chapter</a>, we can get rid of the global intercept term in the model formula by using <code>popularity ~ 0 + artist</code> (in the book they use <code>popularity ~ artist - 1</code>, but I like the <code>0 + artist</code> syntax since the 0 is in the spot where <span class="math inline">\(\beta_0\)</span> would normally go and it feels like it lines up with the model syntax better).</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">brms</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">rstanarm</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>priors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">50</span>, <span class="dv">20</span>), <span class="at">class =</span> b),</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="fl">0.04</span>), <span class="at">class =</span> sigma))</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>model_no_pooled_brms <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bf</span>(popularity <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> artist),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> spotify,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> priors,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">4000</span>, <span class="at">seed =</span> BAYES_SEED, </span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"16-manual_cache/model-no-pooled-brms"</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model_no_pooled_brms <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="fu">c</span>(<span class="st">"fixed"</span>, <span class="st">"ran_pars"</span>), <span class="at">conf.level =</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(effect) <span class="sc">|&gt;</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>component, <span class="sc">-</span>group)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 4 × 6</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="do">## # Groups:   effect [2]</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   effect   term               estimate std.error conf.low conf.high</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;    &lt;chr&gt;                 &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 fixed    artistMiaX             17.2     6.73      8.66      25.8</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 fixed    artistChrisGoldarg     18.0     4.37     12.4       23.6</span></span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 fixed    artistSoul&amp;Roll        26.5     5.94     18.9       34.1</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 ran_pars sd__Observation        14.0     0.562    13.3       14.7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell" data-hash="16-chapter_cache/html/model-no-pooled-rstanarm_c304b0aa974b974ae230989ef1213883">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>model_no_pooled_rstanarm <span class="ot">&lt;-</span> <span class="fu">stan_glm</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  popularity <span class="sc">~</span> <span class="dv">0</span> <span class="sc">+</span> artist,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> spotify,</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> gaussian,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> <span class="fu">normal</span>(<span class="dv">50</span>, <span class="dv">20</span>),</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior_aux =</span> <span class="fu">exponential</span>(<span class="fl">0.04</span>),</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">5000</span><span class="sc">*</span><span class="dv">2</span>, <span class="at">seed =</span> BAYES_SEED, <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>model_no_pooled_rstanarm <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="fu">c</span>(<span class="st">"fixed"</span>, <span class="st">"aux"</span>),</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">!=</span> <span class="st">"mean_PPD"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">45</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 4 × 5</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   term                estimate std.error conf.low conf.high</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                  &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 artistMia X             17.3     6.66      8.67      25.8</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 artistChris Goldarg     18.0     4.28     12.5       23.5</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 artistSoul&amp;Roll         26.5     5.92     18.9       34.0</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 4 sigma                   14.0     0.565    13.3       14.7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>These models give us one coefficient for each artist, representing the artist average, or <span class="math inline">\(\mu_j\)</span>. In the output above I show just the first three artists’ means. We also get a global <span class="math inline">\(\sigma\)</span> of 13.99 points.</p>
+<p>As before, we can see how this model predicts popularity if we plug in the average popularities for each of the artists and see the predicted values. Again, these point ranges represent the posterior predictions for each artist; the red diamonds show the actual average popularity. This time things seem to fit really well—that’s because the model is designed to predict the artist-specific <span class="math inline">\(\mu_j\)</span> averages.</p>
+<p>But this great apparent fit comes at a cost:</p>
+<ol type="1">
+<li>No information is shared across these artists. This is equivalent to running 44 separate models and showing them all in one plot. The number of songs and artist has in the data could influence overall popularity, but since each artist is in an informational silo here, we can’t see if that’s the case.</li>
+<li>The fit is hyper-specific to artists in the sample and can’t be used to predict the popularity of other artists.</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>no_pooled_predictions <span class="ot">&lt;-</span> spotify <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(artist) <span class="sc">|&gt;</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">popularity =</span> <span class="fu">mean</span>(popularity)) <span class="sc">|&gt;</span> </span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_predicted_draws</span>(model_no_pooled_brms)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>no_pooled_predictions <span class="sc">|&gt;</span> </span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> artist, <span class="at">x =</span> .prediction)) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">color =</span> clrs[<span class="dv">5</span>], <span class="at">point_interval =</span> <span class="st">"mean_qi"</span>) <span class="sc">+</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">data =</span> spotify, <span class="fu">aes</span>(<span class="at">x =</span> popularity), </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>               <span class="at">geom =</span> <span class="st">"point"</span>, <span class="at">fun =</span> mean, <span class="at">color =</span> clrs[<span class="dv">2</span>], <span class="at">size =</span> <span class="dv">3</span>, <span class="at">pch =</span> <span class="dv">18</span>) <span class="sc">+</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Popularity"</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="building-the-hierarchical-model" class="level2">
+<h2 class="anchored" data-anchor-id="building-the-hierarchical-model">16.3: Building the hierarchical model</h2>
+<p>We can can overcome these shortcomings of the no pooled model by incorporating the group structure into the model and allowing information to be shared across different artist groups. The formal math gets a little bit more gnarly, and there are different ways of describing the models. <em>Bayes Rules!</em> shows two different approaches.</p>
+<section id="layer-based-notation" class="level3">
+<h3 class="anchored" data-anchor-id="layer-based-notation">Layer-based notation</h3>
+<p>First they show a model with two layers: one layer that models the popularity of songs within artists and one layer that models the variability of popularity between arists:</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y_{i,j} &amp;\sim \mathcal{N}(\mu_j, \sigma_y) &amp; \text{Individual songs within artist } j \\
+\mu_j &amp;= \mathcal{N}(\mu, \sigma_{\mu}) &amp; \text{Between-artist differences} \\
+\\
+\mu &amp;\sim \mathcal{N}(50, 20) &amp; \text{Prior for global average} \\
+\sigma_y &amp;\sim \operatorname{Exponential}(1/25) &amp; \text{Prior for within-artist variability} \\
+\sigma_{\mu} &amp;\sim \operatorname{Exponential}(1) &amp; \text{Prior for between-artist variability}
+\end{aligned}
+\]</span></p>
+<p>In the first layer, we’re modeling the popularity of individual songs within each artist <span class="math inline">\(j\)</span>. We have two parameters:</p>
+<ul>
+<li><span class="math inline">\(\mu_j\)</span>: mean song popularity for artist <span class="math inline">\(j\)</span></li>
+<li><span class="math inline">\(\sigma_y\)</span>: <strong>within-group variability</strong>, or the standard deviation of popularity within each artist</li>
+</ul>
+<p>In the second layer, we’re modeling the variability of popularity across or between artists. We have two different parameters for this part of the model:</p>
+<ul>
+<li><span class="math inline">\(\mu\)</span>: <strong>global average</strong> of mean song popularity across all artists <span class="math inline">\(j\)</span></li>
+<li><span class="math inline">\(\sigma_\mu\)</span>: <strong>between-group variability</strong>, or the standard deviation in mean popularity <span class="math inline">\(\mu_j\)</span> from artist to artist, or how much popularity bounces around as we move from artist to artist</li>
+</ul>
+</section>
+<section id="offset-based-notation" class="level3">
+<h3 class="anchored" data-anchor-id="offset-based-notation">Offset-based notation</h3>
+<p>I like this notation better (and <a href="https://www.andrewheiss.com/blog/2021/12/01/multilevel-models-panel-data-guide/#introduction-to-random-effects-intercepts-for-each-continent">it’s what I use here</a>). It’s still focused on layers—the first line is the same in both model definitions. The second layer is different now, though:</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y_{i,j} &amp;\sim \mathcal{N}(\mu_j, \sigma_y) &amp; \text{Individual songs within artist } j \\
+\mu_j &amp;= (\mu + b_j)  &amp; \text{Between-artist differences} \\
+\\
+\mu &amp;\sim \mathcal{N}(50, 20) &amp; \text{Prior for global average} \\
+b_j &amp;\sim \mathcal{N}(0, \sigma_{\mu}) &amp; \text{Prior for random artist offsets} \\
+\sigma_y &amp;\sim \operatorname{Exponential}(1/25) &amp; \text{Prior for within-artist variability} \\
+\sigma_{\mu} &amp;\sim \operatorname{Exponential}(1) &amp; \text{Prior for between-artist variability}
+\end{aligned}
+\]</span></p>
+<p>In the second layer, we’re still modeling the variability across artists (<span class="math inline">\(\mu_j\)</span>), but we have a new parameter <span class="math inline">\(b_j\)</span>. This requires some short explanation to show where this is coming from.</p>
+<p>Let’s think about song popularity like a slope/intercept regression model with <span class="math inline">\(\beta\)</span> terms instead of with <span class="math inline">\(\mu\)</span>. Since this is an intercept-only model, we just have a <span class="math inline">\(\beta_0\)</span> term:</p>
+<p><span class="math display">\[
+\text{Popularity}_j = \beta_{0_\text{Global artist mean}} + \varepsilon
+\]</span></p>
+<p>Note the <span class="math inline">\(\varepsilon\)</span> term here. We haven’t been using that throughout this book, but it’s always been lurking there. It’s the error term and represents all the variation in popularity that isn’t captured by the global artist mean. Right now the <span class="math inline">\(\beta_0\)</span> coefficient represents the global average of artist-specific averages. Any deviance from that is stuffed away in <span class="math inline">\(\varepsilon\)</span>.</p>
+<p>Here’s an example to help illustrate this. <span class="math inline">\(\mu_j\)</span> represents artist-specific averages, and Beyoncé’s average popularity (<span class="math inline">\(\mu_\text{Beyoncé}\)</span>) is 69.7:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>artist_averages <span class="ot">&lt;-</span> spotify <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(artist) <span class="sc">|&gt;</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">mu_j =</span> <span class="fu">mean</span>(popularity))</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>artist_averages <span class="sc">|&gt;</span> </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(artist <span class="sc">==</span> <span class="st">"Beyoncé"</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 2</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="do">##   artist   mu_j</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;fct&gt;   &lt;dbl&gt;</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 Beyoncé  69.7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The global mean artist-specific popularity is the average of the <code>mu_j</code> column, or 52.1</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>artist_averages <span class="sc">|&gt;</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">global_mu =</span> <span class="fu">mean</span>(mu_j))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 1</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="do">##   global_mu</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="do">##       &lt;dbl&gt;</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 1      52.1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>An intercept-only model of popularity using only artist-specific averages would look something like this:</p>
+<p><span class="math display">\[
+\text{Popularity}_j = 52.1 + \varepsilon
+\]</span></p>
+<p>Beyoncé’s average popularity is 17.6 points higher than the global average of 52.1, but that’s lost in the error term. We can highlight it to show that it really exists:</p>
+<p><span class="math display">\[
+\text{Popularity}_\text{Beyoncé} = 52.1 + (17.6_\text{Beyoncé} + \varepsilon)
+\]</span></p>
+<p>With some algebra, we can group that Beyoncé offset with the global mean:</p>
+<p><span class="math display">\[
+\text{Popularity}_\text{Beyoncé} = (52.1 + 17.6_\text{Beyoncé}) + \varepsilon
+\]</span></p>
+<p>Neat. Beyoncé’s artist-specific average is thus the global mean plus an artist-specific offset.</p>
+<p>We can generalize this to any artist <span class="math inline">\(j\)</span>. We’ll call the offset term <span class="math inline">\(b_j\)</span>:</p>
+<p><span class="math display">\[
+\text{Popularity}_j = (\beta_0 + b_j) + \varepsilon
+\]</span></p>
+<p>Or if we want to go back to the world of <span class="math inline">\(\mu\)</span> instead of <span class="math inline">\(\beta\)</span>s:</p>
+<p><span class="math display">\[
+\text{Popularity}_j = (\mu + b_j)
+\]</span></p>
+<p>Phew. I like this offset approach because it highlights the fact that these are “random” effects, or that we’re modeling the distribution of group-specific shifts above and below some global mean. Here’s the full model again, for reference:</p>
+<p><span class="math display">\[
+\begin{aligned}
+Y_{i,j} &amp;\sim \mathcal{N}(\mu_j, \sigma_y) &amp; \text{Individual songs within artist } j \\
+\mu_j &amp;= (\mu + b_j)  &amp; \text{Between-artist differences} \\
+\\
+\mu &amp;\sim \mathcal{N}(50, 20) &amp; \text{Prior for global average} \\
+b_j &amp;\sim \mathcal{N}(0, \sigma_{\mu}) &amp; \text{Prior for random artist offsets} \\
+\sigma_y &amp;\sim \operatorname{Exponential}(1/25) &amp; \text{Prior for within-artist variability} \\
+\sigma_{\mu} &amp;\sim \operatorname{Exponential}(1) &amp; \text{Prior for between-artist variability}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="within--vs-between-group-variability" class="level3">
+<h3 class="anchored" data-anchor-id="within--vs-between-group-variability">16.3.3: Within- vs between-group variability</h3>
+<p>Since these multilevel/hierarchical/random effects/whatever-we-want-to-call-them models give us so much information about the variability within and between groups, we can do some neat things with that information.</p>
+<p>For instance, the total variance in individual song popularity within and between artists is the sum of the two <span class="math inline">\(\sigma\)</span> terms we’ve estimated:</p>
+<p><span class="math display">\[
+\operatorname{Var}(Y_{i, j}) = \sigma_y + \sigma_\mu
+\]</span></p>
+<p>This means we can calculate some ratios and percentages:</p>
+<ul>
+<li><span class="math inline">\(\frac{\sigma_y}{\sigma_y + \sigma_\mu}\)</span>: Proportion of total variance that is explained by <strong>within-artist</strong> differences</li>
+<li><span class="math inline">\(\frac{\sigma_\mu}{\sigma_y + \sigma_\mu}\)</span>: Proportion of total variance that is explained by <strong>between-artist</strong> differences</li>
+</ul>
+</section>
+</section>
+<section id="posterior-analysis" class="level2">
+<h2 class="anchored" data-anchor-id="posterior-analysis">16.4: Posterior analysis</h2>
+<p>K, finally we can calculate the posterior. To add a random intercept, or allow the intercept to vary by artist-specific offsets (yay for the offset notation!), we include a <code>(1 | artist)</code> term in both brms and rstanarm (and <a href="https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#model-specification">this table is indispensable</a> for remembering how to set different random offsets for different nesting and grouping structures)</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">brms</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">rstanarm</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>priors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">50</span>, <span class="dv">20</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="fl">0.04</span>), <span class="at">class =</span> sigma),</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>            <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="dv">1</span>), <span class="at">class =</span> sd))</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>model_multilevel_brms <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">bf</span>(popularity <span class="sc">~</span> (<span class="dv">1</span> <span class="sc">|</span> artist)),</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> spotify,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">gaussian</span>(),</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> priors,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">4000</span>, <span class="at">seed =</span> BAYES_SEED, </span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"16-manual_cache/model-multilevel-brms"</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>model_multilevel_brms <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="fu">c</span>(<span class="st">"fixed"</span>, <span class="st">"ran_pars"</span>), <span class="at">conf.level =</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>component)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 7</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   effect   group    term            estimate std.error conf.low conf.high</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;    &lt;chr&gt;    &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 fixed    &lt;NA&gt;     (Intercept)         52.5     2.17      49.8      55.3</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 ran_pars artist   sd__(Intercept)     12.6     1.39      10.9      14.5</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 ran_pars Residual sd__Observation     14.1     0.584     13.3      14.8</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Put the results in a list</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>m_mlm <span class="ot">&lt;-</span> model_multilevel_brms <span class="sc">|&gt;</span> </span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="fu">c</span>(<span class="st">"fixed"</span>, <span class="st">"ran_pars"</span>), <span class="at">conf.level =</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">term =</span> janitor<span class="sc">::</span><span class="fu">make_clean_names</span>(term)) <span class="sc">|&gt;</span> </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">split</span>(<span class="sc">~</span>term)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<p>The <code>decov()</code> prior for <span class="math inline">\(\sigma_\mu\)</span> here is weird—it’s equivalent to <code>exponential(1)</code> in the case since we have no predictors.</p>
+<div class="cell" data-hash="16-chapter_cache/html/model-multilevel-rstanarm_3d95b56b6a6f3622ce5b5639c7d092c8">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>model_multilevel_rstanarm <span class="ot">&lt;-</span> <span class="fu">stan_glmer</span>(</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  popularity <span class="sc">~</span> (<span class="dv">1</span> <span class="sc">|</span> artist),</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> spotify,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> gaussian,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior_intercept =</span> <span class="fu">normal</span>(<span class="dv">50</span>, <span class="dv">20</span>),</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior_aux =</span> <span class="fu">exponential</span>(<span class="fl">0.04</span>),</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior_covariance =</span> <span class="fu">decov</span>(<span class="at">reg =</span> <span class="dv">1</span>, <span class="at">conc =</span> <span class="dv">1</span>, <span class="at">shape =</span> <span class="dv">1</span>, <span class="at">scale =</span> <span class="dv">1</span>),</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">5000</span><span class="sc">*</span><span class="dv">2</span>, <span class="at">seed =</span> BAYES_SEED, <span class="at">refresh =</span> <span class="dv">0</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>model_multilevel_rstanarm <span class="sc">|&gt;</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="fu">c</span>(<span class="st">"fixed"</span>, <span class="st">"ran_pars"</span>),</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.8</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 6</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term                    estimate std.error conf.low conf.high group   </span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                      &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;   </span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)                 52.4      2.40     49.2      55.6 &lt;NA&gt;    </span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 sd_(Intercept).artist       15.2     NA        NA        NA   artist  </span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 sd_Observation.Residual     14.0     NA        NA        NA   Residual</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p>(Weirdly rstanarm and brms give different results for the between-artist <span class="math inline">\(\sigma_mu\)</span> term <code>sd_(Intercept)</code>. I don’t know why—probably a prior thing?)</p>
+<section id="global-parameters-fixed-effects" class="level3">
+<h3 class="anchored" data-anchor-id="global-parameters-fixed-effects">Global parameters (“fixed” effects)</h3>
+<p>At the global level of the model, we have these terms:</p>
+<ul>
+<li><span class="math inline">\(\mu\)</span> or <code>(Intercept)</code>: Global average artist-specific popularity</li>
+<li><span class="math inline">\(\sigma_y\)</span> or <code>sd__(Intercept)</code> for <code>artist</code>: Within-artist variability</li>
+<li><span class="math inline">\(\sigma^2_\mu\)</span> or <code>sd__Observation</code> for <code>Residual</code>: Between-artist variability</li>
+</ul>
+<p>The average artist has a posterior average (<span class="math inline">\(\mu\)</span>) of 52.5 popularity points, and there’s an 80% chance that their average popularity is between 49.8 and 55.3</p>
+<p>According to the posterior mean of <span class="math inline">\(\sigma_y\)</span> or <code>sd__(Intercept)</code>, the between-artist variability is 12.6, which means that popularity bounces around by 12ish points as we move <em>from artist to artist</em>. The posterior mean of <span class="math inline">\(\sigma^2_\mu\)</span> or <code>sd__Observation</code> shows that the within-artist variability is 14.1, which means that within any artist, popularity varies by 14ish points <em>from song to song</em>. Alternatively, this is the total residual variation, or the unexplained variation in song popularity.</p>
+<p>We can play with the ratios of these types of variance too:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Proportion of song popularity explained by differences *between* artists</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>(m_mlm<span class="sc">$</span>sd_intercept<span class="sc">$</span>estimate<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> </span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>   (m_mlm<span class="sc">$</span>sd_intercept<span class="sc">$</span>estimate<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> m_mlm<span class="sc">$</span>sd_observation<span class="sc">$</span>estimate<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unname</span>()</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.4450867</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Proportion of song popularity explained by differences *within* artists</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>(m_mlm<span class="sc">$</span>sd_observation<span class="sc">$</span>estimate<span class="sc">^</span><span class="dv">2</span> <span class="sc">/</span> </span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    (m_mlm<span class="sc">$</span>sd_intercept<span class="sc">$</span>estimate<span class="sc">^</span><span class="dv">2</span> <span class="sc">+</span> m_mlm<span class="sc">$</span>sd_observation<span class="sc">$</span>estimate<span class="sc">^</span><span class="dv">2</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unname</span>()</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 0.5549133</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="group-parameters-random-effects" class="level3">
+<h3 class="anchored" data-anchor-id="group-parameters-random-effects">Group parameters (“random” effects)</h3>
+<p>At the artist level of the model, we only have one term:</p>
+<ul>
+<li><span class="math inline">\(b_j\)</span> or <code>(Intercept)</code>: Artist-specific offset from the global mean popularity <span class="math inline">\(\mu\)</span></li>
+</ul>
+<p>We can extract these offsets with the <code>ranef()</code> function, which returns a messy gross array, or we can use <code>broom.mixed::tidy(..., effects = "ran_vals")</code>. Let’s look at Beyoncé’s offset, since we used that as an example earlier. It should be somewhere around 17.6 (though not exactly that, since that was the value from the no pooling model—we have more information about artists this time, so that should influence the estimated artist average here).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>model_multilevel_brms <span class="sc">|&gt;</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="st">"ran_vals"</span>, <span class="at">conf.level =</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(level <span class="sc">==</span> <span class="st">"Beyoncé"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>effect, <span class="sc">-</span>component)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 7</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   group  level   term        estimate std.error conf.low conf.high</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;  &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 artist Beyoncé (Intercept)     16.4      3.43     11.9      20.7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The offset is a little smaller (16ish) now that we’re partially pooling, and there’s an 80% chance that her offset is between 12 and 21ish popularity points from the global average.</p>
+<p>We can look at everyone’s offsets and calculate artist-specific posterior group averages, or <span class="math inline">\(\mu_j\)</span> with some tidybayes wrangling:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>model_multilevel_brms <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(b_Intercept, r_artist[artist,]) <span class="sc">|&gt;</span>  </span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mu_j =</span> b_Intercept <span class="sc">+</span> r_artist) <span class="sc">|&gt;</span></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">artist =</span> <span class="fu">fct_reorder</span>(artist, mu_j, <span class="at">.fun =</span> mean)) <span class="sc">|&gt;</span> </span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> artist, <span class="at">x =</span> mu_j)) <span class="sc">+</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">color =</span> clrs[<span class="dv">3</span>]) <span class="sc">+</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Popularity"</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="posterior-prediction" class="level2">
+<h2 class="anchored" data-anchor-id="posterior-prediction">16.5: Posterior prediction</h2>
+<p>Because we used a hierarchical model, we aren’t limited to making predictions for only the artists that exist in the original data. We can use the model to make predictions both for existing artists and for brand new unseen artists</p>
+<section id="predictions-for-existing-groups-artists" class="level3">
+<h3 class="anchored" data-anchor-id="predictions-for-existing-groups-artists">Predictions for existing groups / artists</h3>
+<p>There are multiple forms of uncertainty in this model at both the global and artist levels. Like I explore in <a href="https://www.andrewheiss.com/blog/2022/09/26/guide-visualizing-types-posteriors/">this guide to different posterior predictions</a>, we have uncertainty in <span class="math inline">\(mu_j\)</span>, or the artist-specific average, and uncertainty in <span class="math inline">\(Y\)</span>, or the song-specific average.</p>
+<p>The posterior predictions for <span class="math inline">\(mu_j\)</span> will be narrow than those for <span class="math inline">\(Y\)</span> because <span class="math inline">\(mu_j\)</span> is only a function of the global <span class="math inline">\(\mu\)</span> and artist-specific offsets <span class="math inline">\(b_j\)</span>:</p>
+<p><span class="math display">\[
+\mu_j = \mu + b_j
+\]</span></p>
+<p>This corresponds to <code>posterior_linpred()</code> or <code>posterior_epred()</code>.</p>
+<p>The posterior predictions for <span class="math inline">\(Y\)</span> have much more uncertainty because <span class="math inline">\(Y\)</span> is a function of both <span class="math inline">\(\mu_j\)</span> and <span class="math inline">\(\sigma_y\)</span>, or the within-artist variability:</p>
+<p><span class="math display">\[
+Y_{i,j} \sim \mathcal{N}(\mu_j, \sigma_y)
+\]</span></p>
+<p>This corresponds to <code>posterior_predict()</code>.</p>
+<p>We can make these posterior predictions both manually and with the more automatic functions. We’ll predict Frank Ocean’s popularity since that’s what the book does.</p>
+<p>Manually we need to get the intercept, offset, and sigma from the MCMC chains, add the intercept and offset to create <span class="math inline">\(\mu_j\)</span>, and then randomly draw from a normal distribution with that <span class="math inline">\(\mu_j\)</span> and <span class="math inline">\(\sigma_y\)</span>:</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">Manually</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">Automatically with <code>postior_predict()</code></a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>ocean_posterior_preds <span class="ot">&lt;-</span> model_multilevel_brms <span class="sc">%&gt;%</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(b_Intercept, r_artist[artist,], sigma) <span class="sc">|&gt;</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(artist <span class="sc">==</span> <span class="st">"Frank.Ocean"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">mu_ocean =</span> b_Intercept <span class="sc">+</span> r_artist,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_ocean =</span> <span class="fu">rnorm</span>(<span class="fu">n</span>(), <span class="at">mean =</span> mu_ocean, <span class="at">sd =</span> sigma))</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>ocean_posterior_preds <span class="sc">|&gt;</span> </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> y_ocean)) <span class="sc">+</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">fill =</span> clrs[<span class="dv">3</span>]) <span class="sc">+</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Posterior predictive distribution for the</span><span class="sc">\n</span><span class="st">popularity of one new Frank Ocean song"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>model_multilevel_brms <span class="sc">|&gt;</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predicted_draws</span>(<span class="at">newdata =</span> <span class="fu">tibble</span>(<span class="at">artist =</span> <span class="st">"Frank Ocean"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .prediction)) <span class="sc">+</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">fill =</span> clrs[<span class="dv">3</span>]) <span class="sc">+</span></span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Posterior predictive distribution for the</span><span class="sc">\n</span><span class="st">popularity of one new Frank Ocean song"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Looking at the posterior distribution of just <span class="math inline">\(\mu_j\)</span> gives us a narrower range, since this corresponds to our prediction of Frank Ocean’s underlying average song popularity, not the popularity of a single song:</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">Manually</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">Automatically wtih <code>posterior_linpred()</code></a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>ocean_posterior_preds <span class="sc">|&gt;</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mu_ocean)) <span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">fill =</span> clrs[<span class="dv">2</span>]) <span class="sc">+</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Posterior predictive distribution for the</span><span class="sc">\n</span><span class="st">mean popularity of Frank Ocean songs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>model_multilevel_brms <span class="sc">|&gt;</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">linpred_draws</span>(<span class="at">newdata =</span> <span class="fu">tibble</span>(<span class="at">artist =</span> <span class="st">"Frank Ocean"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .linpred)) <span class="sc">+</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">fill =</span> clrs[<span class="dv">2</span>]) <span class="sc">+</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Posterior predictive distribution for the</span><span class="sc">\n</span><span class="st">mean popularity of Frank Ocean songs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="predictions-for-unseen-groups-artists" class="level3">
+<h3 class="anchored" data-anchor-id="predictions-for-unseen-groups-artists">Predictions for unseen groups / artists</h3>
+<p>If we want to simulate a posterior for a completely unobserved artist, we can’t just extract their offset, add it to the global mean, and use <code>rnorm()</code>. There’s no offset to extract!</p>
+<p>So instead we have to simulate the offset. We estimated a posterior distribution for <span class="math inline">\(\sigma_\mu\)</span> for the variability in the offsets:</p>
+<p><span class="math display">\[
+b_j \sim \mathcal{N}(0, \sigma_{\mu})
+\]</span></p>
+<p>…so we can use that to generate a random offset, then add that to the global mean, and then make predictions like normal. In the book they make up an artist named “Mohsen Beats” so we’ll do that here too.</p>
+<p>When doing this automatically, we need to include <code>re_formula = NULL</code> and <code>allow_new_levels = TRUE</code> to incorporate the random effects into the predictions (<a href="https://www.andrewheiss.com/blog/2021/11/10/ame-bayes-re-guide/#overall-summary-of-different-approaches">see here for more about that</a>). We also use <code>sample_new_levels = "gaussian"</code> to indicate that the random offsets we’re adding in for the new fake artist come from a normal distribution (just like we do with <code>rnorm()</code>). It’s also possible to use <code>sample_new_levels = "uncertainty"</code> (and I think that’s the default?), which doesn’t use <code>rnorm()</code> to generate the offsets but instead somehow uses the uncertainty and variation in the existing groups to create the offsets.</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true">Manually</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false">Automatically with <code>posterior_predict(re_formula = NULL)</code></a></li></ul>
+<div class="tab-content">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>mohsen_posterior_preds <span class="ot">&lt;-</span> model_multilevel_brms <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(b_Intercept, sd_artist__Intercept, sigma) <span class="sc">|&gt;</span> </span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">sigma_mu =</span> sd_artist__Intercept,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">mu_mohsen =</span> b_Intercept <span class="sc">+</span> <span class="fu">rnorm</span>(<span class="fu">n</span>(), <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> sigma_mu),</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">y_mohsen =</span> <span class="fu">rnorm</span>(<span class="fu">n</span>(), <span class="at">mean =</span> mu_mohsen, <span class="at">sd =</span> sigma))</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>mohsen_posterior_preds <span class="sc">|&gt;</span> </span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> y_mohsen)) <span class="sc">+</span></span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">fill =</span> colorspace<span class="sc">::</span><span class="fu">darken</span>(clrs[<span class="dv">3</span>], <span class="fl">0.7</span>)) <span class="sc">+</span></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Posterior predictive distribution for the</span><span class="sc">\n</span><span class="st">popularity of one new Mohsen Beats song"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>model_multilevel_brms <span class="sc">|&gt;</span> </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predicted_draws</span>(<span class="at">newdata =</span> <span class="fu">tibble</span>(<span class="at">artist =</span> <span class="st">"Mohsen Beats"</span>),</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">re_formula =</span> <span class="cn">NULL</span>, <span class="at">allow_new_levels =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sample_new_levels =</span> <span class="st">"gaussian"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .prediction)) <span class="sc">+</span></span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">fill =</span> colorspace<span class="sc">::</span><span class="fu">darken</span>(clrs[<span class="dv">3</span>], <span class="fl">0.7</span>)) <span class="sc">+</span></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Posterior predictive distribution for the</span><span class="sc">\n</span><span class="st">popularity of one new Mohsen Beats song"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>We can also get the posterior distribution of just the <span class="math inline">\(\mu_j\)</span> part for Mohsen Beats, providing a prediction of the artist’s average song popularity:</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true">Manually</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false">Automatically wtih <code>posterior_linpred(re_formula = NULL)</code></a></li></ul>
+<div class="tab-content">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>mohsen_posterior_preds <span class="sc">|&gt;</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mu_mohsen)) <span class="sc">+</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">fill =</span> colorspace<span class="sc">::</span><span class="fu">darken</span>(clrs[<span class="dv">2</span>], <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Posterior predictive distribution for the</span><span class="sc">\n</span><span class="st">mean popularity of Mohsen Beats songs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>model_multilevel_brms <span class="sc">|&gt;</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">linpred_draws</span>(<span class="at">newdata =</span> <span class="fu">tibble</span>(<span class="at">artist =</span> <span class="st">"Mohsen Beats"</span>),</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>                <span class="at">re_formula =</span> <span class="cn">NULL</span>, <span class="at">allow_new_levels =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">sample_new_levels =</span> <span class="st">"gaussian"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .linpred)) <span class="sc">+</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">fill =</span> colorspace<span class="sc">::</span><span class="fu">darken</span>(clrs[<span class="dv">2</span>], <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Posterior predictive distribution for the</span><span class="sc">\n</span><span class="st">mean popularity of Mohsen Beats songs"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="comparisons" class="level3">
+<h3 class="anchored" data-anchor-id="comparisons">Comparisons</h3>
+<p>For fun, we can compare all four of these posteriors:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> model_multilevel_brms <span class="sc">|&gt;</span> </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predicted_draws</span>(<span class="at">newdata =</span> <span class="fu">tibble</span>(<span class="at">artist =</span> <span class="fu">c</span>(<span class="st">"Frank Ocean"</span>, <span class="st">"Mohsen Beats"</span>)),</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">re_formula =</span> <span class="cn">NULL</span>, <span class="at">allow_new_levels =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">sample_new_levels =</span> <span class="st">"gaussian"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .prediction, <span class="at">y =</span> artist, <span class="at">fill =</span> artist)) <span class="sc">+</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>() <span class="sc">+</span></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(clrs[<span class="dv">3</span>], colorspace<span class="sc">::</span><span class="fu">darken</span>(clrs[<span class="dv">3</span>], <span class="fl">0.7</span>)),</span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>                    <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Posterior predictions for individual songs (Yij)</span><span class="sc">\n</span><span class="st">(equivalent to posterior_predict()"</span>,</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="cn">NULL</span>)</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> model_multilevel_brms <span class="sc">|&gt;</span> </span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">linpred_draws</span>(<span class="at">newdata =</span> <span class="fu">tibble</span>(<span class="at">artist =</span> <span class="fu">c</span>(<span class="st">"Frank Ocean"</span>, <span class="st">"Mohsen Beats"</span>)),</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>                <span class="at">re_formula =</span> <span class="cn">NULL</span>, <span class="at">allow_new_levels =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>                <span class="at">sample_new_levels =</span> <span class="st">"gaussian"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .linpred, <span class="at">y =</span> artist, <span class="at">fill =</span> artist)) <span class="sc">+</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>() <span class="sc">+</span></span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(clrs[<span class="dv">2</span>], colorspace<span class="sc">::</span><span class="fu">darken</span>(clrs[<span class="dv">2</span>], <span class="fl">0.5</span>)),</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>                    <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Posterior predictions for artist average (µj)</span><span class="sc">\n</span><span class="st">(equivalent to posterior_linpred()"</span>,</span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="cn">NULL</span>)</span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">|</span> p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="shrinkage-and-the-bias-variance-tradeoff" class="level2">
+<h2 class="anchored" data-anchor-id="shrinkage-and-the-bias-variance-tradeoff">16.6: Shrinkage and the bias-variance tradeoff</h2>
+<p>We’ve been talking about how information is shared across artists in these hierarchical models, and that’s why they’re better than the no pooling approach, but what information actually gets shared? In these intercept-only models, there aren’t any other covariates that are spread across artists (like age of artist, number of years producing music, gender, income, whatever) that could inform between-artist variation. All we have is the artist name.</p>
+<p>Even with the artist name, we’re still sharing information across artists, but in a more subtle way. The average popularity for each artist is heavily informed by the number of songs each artist has. Artists with just a handful of songs might have high popularity, but that average is really unstable; artists with lots of songs and who are also highly popular have a much more stable average.</p>
+<p>(This is like Amazon ratings too: an item on Amazon with a 4.6 star average with 10,000 reviews is more trustworthy than an item with a 4.8 star average with 4 reviews)</p>
+<p>In the book they compare the ratings and counts of Camila Cabello (38 songs) and Lil Skies (3 songs):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>spotify <span class="sc">|&gt;</span> </span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(artist <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Camila Cabello"</span>, <span class="st">"Lil Skies"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(artist) <span class="sc">|&gt;</span> </span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>(), <span class="at">popularity =</span> <span class="fu">mean</span>(popularity))</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 3</span></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   artist         count popularity</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;fct&gt;          &lt;int&gt;      &lt;dbl&gt;</span></span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 Camila Cabello    38       77.1</span></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 Lil Skies          3       79.3</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In a model without pooling, Lil Skies’s average remains high because it ignores the effect of artist-specific sample size, but hierarchical models care about the number of songs within each artist, and that influences the predicted average for artists with fewer songs. <em>That’s</em> the information sharing we get in an intercept-only model.</p>
+<p>We can compare the predictions from the no pooling and multilevel models for these two to see the smaller prediction after sharing information in the hierarchical model:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>no_pooled_small <span class="ot">&lt;-</span> no_pooled_predictions <span class="sc">|&gt;</span> </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(artist <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Camila Cabello"</span>, <span class="st">"Lil Skies"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model_type =</span> <span class="st">"No pooling"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(artist, .row, .chain, .iteration, .draw, .prediction, model_type)</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>multilevel_small <span class="ot">&lt;-</span>  model_multilevel_brms <span class="sc">|&gt;</span> </span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predicted_draws</span>(<span class="at">newdata =</span> <span class="fu">tibble</span>(<span class="at">artist =</span> <span class="fu">unique</span>(spotify<span class="sc">$</span>artist))) <span class="sc">|&gt;</span> </span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(artist <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Camila Cabello"</span>, <span class="st">"Lil Skies"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">model_type =</span> <span class="st">"Multilevel"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb36-12"><a href="#cb36-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(artist, .row, .chain, .iteration, .draw, .prediction, model_type)</span>
+<span id="cb36-13"><a href="#cb36-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-14"><a href="#cb36-14" aria-hidden="true" tabindex="-1"></a>both_small <span class="ot">&lt;-</span> <span class="fu">rbind</span>(no_pooled_small, multilevel_small)</span>
+<span id="cb36-15"><a href="#cb36-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-16"><a href="#cb36-16" aria-hidden="true" tabindex="-1"></a>actual_small <span class="ot">&lt;-</span> spotify <span class="sc">|&gt;</span> </span>
+<span id="cb36-17"><a href="#cb36-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(artist <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Camila Cabello"</span>, <span class="st">"Lil Skies"</span>))</span>
+<span id="cb36-18"><a href="#cb36-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-19"><a href="#cb36-19" aria-hidden="true" tabindex="-1"></a>both_small <span class="sc">|&gt;</span> </span>
+<span id="cb36-20"><a href="#cb36-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .prediction, <span class="at">y =</span> <span class="fu">fct_rev</span>(artist), <span class="at">color =</span> model_type)) <span class="sc">+</span></span>
+<span id="cb36-21"><a href="#cb36-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.4</span>)) <span class="sc">+</span></span>
+<span id="cb36-22"><a href="#cb36-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">data =</span> actual_small, </span>
+<span id="cb36-23"><a href="#cb36-23" aria-hidden="true" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">x =</span> popularity, <span class="at">color =</span> <span class="st">"Original data"</span>), </span>
+<span id="cb36-24"><a href="#cb36-24" aria-hidden="true" tabindex="-1"></a>               <span class="at">fun.data =</span> <span class="st">"mean_se"</span>, <span class="at">fun.args =</span> <span class="fu">list</span>(<span class="at">mult =</span> <span class="fl">1.96</span>),</span>
+<span id="cb36-25"><a href="#cb36-25" aria-hidden="true" tabindex="-1"></a>               <span class="at">geom =</span> <span class="st">"pointrange"</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">pch =</span> <span class="dv">18</span>) <span class="sc">+</span></span>
+<span id="cb36-26"><a href="#cb36-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(clrs[<span class="dv">1</span>], <span class="st">"grey50"</span>, clrs[<span class="dv">3</span>]),</span>
+<span id="cb36-27"><a href="#cb36-27" aria-hidden="true" tabindex="-1"></a>                     <span class="at">breaks =</span> <span class="fu">c</span>(<span class="st">"No pooling"</span>, <span class="st">"Original data"</span>, <span class="st">"Multilevel"</span>)) <span class="sc">+</span></span>
+<span id="cb36-28"><a href="#cb36-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Popularity"</span>, <span class="at">y =</span> <span class="cn">NULL</span>, <span class="at">color =</span> <span class="cn">NULL</span>) <span class="sc">+</span></span>
+<span id="cb36-29"><a href="#cb36-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>For Camila Cabello, the averages are all basically the same since she has so many songs (38). For Lil Skies, though, the predicted average in the multilevel model is smaller than either the no pooled data or the observed mean, since the partial pooling takes the small number of songs (3) into account and shrinks the prediction.</p>
+<p>We can see this phenomenon if we look at everyone’s posterior predictions. For artists near the average level of popularity, the model’s predictions are basically perfectly inline with the observed average. For artists with more extreme levels of popularity, the multilevel model pulls their averages toward the middle, particularly when artists only have a handful of songs. You can see a sizable divergence in observed and predicted averages for artists like Lil Skies and Sean Kingston at the top end of popularity and Mia X and Soul &amp; Roll at the bottom end. In an artist in the extremes has a lot of songs (like Camila Cabello or Beyoncé), there’s no shrinkage—the higher number of songs helps stabilize the prediction.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>multilevel_predictions <span class="ot">&lt;-</span> model_multilevel_brms <span class="sc">|&gt;</span> </span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predicted_draws</span>(<span class="at">newdata =</span> <span class="fu">tibble</span>(<span class="at">artist =</span> <span class="fu">unique</span>(spotify<span class="sc">$</span>artist)))</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>multilevel_predictions <span class="sc">|&gt;</span> </span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">y =</span> artist, <span class="at">x =</span> .prediction)) <span class="sc">+</span></span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">color =</span> clrs[<span class="dv">3</span>], <span class="at">point_interval =</span> <span class="st">"mean_qi"</span>) <span class="sc">+</span></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_summary</span>(<span class="at">data =</span> spotify, <span class="fu">aes</span>(<span class="at">x =</span> popularity), </span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>               <span class="at">geom =</span> <span class="st">"point"</span>, <span class="at">fun =</span> mean, <span class="at">color =</span> clrs[<span class="dv">2</span>], <span class="at">size =</span> <span class="dv">3</span>, <span class="at">pch =</span> <span class="dv">18</span>) <span class="sc">+</span></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Popularity"</span>, <span class="at">y =</span> <span class="cn">NULL</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="16-chapter_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
