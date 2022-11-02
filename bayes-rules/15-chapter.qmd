@@ -1,6 +1,6 @@
 ---
 title: "Reading notes"
-subtitle: "Multilevel models are exciting"
+subtitle: "Hierarchical models are exciting"
 date: "November 1, 2022"
 ---
 
@@ -204,7 +204,7 @@ lol this model isn't great. It doesn't keep any information about participants a
 
 # 15.2: No pooling
 
-Instead of lumping all the runners, we can keep *complete* information about each runner by not lumping anything together at all. Note how here there's no node for "Population" here like before—with the no pooling approach, we treat each runner as the complete population for that person:
+Instead of lumping all the runners together, we can keep *complete* information about each runner by not lumping anything together at all. Note how here there's no node for "Population" here like before—with the no pooling approach, we treat each runner as the complete population for that person:
 
 ```{tikz no-pooling, engine.opts=font_opts}
 #| echo: false
