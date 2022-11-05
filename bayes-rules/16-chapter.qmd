@@ -429,9 +429,9 @@ $$
 \begin{aligned}
 Y_{i,j} &\sim \mathcal{N}(\mu_j, \sigma_y) & \text{Individual songs within artist } j \\
 \mu_j &= (\mu + b_j)  & \text{Between-artist differences} \\
+b_j &\sim \mathcal{N}(0, \sigma_{\mu}) & \text{Random artist offsets} \\
 \\
 \mu &\sim \mathcal{N}(50, 20) & \text{Prior for global average} \\
-b_j &\sim \mathcal{N}(0, \sigma_{\mu}) & \text{Prior for random artist offsets} \\
 \sigma_y &\sim \operatorname{Exponential}(1/25) & \text{Prior for within-artist variability} \\
 \sigma_{\mu} &\sim \operatorname{Exponential}(1) & \text{Prior for between-artist variability}
 \end{aligned}
@@ -503,9 +503,9 @@ $$
 \begin{aligned}
 Y_{i,j} &\sim \mathcal{N}(\mu_j, \sigma_y) & \text{Individual songs within artist } j \\
 \mu_j &= (\mu + b_j)  & \text{Between-artist differences} \\
+b_j &\sim \mathcal{N}(0, \sigma_{\mu}) & \text{Random artist offsets} \\
 \\
 \mu &\sim \mathcal{N}(50, 20) & \text{Prior for global average} \\
-b_j &\sim \mathcal{N}(0, \sigma_{\mu}) & \text{Prior for random artist offsets} \\
 \sigma_y &\sim \operatorname{Exponential}(1/25) & \text{Prior for within-artist variability} \\
 \sigma_{\mu} &\sim \operatorname{Exponential}(1) & \text{Prior for between-artist variability}
 \end{aligned}
