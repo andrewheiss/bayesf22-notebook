@@ -93,6 +93,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../bayes-rules/17-chapter.html" rel="next">
 <link href="../bayes-rules/15-chapter.html" rel="prev">
 <link href="..//files/favicon.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
@@ -410,8 +411,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       </div>
       <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
-  bayes-rules/17-chapter.qmd
-  </li>
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/17-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -871,9 +874,9 @@ Y_{i,j} &amp;\sim \mathcal{N}(\mu_j, \sigma_y) &amp; \text{Individual songs with
 \begin{aligned}
 Y_{i,j} &amp;\sim \mathcal{N}(\mu_j, \sigma_y) &amp; \text{Individual songs within artist } j \\
 \mu_j &amp;= (\mu + b_j)  &amp; \text{Between-artist differences} \\
+b_j &amp;\sim \mathcal{N}(0, \sigma_{\mu}) &amp; \text{Random artist offsets} \\
 \\
 \mu &amp;\sim \mathcal{N}(50, 20) &amp; \text{Prior for global average} \\
-b_j &amp;\sim \mathcal{N}(0, \sigma_{\mu}) &amp; \text{Prior for random artist offsets} \\
 \sigma_y &amp;\sim \operatorname{Exponential}(1/25) &amp; \text{Prior for within-artist variability} \\
 \sigma_{\mu} &amp;\sim \operatorname{Exponential}(1) &amp; \text{Prior for between-artist variability}
 \end{aligned}
@@ -932,9 +935,9 @@ b_j &amp;\sim \mathcal{N}(0, \sigma_{\mu}) &amp; \text{Prior for random artist o
 \begin{aligned}
 Y_{i,j} &amp;\sim \mathcal{N}(\mu_j, \sigma_y) &amp; \text{Individual songs within artist } j \\
 \mu_j &amp;= (\mu + b_j)  &amp; \text{Between-artist differences} \\
+b_j &amp;\sim \mathcal{N}(0, \sigma_{\mu}) &amp; \text{Random artist offsets} \\
 \\
 \mu &amp;\sim \mathcal{N}(50, 20) &amp; \text{Prior for global average} \\
-b_j &amp;\sim \mathcal{N}(0, \sigma_{\mu}) &amp; \text{Prior for random artist offsets} \\
 \sigma_y &amp;\sim \operatorname{Exponential}(1/25) &amp; \text{Prior for within-artist variability} \\
 \sigma_{\mu} &amp;\sim \operatorname{Exponential}(1) &amp; \text{Prior for between-artist variability}
 \end{aligned}
@@ -1488,6 +1491,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../bayes-rules/17-chapter.html" class="pagination-link">
+        <span class="nav-page-text">Reading notes</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->
