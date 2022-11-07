@@ -461,9 +461,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
   <ul>
   <li><a href="#global-analysis" id="toc-global-analysis" class="nav-link" data-scroll-target="#global-analysis">Global analysis</a>
   <ul class="collapse">
-  <li><a href="#intercept-or-beta_0" id="toc-intercept-or-beta_0" class="nav-link" data-scroll-target="#intercept-or-beta_0">Intercept or <span class="math inline">\(\beta_0\)</span></a></li>
-  <li><a href="#age-effect-or-beta_1" id="toc-age-effect-or-beta_1" class="nav-link" data-scroll-target="#age-effect-or-beta_1">Age effect or <span class="math inline">\(\beta_1\)</span></a></li>
-  <li><a href="#oxygen-effect-or-beta_2" id="toc-oxygen-effect-or-beta_2" class="nav-link" data-scroll-target="#oxygen-effect-or-beta_2">Oxygen effect or <span class="math inline">\(\beta_2\)</span></a></li>
+  <li><a href="#intercept-beta_0" id="toc-intercept-beta_0" class="nav-link" data-scroll-target="#intercept-beta_0">Intercept (<span class="math inline">\(\beta_0\)</span>)</a></li>
+  <li><a href="#age-beta_1" id="toc-age-beta_1" class="nav-link" data-scroll-target="#age-beta_1">Age (<span class="math inline">\(\beta_1\)</span>)</a></li>
+  <li><a href="#oxygen-beta_2" id="toc-oxygen-beta_2" class="nav-link" data-scroll-target="#oxygen-beta_2">Oxygen (<span class="math inline">\(\beta_2\)</span>)</a></li>
   <li><a href="#age-and-oxygen-at-the-same-time" id="toc-age-and-oxygen-at-the-same-time" class="nav-link" data-scroll-target="#age-and-oxygen-at-the-same-time">Age and oxygen at the same time</a></li>
   </ul></li>
   <li><a href="#team-specific-analysis" id="toc-team-specific-analysis" class="nav-link" data-scroll-target="#team-specific-analysis">Team-specific analysis</a></li>
@@ -812,12 +812,12 @@ b_{0_j} &amp;\sim \mathcal{N}(0, \sigma_0) &amp; \text{Team-specific offsets fro
 </div>
 </div>
 <p>Here’s how to interpret all these coefficients, using the brms results:</p>
-<section id="intercept-or-beta_0" class="level5">
-<h5 class="anchored" data-anchor-id="intercept-or-beta_0">Intercept or <span class="math inline">\(\beta_0\)</span></h5>
+<section id="intercept-beta_0" class="level5">
+<h5 class="anchored" data-anchor-id="intercept-beta_0">Intercept (<span class="math inline">\(\beta_0\)</span>)</h5>
 <p>The posterior mean for <span class="math inline">\(\beta_0\)</span> is -3.09, but that’s weird and on the logit scale. We can convert this to the probability scale with <span class="math inline">\(\frac{e^{-3.09}}{1 + e^{-3.09}}\)</span> or with <code>plogis()</code>, which is 0.043. This means that the posterior mean probability of success for a climber of average age (36.96 years) and when not using oxygen is 4.3%, and there’s an 80% chance it’s between 2.8% and 6.6%.</p>
 </section>
-<section id="age-effect-or-beta_1" class="level5">
-<h5 class="anchored" data-anchor-id="age-effect-or-beta_1">Age effect or <span class="math inline">\(\beta_1\)</span></h5>
+<section id="age-beta_1" class="level5">
+<h5 class="anchored" data-anchor-id="age-beta_1">Age (<span class="math inline">\(\beta_1\)</span>)</h5>
 <p>The posterior mean for <span class="math inline">\(\beta_1\)</span> is -0.047, but that’s also weird and logit-ed.&nbsp;We can exponentiate it (<span class="math inline">\(e^{-0.047}\)</span>) and get a mean posterior odds ratio of 0.954, with an 80% credible interval of 0.943–0.965). A one-year increase in a typical climber’s age makes climbing success 4.6% <em>less</em> likely (with an 80% credible interval of 3.5%–5.7%).</p>
 <p>We can also convert these results to a much more manageable probability scale, but that’s a little trickier now that we’re working with multiple covariates. We can’t just do this, since we also have a <code>b2</code> to deal with:</p>
 <div class="cell">
@@ -877,8 +877,8 @@ b_{0_j} &amp;\sim \mathcal{N}(0, \sigma_0) &amp; \text{Team-specific offsets fro
 </div>
 <p>For a typical young climber (18 years old), a one-year increase in age is associated with a posterior mean -0.339 percentage point decrease in the probability of success. That’s a sizable drop! For a typical middle-aged climber (40 years old), getting older is associated with a smaller -0.134 percentage point drop in probability, while older climbers (60 years old) see an even smaller -0.054 percentage point decline. Age thus seems to matter the most for younger climbers—it doesn’t have an effect on the typical older climber.</p>
 </section>
-<section id="oxygen-effect-or-beta_2" class="level5">
-<h5 class="anchored" data-anchor-id="oxygen-effect-or-beta_2">Oxygen effect or <span class="math inline">\(\beta_2\)</span></h5>
+<section id="oxygen-beta_2" class="level5">
+<h5 class="anchored" data-anchor-id="oxygen-beta_2">Oxygen (<span class="math inline">\(\beta_2\)</span>)</h5>
 <p>The posterior mean for <span class="math inline">\(\beta_2\)</span> is 5.651 in the log odds world. Exponentiating it (<span class="math inline">\(e^{5.651}\)</span>) gives us a <em>massive</em> mean posterior odds ratio of 284.446, with an 80% credible interval of 160.629–515.843). Holding age constant, oxygen use in a typical climber increases the odds of success by 161–516 times! Wild!</p>
 <p>Let’s translate this to probabilities. Holy crap there’s a massive difference the probability of success:</p>
 <div class="cell">
@@ -961,7 +961,7 @@ b_{0_j} &amp;\sim \mathcal{N}(0, \sigma_0) &amp; \text{Team-specific offsets fro
 </section>
 <section id="age-and-oxygen-at-the-same-time" class="level5">
 <h5 class="anchored" data-anchor-id="age-and-oxygen-at-the-same-time">Age and oxygen at the same time</h5>
-<p>For fun, here’s what the effect of both age and oxygen look like simultanously:</p>
+<p>For fun, here’s what the effect of both age and oxygen look like simultaneously:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datagrid</span>(<span class="at">model =</span> model_success_brms,</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">oxygen_used =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>),</span>
@@ -1153,7 +1153,7 @@ B_0 + b_{0_j}
 </section>
 <section id="posterior-classification" class="level3">
 <h3 class="anchored" data-anchor-id="posterior-classification">Posterior classification</h3>
-<p>To see how this model predict/classifies new climbers, we can create a set of simulated climbers with different combinations of ages and oxygen use:</p>
+<p>To see how this model predict/classifies new climbers, we can create a set of simulated climbers with different combinations of ages and oxygen use. As expected, the climber with the highest probability of success is the young one planning on using oxygen; the climber with the lowest probability is the old one sans oxygen.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>binary_prediction <span class="ot">&lt;-</span> model_success_brms <span class="sc">|&gt;</span> </span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predicted_draws</span>(<span class="fu">expand_grid</span>(<span class="at">age_c =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">60</span>) <span class="sc">-</span> unscaled<span class="sc">$</span>age_c<span class="sc">$</span>scaled_center,</span>
@@ -1166,10 +1166,11 @@ B_0 + b_{0_j}
 <span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">age =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"{age} years old"</span>)) <span class="sc">|&gt;</span> </span>
 <span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(.row), <span class="at">y =</span> .prediction, <span class="at">fill =</span> oxygen_used)) <span class="sc">+</span></span>
 <span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(clrs[<span class="dv">3</span>], clrs[<span class="dv">1</span>])) <span class="sc">+</span></span>
-<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(age), <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
-<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Simulated climber"</span>, <span class="at">y =</span> <span class="st">"Posterior predicted probability of success"</span>,</span>
-<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Oxygen used"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_percent</span>()) <span class="sc">+</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(clrs[<span class="dv">3</span>], clrs[<span class="dv">1</span>])) <span class="sc">+</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(age), <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Simulated climber"</span>, <span class="at">y =</span> <span class="st">"Posterior predicted probability of success"</span>,</span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Oxygen used"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="18-chapter_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
 </div>
