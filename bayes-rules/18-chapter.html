@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.157">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2022-11-05">
+
+<title>bayesf22 Notebook - Reading notes</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../bayes-rules/17-chapter.html" rel="prev">
+<link href="..//files/favicon.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title"><code>bayesf22</code> Notebook</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="https://bayesf22.classes.andrewheiss.com/">
+ <span class="menu-text">Main bayesf22 class</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../rethinking/index.html">
+ <span class="menu-text">Statistical Rethinking</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../bayes-rules/index.html" aria-current="page">
+ <span class="menu-text">Bayes Rules!</span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/andrewheiss/bayesf22-notebook"><i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+ <span class="menu-text"></span></a>
+  </li>  
+</ul>
+              <div id="quarto-search" class="" title="Search"></div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title">Reading notes</h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/index.html" class="sidebar-item-text sidebar-link">Bayes Rules!</a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">2: Bayes’ rule</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/02-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">3: The Beta-Binomial Bayesian model</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/03-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">4: Balance and sequentiality</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/04-practice.html" class="sidebar-item-text sidebar-link">Exercises</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">5: Conjugate families</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/05-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/05-practice.html" class="sidebar-item-text sidebar-link">Exercises</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">6: Approximating the posterior</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/06-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">7: MCMC under the hood</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/07-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">8: Posterior inference and prediction</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/08-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">9: Simple normal regression</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/09-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">10: Evaluating regression models</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-9" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-9" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/10-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true">11: Extending the normal regression model</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-10" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-10" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/11-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="true">12: Poisson and negative binomial regression</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-11" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-11" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/12-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="true">13: Logistic regression</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-12" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-12" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/13-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true">15: Hierarchical models are exciting</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-13" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-13" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/15-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" aria-expanded="true">16: Hierarchical models without predictors</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-14" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-14" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/16-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" aria-expanded="true">17: Hierarchical models with predictors</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-15" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-15" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/17-chapter.html" class="sidebar-item-text sidebar-link">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" aria-expanded="true">18: Non-normal hierarchical regression</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-16" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-16" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../bayes-rules/18-chapter.html" class="sidebar-item-text sidebar-link active">Reading notes</a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" aria-expanded="true">19: Adding More Layers</a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-17" aria-expanded="true">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-17" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  bayes-rules/19-chapter.qmd
+  </li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#hierarchical-logistic-regression" id="toc-hierarchical-logistic-regression" class="nav-link active" data-scroll-target="#hierarchical-logistic-regression">18.1: Hierarchical logistic regression</a>
+  <ul>
+  <li><a href="#the-general-setup" id="toc-the-general-setup" class="nav-link" data-scroll-target="#the-general-setup">The general setup</a></li>
+  <li><a href="#model-building" id="toc-model-building" class="nav-link" data-scroll-target="#model-building">Model building</a></li>
+  <li><a href="#posterior-simulation-and-analysis" id="toc-posterior-simulation-and-analysis" class="nav-link" data-scroll-target="#posterior-simulation-and-analysis">Posterior simulation and analysis</a>
+  <ul>
+  <li><a href="#global-analysis" id="toc-global-analysis" class="nav-link" data-scroll-target="#global-analysis">Global analysis</a>
+  <ul class="collapse">
+  <li><a href="#intercept-or-beta_0" id="toc-intercept-or-beta_0" class="nav-link" data-scroll-target="#intercept-or-beta_0">Intercept or <span class="math inline">\(\beta_0\)</span></a></li>
+  <li><a href="#age-effect-or-beta_1" id="toc-age-effect-or-beta_1" class="nav-link" data-scroll-target="#age-effect-or-beta_1">Age effect or <span class="math inline">\(\beta_1\)</span></a></li>
+  <li><a href="#oxygen-effect-or-beta_2" id="toc-oxygen-effect-or-beta_2" class="nav-link" data-scroll-target="#oxygen-effect-or-beta_2">Oxygen effect or <span class="math inline">\(\beta_2\)</span></a></li>
+  <li><a href="#age-and-oxygen-at-the-same-time" id="toc-age-and-oxygen-at-the-same-time" class="nav-link" data-scroll-target="#age-and-oxygen-at-the-same-time">Age and oxygen at the same time</a></li>
+  </ul></li>
+  <li><a href="#team-specific-analysis" id="toc-team-specific-analysis" class="nav-link" data-scroll-target="#team-specific-analysis">Team-specific analysis</a></li>
+  <li><a href="#between-team-variability" id="toc-between-team-variability" class="nav-link" data-scroll-target="#between-team-variability">Between-team variability</a></li>
+  </ul></li>
+  <li><a href="#posterior-classification" id="toc-posterior-classification" class="nav-link" data-scroll-target="#posterior-classification">Posterior classification</a></li>
+  <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">Model evaluation</a>
+  <ul>
+  <li><a href="#how-fair-is-the-model" id="toc-how-fair-is-the-model" class="nav-link" data-scroll-target="#how-fair-is-the-model">How fair is the model?</a></li>
+  <li><a href="#how-wrong-is-the-model" id="toc-how-wrong-is-the-model" class="nav-link" data-scroll-target="#how-wrong-is-the-model">How wrong is the model?</a></li>
+  <li><a href="#how-accurate-are-the-models-posterior-classifications" id="toc-how-accurate-are-the-models-posterior-classifications" class="nav-link" data-scroll-target="#how-accurate-are-the-models-posterior-classifications">How accurate are the model’s posterior classifications?</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#hierarchical-poisson-and-negative-binomial" id="toc-hierarchical-poisson-and-negative-binomial" class="nav-link" data-scroll-target="#hierarchical-poisson-and-negative-binomial">18.2: Hierarchical Poisson and negative binomial</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/andrewheiss/bayesf22-notebook/edit/main/bayes-rules/18-chapter.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/andrewheiss/bayesf22-notebook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block">Reading notes</h1>
+<p class="subtitle lead">Non-Normal Hierarchical Regression &amp; Classification</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">November 5, 2022</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<p><a href="https://www.bayesrulesbook.com/chapter-18.html">(Original chapter)</a></p>
+<p>All this multilevel modeling stuff also works with other distributional families. This chapter covers logistic regression and Poisson regression, but the same principles apply to any distribution supported by Stan. This chapter is a lot less detailed than chapters 15, 16, and 17, which spend a ton of time on the mechanics of multilevel models. Instead, this just shows how to add multiple levels to logit and Poisson models.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(brms)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rstanarm)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(marginaleffects)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(broom.mixed)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(parameters)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidybayes)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggtext)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">width =</span> <span class="dv">100</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># tikz stuff</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Necessary for using dvisvgm on macOS</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># See https://www.andrewheiss.com/blog/2021/08/27/tikz-knitr-html-svg-fun/</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.setenv</span>(<span class="at">LIBGS =</span> <span class="st">"/usr/local/share/ghostscript/9.53.3/lib/libgs.dylib.9.53"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>font_opts <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">dvisvgm.opts =</span> <span class="st">"--font-format=woff"</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot stuff</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>clrs <span class="ot">&lt;-</span> MetBrewer<span class="sc">::</span><span class="fu">met.brewer</span>(<span class="st">"Lakota"</span>, <span class="dv">6</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Tell bayesplot to use the Lakota palette for things like pp_check()</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="co"># bayesplot::color_scheme_set(clrs)</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Tell bayesplot to use the viridis rocket palette for things like pp_check()</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>viridisLite<span class="sc">::</span><span class="fu">viridis</span>(<span class="dv">6</span>, <span class="at">option =</span> <span class="st">"rocket"</span>, <span class="at">end =</span> <span class="fl">0.85</span>, <span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Take off the trailing "FF" in the hex codes</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">map_chr</span>(<span class="sc">~</span><span class="fu">str_sub</span>(., <span class="dv">1</span>, <span class="dv">7</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  bayesplot<span class="sc">::</span><span class="fu">color_scheme_set</span>()</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Seed stuff</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1234</span>)</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>BAYES_SEED <span class="ot">&lt;-</span> <span class="dv">1234</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Data stuff</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(climbers_sub, <span class="at">package =</span> <span class="st">"bayesrules"</span>)</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>climbers <span class="ot">&lt;-</span> climbers_sub <span class="sc">%&gt;%</span> </span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(expedition_id, member_id, success, year, season,</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>         age, expedition_role, oxygen_used) <span class="sc">|&gt;</span> </span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age_c =</span> <span class="fu">scale</span>(age, <span class="at">scale =</span> <span class="cn">FALSE</span>))</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>extract_attributes <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">attributes</span>(x) <span class="sc">%&gt;%</span></span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>    <span class="fu">set_names</span>(janitor<span class="sc">::</span><span class="fu">make_clean_names</span>(<span class="fu">names</span>(.))) <span class="sc">%&gt;%</span></span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>    <span class="fu">as_tibble</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>    <span class="fu">slice</span>(<span class="dv">1</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>unscaled <span class="ot">&lt;-</span> climbers <span class="sc">%&gt;%</span></span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">ends_with</span>(<span class="st">"_c"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span><span class="fu">extract_attributes</span>(.))) <span class="sc">|&gt;</span> </span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">everything</span>()) <span class="sc">|&gt;</span> </span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unnest</span>(value) <span class="sc">|&gt;</span> </span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  <span class="fu">split</span>(<span class="sc">~</span>name)</span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Access these things like so:</span></span>
+<span id="cb1-62"><a href="#cb1-62" aria-hidden="true" tabindex="-1"></a><span class="co"># unscaled$age_c$scaled_center</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="hierarchical-logistic-regression" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="hierarchical-logistic-regression">18.1: Hierarchical logistic regression</h2>
+<section id="the-general-setup" class="level3">
+<h3 class="anchored" data-anchor-id="the-general-setup">The general setup</h3>
+<p>With the logistic regression example in this chapter, we want to model the probability of a successful Himalayan climbing expedition. The data we have includes details about the expedition team, the year and season of the climb, and details about the climbers themselves, like their age, their role in the expedition, and whether or not they used oxygen during the climb.</p>
+<p>Most climbers were unsuccessful and did not make it to the summit:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>climbers <span class="sc">|&gt;</span> </span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(success) <span class="sc">|&gt;</span> </span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n))</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 3</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   success     n  prop</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;lgl&gt;   &lt;int&gt; &lt;dbl&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 FALSE    1269 0.611</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 TRUE      807 0.389</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>These climbers never climb on their own. They always go in groups ranging from 5 to 44 people, and teams do not always unanimously finish together:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>climbers_expeditions <span class="ot">&lt;-</span> climbers <span class="sc">|&gt;</span> </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(expedition_id) <span class="sc">|&gt;</span> </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">prop_success =</span> <span class="fu">mean</span>(success))</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> climbers_expeditions <span class="sc">|&gt;</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> prop_success)) <span class="sc">+</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_count</span>(<span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">color =</span> clrs[<span class="dv">5</span>]) <span class="sc">+</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_size_area</span>(<span class="at">max_size =</span> <span class="dv">8</span>, <span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">10</span>)) <span class="sc">+</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Expedition team size"</span>, </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Proportion of expedition team that finished"</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">size =</span> <span class="st">"Number of</span><span class="sc">\n</span><span class="st">expeditions"</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> climbers_expeditions <span class="sc">|&gt;</span> </span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> prop_success)) <span class="sc">+</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="fl">0.05</span>, <span class="at">center =</span> <span class="dv">0</span>, <span class="at">color =</span> <span class="st">"white"</span>, <span class="at">fill =</span> clrs[<span class="dv">5</span>]) <span class="sc">+</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Proportion of expedition team that finished"</span>, <span class="at">y =</span> <span class="st">"Count"</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>p1 <span class="sc">+</span> p2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="864"></p>
+</div>
+</div>
+<p>We thus have a hierarchical/multilevel structure that looks like this, with climbers <span class="math inline">\(y_i\)</span> nested in expedition teams <span class="math inline">\(j\)</span>:</p>
+<div class="cell" data-layout-align="center" data-engine.opts="{&quot;dvisvgm.opts&quot;:&quot;--font-format=woff&quot;}">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="18-chapter_files/figure-html/partial-pooling-1.svg" class="img-fluid figure-img" style="width:100.0%"></p>
+<p></p><figcaption class="figure-caption">Multilevel structure of climbers within expeditions</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="model-building" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="model-building">Model building</h3>
+<p>In this example, we want to model whether an individual climber successfully reaches the summit. This is a binary outcome: 1 if yes, 0 if no. It’s also an individual outcome, nested in groups, so it has subscripts:</p>
+<p><span class="math display">\[
+\text{Success}_{i_j} = \begin{cases}
+1 &amp; \text{Yes} \\
+0 &amp; \text{No} \\
+\end{cases}
+\]</span></p>
+<p>In the book they use two covariates to explain climbing success:</p>
+<ul>
+<li><span class="math inline">\(X_{i_{j}1}\)</span> or <span class="math inline">\(\text{Age}_{i_j}\)</span>: Age of climber <span class="math inline">\(i\)</span> in expedition <span class="math inline">\(j\)</span></li>
+<li><span class="math inline">\(X_{i_{j}2}\)</span> or <span class="math inline">\(\text{Oxygen}_{i_j}\)</span>: Whether climber <span class="math inline">\(i\)</span> in expedition <span class="math inline">\(j\)</span> used oxygen</li>
+</ul>
+<p>…so we’ll do that here too. At first glance, it doesn’t look like age makes much of a difference in the probability of success, but oxygen use matters <em>a lot</em>. Almost all of the successful climbers used oxygen; only a handful of oxygen-users were unsuccessful:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>climbers <span class="sc">|&gt;</span> </span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> success, <span class="at">color =</span> oxygen_used)) <span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_dots</span>(<span class="fu">aes</span>(<span class="at">side =</span> <span class="fu">ifelse</span>(success <span class="sc">==</span> <span class="cn">TRUE</span>, <span class="st">"bottom"</span>, <span class="st">"top"</span>)), </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">pch =</span> <span class="dv">19</span>, <span class="at">scale =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_discrete</span>(<span class="at">expand =</span> <span class="fu">expansion</span>(<span class="at">mult =</span> <span class="fl">0.1</span>)) <span class="sc">+</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(clrs[<span class="dv">3</span>], clrs[<span class="dv">1</span>])) <span class="sc">+</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age"</span>, <span class="at">y =</span> <span class="st">"Success"</span>, <span class="at">color =</span> <span class="st">"Oxygen used"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Instead of building up this model step-by-step like in previous chapters, we’ll just define it all at once here:</p>
+<div class="column-screen-inset">
+<p><span class="math display">\[
+\begin{aligned}
+\text{Success}_{i_j} &amp;\sim \operatorname{Bernoulli}(\pi_{i_j}) &amp; \text{Probability of success for climber}_i \text{ in team}_j \\
+\operatorname{logit}(\pi_{i_j}) &amp;= \beta_{0_j} + \beta_1\, \text{Age}_{i_j} + \beta_2\, \text{Oxygen}_{i_j} &amp; \text{Model for probability} \\
+\beta_{0_j} &amp;\sim \mathcal{N}(\beta_0, \sigma_0) &amp; \text{Team-specific intercepts, or baseline probabilities} \\
+\\
+\beta_{0_c} &amp;\sim \mathcal{N}(0, 2.5) &amp; \text{Prior for global average success rate} \\
+\beta_1 &amp;\sim \mathcal{N}(0, 2.5) &amp; \text{Prior for global age effect, holding oxygen constant} \\
+\beta_1 &amp;\sim \mathcal{N}(0, 2.5) &amp; \text{Prior for global oxygen effect, holding age constant} \\
+\sigma_0 &amp;\sim \operatorname{Exponential}(1) &amp; \text{Prior for between-team variability}
+\end{aligned}
+\]</span></p>
+</div>
+<p>&nbsp;</p>
+<p>Or with offset-based notation:</p>
+<div class="column-screen-inset">
+<p><span class="math display">\[
+\begin{aligned}
+\text{Success}_{i_j} &amp;\sim \operatorname{Bernoulli}(\pi_{i_j}) &amp; \text{Probability of success for climber}_i \text{ in team}_j \\
+\operatorname{logit}(\pi_{i_j}) &amp;= (\beta_0 + b_{0_j}) + \beta_1\, \text{Age}_{i_j} + \beta_2\, \text{Oxygen}_{i_j} &amp; \text{Model for probability} \\
+b_{0_j} &amp;\sim \mathcal{N}(0, \sigma_0) &amp; \text{Team-specific offsets from global success rate} \\
+\\
+\beta_{0_c} &amp;\sim \mathcal{N}(0, 2.5) &amp; \text{Prior for global average success rate} \\
+\beta_1 &amp;\sim \mathcal{N}(0, 2.5) &amp; \text{Prior for global age effect, holding oxygen constant} \\
+\beta_1 &amp;\sim \mathcal{N}(0, 2.5) &amp; \text{Prior for global oxygen effect, holding age constant} \\
+\sigma_0 &amp;\sim \operatorname{Exponential}(1) &amp; \text{Prior for between-team variability}
+\end{aligned}
+\]</span></p>
+</div>
+</section>
+<section id="posterior-simulation-and-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="posterior-simulation-and-analysis">Posterior simulation and analysis</h3>
+<p>We can run this model by including <code>(1 | expedition_id)</code> for the random team intercepts:</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true">brms</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">rstanarm</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>priors <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">2.5</span>), <span class="at">class =</span> Intercept),</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>            <span class="fu">prior</span>(<span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">2.5</span>), <span class="at">class =</span> b),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>            <span class="fu">prior</span>(<span class="fu">exponential</span>(<span class="dv">1</span>), <span class="at">class =</span> sd))</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>model_success_brms <span class="ot">&lt;-</span> <span class="fu">brm</span>(</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  success <span class="sc">~</span> age_c <span class="sc">+</span> oxygen_used <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> expedition_id), </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> climbers,</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">bernoulli</span>(<span class="at">link =</span> <span class="st">"logit"</span>),</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> priors,</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">4000</span>, <span class="at">threads =</span> <span class="fu">threading</span>(<span class="dv">2</span>), <span class="at">seed =</span> BAYES_SEED, </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"cmdstanr"</span>, <span class="at">refresh =</span> <span class="dv">0</span>,</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">file =</span> <span class="st">"18-manual_cache/success-brms"</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>We’ll keep the autoscaled priors here because rstan complains about init issues otherwise?</p>
+<div class="cell" data-hash="18-chapter_cache/html/model-success-rstanarm_7ce41195bd340586116753623ab98679">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>model_success_rstanarm <span class="ot">&lt;-</span> <span class="fu">stan_glmer</span>(</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  success <span class="sc">~</span> age_c <span class="sc">+</span> oxygen_used <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> expedition_id), </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> climbers, <span class="at">family =</span> binomial,</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior_intercept =</span> <span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">2.5</span>, <span class="at">autoscale =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior =</span> <span class="fu">normal</span>(<span class="dv">0</span>, <span class="fl">2.5</span>, <span class="at">autoscale =</span> <span class="cn">TRUE</span>), </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">prior_covariance =</span> <span class="fu">decov</span>(<span class="at">reg =</span> <span class="dv">1</span>, <span class="at">conc =</span> <span class="dv">1</span>, <span class="at">shape =</span> <span class="dv">1</span>, <span class="at">scale =</span> <span class="dv">1</span>),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">chains =</span> <span class="dv">4</span>, <span class="at">cores =</span> <span class="dv">4</span>, <span class="at">iter =</span> <span class="dv">5000</span><span class="sc">*</span><span class="dv">2</span>, <span class="at">seed =</span> <span class="dv">84735</span>, <span class="at">refresh =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<section id="global-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="global-analysis">Global analysis</h4>
+<p>First we’ll look at what this model says about a typical climber, which involves the <span class="math inline">\(\beta_0\)</span>, <span class="math inline">\(\beta_1\)</span>, and <span class="math inline">\(\beta_2\)</span> terms:</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true">brms</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false">rstanarm</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>model_success_brms <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="fu">c</span>(<span class="st">"fixed"</span>), <span class="at">conf.level =</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>component)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 6</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   effect term            estimate std.error conf.low conf.high</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;  &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 fixed  (Intercept)      -3.09     0.349    -3.54     -2.65  </span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 fixed  age_c            -0.0473   0.00913  -0.0589   -0.0358</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 fixed  oxygen_usedTRUE   5.65     0.457     5.08      6.25</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Odds ratio-scale coefficients:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># There's a tiny bug in broom.mixed when exponentiating, so we'll use</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># parameters::model_parameters() instead</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>model_success_brms <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model_parameters</span>(<span class="at">centrality =</span> <span class="st">"mean"</span>, <span class="at">dispersion =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">test =</span> <span class="cn">FALSE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">ci_method =</span> <span class="st">"hdi"</span>, <span class="at">ci =</span> <span class="fl">0.8</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">exponentiate =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Parameter       |   Mean |       SD |           80% CI |  Rhat |     ESS</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="do">## ------------------------------------------------------------------------</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)     |   0.05 |     0.35 | [  0.03,   0.07] | 1.003 | 1359.00</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="do">## age_c           |   0.95 | 9.13e-03 | [  0.94,   0.96] | 1.000 | 7270.00</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="do">## oxygen_usedTRUE | 284.45 |     0.46 | [157.94, 500.89] | 1.002 | 2508.00</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model_success_brms <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_draws</span>(<span class="st">`</span><span class="at">^b_.*</span><span class="st">`</span>, <span class="at">regex =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">.value =</span> <span class="fu">exp</span>(.value),</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">.variable =</span> <span class="fu">fct_inorder</span>(.variable)) <span class="sc">|&gt;</span> </span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .value, <span class="at">fill =</span> .variable)) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">normalize =</span> <span class="st">"xy"</span>) <span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(clrs[<span class="dv">5</span>], clrs[<span class="dv">4</span>], clrs[<span class="dv">6</span>]), <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(.variable), <span class="at">scales =</span> <span class="st">"free_x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</div>
+<div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>model_success_rstanarm <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="fu">c</span>(<span class="st">"fixed"</span>),</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.8</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 5</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term            estimate std.error conf.low conf.high</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 (Intercept)      -3.16     0.355    -3.63     -2.72  </span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 age_c            -0.0475   0.00922  -0.0593   -0.0358</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="do">## 3 oxygen_usedTRUE   5.79     0.474     5.20      6.43</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># There's a tiny bug in broom.mixed when exponentiating, so we'll use</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co"># parameters::model_parameters() instead</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>model_success_rstanarm <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">model_parameters</span>(<span class="at">centrality =</span> <span class="st">"mean"</span>, <span class="at">dispersion =</span> <span class="cn">TRUE</span>, <span class="at">prior =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">test =</span> <span class="cn">FALSE</span>, <span class="at">verbose =</span> <span class="cn">FALSE</span>, <span class="at">ci_method =</span> <span class="st">"hdi"</span>, <span class="at">ci =</span> <span class="fl">0.8</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">exponentiate =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Parameter       |   Mean |       SD |           80% CI |  Rhat |      ESS</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="do">## -------------------------------------------------------------------------</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="do">## (Intercept)     |   0.04 |     0.36 | [  0.03,   0.07] | 1.001 |  3980.00</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="do">## age_c           |   0.95 | 9.21e-03 | [  0.94,   0.96] | 1.000 | 26332.00</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="do">## oxygen_usedTRUE | 332.40 |     0.48 | [180.00, 608.64] | 1.001 |  8012.00</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>model_success_rstanarm <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_draws</span>(<span class="st">`</span><span class="at">(Intercept)</span><span class="st">`</span>, age_c, oxygen_usedTRUE) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">.value =</span> <span class="fu">exp</span>(.value),</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">.variable =</span> <span class="fu">fct_inorder</span>(.variable)) <span class="sc">|&gt;</span> </span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .value, <span class="at">fill =</span> .variable)) <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">normalize =</span> <span class="st">"xy"</span>) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(clrs[<span class="dv">5</span>], clrs[<span class="dv">4</span>], clrs[<span class="dv">6</span>]), <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(.variable), <span class="at">scales =</span> <span class="st">"free_x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>Here’s how to interpret all these coefficients, using the brms results:</p>
+<section id="intercept-or-beta_0" class="level5">
+<h5 class="anchored" data-anchor-id="intercept-or-beta_0">Intercept or <span class="math inline">\(\beta_0\)</span></h5>
+<p>The posterior mean for <span class="math inline">\(\beta_0\)</span> is -3.09, but that’s weird and on the logit scale. We can convert this to the probability scale with <span class="math inline">\(\frac{e^{-3.09}}{1 + e^{-3.09}}\)</span> or with <code>plogis()</code>, which is 0.043. This means that the posterior mean probability of success for a climber of average age (36.96 years) and when not using oxygen is 4.3%, and there’s an 80% chance it’s between 2.8% and 6.6%.</p>
+</section>
+<section id="age-effect-or-beta_1" class="level5">
+<h5 class="anchored" data-anchor-id="age-effect-or-beta_1">Age effect or <span class="math inline">\(\beta_1\)</span></h5>
+<p>The posterior mean for <span class="math inline">\(\beta_1\)</span> is -0.047, but that’s also weird and logit-ed.&nbsp;We can exponentiate it (<span class="math inline">\(e^{-0.047}\)</span>) and get a mean posterior odds ratio of 0.954, with an 80% credible interval of 0.943–0.965). A one-year increase in a typical climber’s age makes climbing success 4.6% <em>less</em> likely (with an 80% credible interval of 3.5%–5.7%).</p>
+<p>We can also convert these results to a much more manageable probability scale, but that’s a little trickier now that we’re working with multiple covariates. We can’t just do this, since we also have a <code>b2</code> to deal with:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plogis</span>(b0 <span class="sc">+</span> b1) <span class="sc">-</span> <span class="fu">plogis</span>(b0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Instead, we can use the magical <a href="https://vincentarelbundock.github.io/marginaleffects/"><strong>marginaleffects</strong></a> package to get probability-scale estimates. First we’ll plot the predicted probabilities of success as age increases, holding oxygen use constant (as a no). Note that we include <code>re_formula = NA</code> to omit any random effects—this only uses the global parameters:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fast automatic version:</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># plot_cap(model_success_brms, condition = "age_c", re_formula = NA)</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">datagrid</span>(<span class="at">model =</span> model_success_brms,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">age_c =</span> <span class="fu">seq</span>(<span class="dv">17</span>, <span class="dv">76</span>, <span class="at">by =</span> <span class="dv">1</span>) <span class="sc">-</span> unscaled<span class="sc">$</span>age_c<span class="sc">$</span>scaled_center) <span class="sc">|&gt;</span> </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_epred_draws</span>(model_success_brms, <span class="at">re_formula =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> age_c <span class="sc">+</span> unscaled<span class="sc">$</span>age_c<span class="sc">$</span>scaled_center) <span class="sc">|&gt;</span> </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> .epred)) <span class="sc">+</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">color =</span> clrs[<span class="dv">3</span>], <span class="at">fill =</span> clrs[<span class="dv">3</span>], <span class="at">alpha =</span> <span class="fl">0.35</span>) <span class="sc">+</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_percent</span>()) <span class="sc">+</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age"</span>, <span class="at">y =</span> <span class="st">"Posterior probability of success"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Successful expeditions are most likely among younger climbers, and as a typical climber ages, the probability of success decreases. We can get exact estimates of the slope of this posterior with <code>marginaleffects()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>mfx_success <span class="ot">&lt;-</span> model_success_brms <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">marginaleffects</span>(<span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">age_c =</span> <span class="fu">seq</span>(<span class="dv">17</span>, <span class="dv">76</span>, <span class="at">by =</span> <span class="dv">1</span>) <span class="sc">-</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>                                       unscaled<span class="sc">$</span>age_c<span class="sc">$</span>scaled_center),</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">variables =</span> <span class="st">"age_c"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>                  <span class="at">type =</span> <span class="st">"response"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">posteriordraws</span>() <span class="sc">|&gt;</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> age_c <span class="sc">+</span> unscaled<span class="sc">$</span>age_c<span class="sc">$</span>scaled_center)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>mfx_success <span class="sc">|&gt;</span> </span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> draw <span class="sc">*</span> <span class="dv">100</span>)) <span class="sc">+</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_lineribbon</span>(<span class="at">alpha =</span> <span class="fl">0.25</span>, <span class="at">fill =</span> clrs[<span class="dv">6</span>], <span class="at">color =</span> clrs[<span class="dv">6</span>]) <span class="sc">+</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age"</span>, </span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">"Percentage point change in</span><span class="sc">\n</span><span class="st">probability of climbing success"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can pick out the slope at a few of these different ages:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>mfx_success <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(age <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">18</span>, <span class="dv">40</span>, <span class="dv">60</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(age) <span class="sc">|&gt;</span> </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_slope =</span> <span class="fu">mean</span>(draw),</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>            <span class="at">conf.low =</span> <span class="fu">mean</span>(conf.low),</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">conf.high =</span> <span class="fu">mean</span>(conf.high)) <span class="sc">|&gt;</span> </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(mean_slope, conf.low, conf.high), <span class="sc">~</span> . <span class="sc">*</span> <span class="dv">100</span>))</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 3 × 4</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="do">##     age mean_slope conf.low conf.high</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="do">## 1    18    -0.339    -0.925   -0.0696</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="do">## 2    40    -0.134    -0.384   -0.0291</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 3    60    -0.0543   -0.158   -0.0118</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>For a typical young climber (18 years old), a one-year increase in age is associated with a posterior mean -0.339 percentage point decrease in the probability of success. That’s a sizable drop! For a typical middle-aged climber (40 years old), getting older is associated with a smaller -0.134 percentage point drop in probability, while older climbers (60 years old) see an even smaller -0.054 percentage point decline. Age thus seems to matter the most for younger climbers—it doesn’t have an effect on the typical older climber.</p>
+</section>
+<section id="oxygen-effect-or-beta_2" class="level5">
+<h5 class="anchored" data-anchor-id="oxygen-effect-or-beta_2">Oxygen effect or <span class="math inline">\(\beta_2\)</span></h5>
+<p>The posterior mean for <span class="math inline">\(\beta_2\)</span> is 5.651 in the log odds world. Exponentiating it (<span class="math inline">\(e^{5.651}\)</span>) gives us a <em>massive</em> mean posterior odds ratio of 284.446, with an 80% credible interval of 160.629–515.843). Holding age constant, oxygen use in a typical climber increases the odds of success by 161–516 times! Wild!</p>
+<p>Let’s translate this to probabilities. Holy crap there’s a massive difference the probability of success:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datagrid</span>(<span class="at">model =</span> model_success_brms,</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">oxygen_used =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_epred_draws</span>(model_success_brms, <span class="at">re_formula =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> oxygen_used, <span class="at">y =</span> .epred, <span class="at">fill =</span> oxygen_used, <span class="at">color =</span> oxygen_used)) <span class="sc">+</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_gradientinterval</span>(<span class="at">width =</span> <span class="fl">0.25</span>) <span class="sc">+</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(clrs[<span class="dv">3</span>], clrs[<span class="dv">1</span>]), <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> colorspace<span class="sc">::</span><span class="fu">darken</span>(<span class="fu">c</span>(clrs[<span class="dv">3</span>], clrs[<span class="dv">1</span>]), <span class="fl">0.5</span>), <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Oxygen used"</span>, <span class="at">y =</span> <span class="st">"Posterior probability of success"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>To calculate the exact difference we could just use the results from <code>add_epred_draws()</code> and do some dplyr <code>group_by()</code> and <code>summarize()</code> and subtraction work, or we can use <strong>tidybaes</strong>’s <code>compare_levels()</code> to do the same thing. This is a <a href="https://www.andrewheiss.com/blog/2022/05/20/marginalia/#marginal-effects-at-user-specified-or-representative-values">marginal effect at user-specified values</a>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datagrid</span>(<span class="at">model =</span> model_success_brms,</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">oxygen_used =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_epred_draws</span>(model_success_brms, <span class="at">re_formula =</span> <span class="cn">NA</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">compare_levels</span>(<span class="at">variable =</span> .epred, <span class="at">by =</span> oxygen_used) <span class="sc">|&gt;</span> </span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .epred)) <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Alternatively, we can use <code>marginaleffects::comparisons()</code> to calculate actual average marginal effects (or rather, group contrasts, since strictly speaking, marginal effects are partial derivatives). Instead of feeding the model a single average value for age, we’ll plug in each original row of the data into the model and get one contrast per row.</p>
+<div class="cell" data-hash="18-chapter_cache/html/mfx-comparisons-success_c69727d744467804adb2ba61108380a5">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>mfx_cmp_success <span class="ot">&lt;-</span> model_success_brms <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">comparisons</span>(<span class="at">variables =</span> <span class="st">"oxygen_used"</span>, <span class="at">re_formula =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(mfx_cmp_success)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2076</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(climbers)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="do">## [1] 2076</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>mfx_cmp_success <span class="sc">|&gt;</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">posteriordraws</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(drawid) <span class="sc">|&gt;</span> </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">draw =</span> <span class="fu">mean</span>(draw)) <span class="sc">|&gt;</span> </span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> draw)) <span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>For even more bonus fun, we can actually do something new with <strong>marginaleffects</strong> and <a href="https://vincentarelbundock.github.io/marginaleffects/articles/alternative_software.html#brmsmargins">integrate out the random effects</a> (<a href="https://vincentarelbundock.github.io/marginaleffects/articles/brms.html#averaging-marginalizing-integrating-random-effects">see this too for an example</a>). So far, we’ve been using <code>re_formula = NA</code> to ignore the expedition team effects entirely. If we use <code>re_formula = NULL</code> to include them, we either have to (1) specify one specific expedition team ID, or (2) invent a new hypothetical team that’s based on the the global average. Alternatively, we can create a bunch of new hypothetical teams (like 100) and calculate either the marginal effects or contrasts for each coefficient in those hypothetical teams, then take the average (see <a href="https://joshuawiley.com/brmsmargins/articles/mixed-effects-marginaleffects.html#integrating-out-random-effects">this vignette for <strong>brmsmargins</strong> for more details</a>). Fortunately <strong>marginalffects</strong> can handle all this for us:</p>
+<div class="cell" data-hash="18-chapter_cache/html/mfx-success-integrated-out_116691b8d62a3eba09a80a061a80b490">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>mfx_success_integrated_out <span class="ot">&lt;-</span> <span class="fu">comparisons</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  model_success_brms,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># 100 fake expedition IDs</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> <span class="fu">datagrid</span>(<span class="at">expedition_id =</span> <span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">100</span>),</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">allow_new_levels =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">sample_new_levels =</span> <span class="st">"gaussian"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>mfx_success_integrated_out <span class="sc">|&gt;</span> <span class="fu">summary</span>()</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="do">##          Term     Contrast    Effect    2.5 %  97.5 %</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="do">## 1       age_c  (x + 1) - x -0.004151 -0.09081 0.08254</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 oxygen_used TRUE - FALSE  0.520871  0.39713 0.62711</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="do">## Model type:  brmsfit </span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="do">## Prediction type:  response</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>mfx_success_integrated_out <span class="sc">|&gt;</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">posteriordraws</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(drawid, term) <span class="sc">|&gt;</span> </span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">draw =</span> <span class="fu">mean</span>(draw)) <span class="sc">|&gt;</span> </span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> draw, <span class="at">fill =</span> term)) <span class="sc">+</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>() <span class="sc">+</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(term), <span class="at">scales =</span> <span class="st">"free_x"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="age-and-oxygen-at-the-same-time" class="level5">
+<h5 class="anchored" data-anchor-id="age-and-oxygen-at-the-same-time">Age and oxygen at the same time</h5>
+<p>For fun, here’s what the effect of both age and oxygen look like simultanously:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">datagrid</span>(<span class="at">model =</span> model_success_brms,</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">oxygen_used =</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>),</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">age_c =</span> <span class="fu">seq</span>(<span class="dv">17</span>, <span class="dv">76</span>, <span class="at">by =</span> <span class="dv">1</span>) <span class="sc">-</span> unscaled<span class="sc">$</span>age_c<span class="sc">$</span>scaled_center) <span class="sc">|&gt;</span> </span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_epred_draws</span>(model_success_brms, <span class="at">re_formula =</span> <span class="cn">NA</span>, <span class="at">ndraws =</span> <span class="dv">100</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> age_c <span class="sc">+</span> unscaled<span class="sc">$</span>age_c<span class="sc">$</span>scaled_center) <span class="sc">|&gt;</span> </span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> .epred, <span class="at">color =</span> oxygen_used)) <span class="sc">+</span></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">group =</span> <span class="fu">paste</span>(oxygen_used, .draw)), <span class="at">alpha =</span> <span class="fl">0.35</span>) <span class="sc">+</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">label_percent</span>()) <span class="sc">+</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(clrs[<span class="dv">3</span>], clrs[<span class="dv">1</span>])) <span class="sc">+</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Age"</span>, <span class="at">y =</span> <span class="st">"Posterior probability of success"</span>, </span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">color =</span> <span class="st">"Oxygen used"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="team-specific-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="team-specific-analysis">Team-specific analysis</h4>
+<p>Next we can look at the team-specific details, or the offsets from the baseline probability of success:</p>
+<p><span class="math display">\[
+B_0 + b_{0_j}
+\]</span></p>
+<p>There’s a surprising amount of variation in success across teams here. Some have a predicted 97% baseline chance of success; others have practically no baseline chance of success. Here are the top 5 and bottom 5 as an example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>team_baselines <span class="ot">&lt;-</span> model_success_brms <span class="sc">|&gt;</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">epred_draws</span>(<span class="fu">tibble</span>(<span class="at">expedition_id =</span> <span class="fu">unique</span>(climbers<span class="sc">$</span>expedition_id),</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">age_c =</span> <span class="dv">0</span>, <span class="at">oxygen_used =</span> <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">expedition_id =</span> <span class="fu">fct_reorder</span>(<span class="fu">factor</span>(expedition_id), .epred, <span class="at">.fun =</span> mean))</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>team_baselines <span class="sc">|&gt;</span> </span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(expedition_id) <span class="sc">|&gt;</span> </span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">avg =</span> <span class="fu">mean</span>(.epred)) <span class="sc">|&gt;</span> </span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(avg)) <span class="sc">|&gt;</span> </span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="dv">196</span><span class="sc">:</span><span class="dv">200</span>)</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 10 × 2</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a><span class="do">##    expedition_id      avg</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a><span class="do">##    &lt;fct&gt;            &lt;dbl&gt;</span></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="do">##  1 TUKU16301     0.965   </span></span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="do">##  2 SPHN93101     0.950   </span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a><span class="do">##  3 MANA84101     0.942   </span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a><span class="do">##  4 AMAD11321     0.931   </span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a><span class="do">##  5 AMAD98311     0.926   </span></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="do">##  6 MANA82401     0.000651</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a><span class="do">##  7 MAKA08112     0.000606</span></span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a><span class="do">##  8 EVER07194     0.000402</span></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a><span class="do">##  9 MANA08324     0.000365</span></span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a><span class="do">## 10 EVER19112     0.000112</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And for bonus fun, here are all 200 teams simultaneously:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>global_baseline <span class="ot">&lt;-</span> model_success_brms <span class="sc">|&gt;</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="fu">c</span>(<span class="st">"fixed"</span>), <span class="at">conf.level =</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"(Intercept)"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(estimate, conf.low, conf.high), plogis))</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>team_baselines <span class="sc">|&gt;</span> </span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .epred, <span class="at">y =</span> expedition_id)) <span class="sc">+</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="at">geom =</span> <span class="st">"rect"</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>,</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmin =</span> global_baseline<span class="sc">$</span>conf.low, <span class="at">xmax =</span> global_baseline<span class="sc">$</span>conf.high,</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> clrs[<span class="dv">2</span>], <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> global_baseline<span class="sc">$</span>estimate, <span class="at">color =</span> clrs[<span class="dv">2</span>]) <span class="sc">+</span></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">color =</span> clrs[<span class="dv">3</span>], <span class="at">size =</span> <span class="fl">0.1</span>,</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>                     <span class="at">point_interval =</span> <span class="st">"mean_qi"</span>) <span class="sc">+</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">labels =</span> <span class="fu">label_percent</span>()) <span class="sc">+</span></span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Baseline probability of success"</span>, <span class="at">y =</span> <span class="st">"Expedition team ID"</span>,</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Baseline probability of expedition team success"</span>,</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">"Global baseline and 80% credible interval shown in yellow"</span>) <span class="sc">+</span></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can also look at how these team-specific offsets influence the age-success relationship. Here we’ll plot three arbitrarily chosen teams (I just scrolled through the list and picked at random). All the model does here is shift the baseline intercept around—the slope is the same in all three panels (but looks difference because of logit slopes are nonlinear and weird).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>climbers_small <span class="ot">&lt;-</span> climbers <span class="sc">|&gt;</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(expedition_id <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"AMAD81101"</span>, <span class="st">"AMAD03107"</span>, <span class="st">"EVER07194"</span>))</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>climbers_small <span class="sc">|&gt;</span> </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_epred_draws</span>(model_success_brms, <span class="at">ndraws =</span> <span class="dv">250</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> age, <span class="at">y =</span> <span class="fu">as.numeric</span>(success))) <span class="sc">+</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> .epred, <span class="at">group =</span> <span class="fu">paste</span>(expedition_id, .draw), </span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>                <span class="at">color =</span> expedition_id),</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="fl">0.2</span>, <span class="at">size =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> climbers_small, <span class="fu">aes</span>(<span class="at">color =</span> expedition_id)) <span class="sc">+</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(clrs[<span class="dv">1</span>], clrs[<span class="dv">2</span>], clrs[<span class="dv">5</span>]), <span class="at">guide =</span> <span class="st">"none"</span>) <span class="sc">+</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(expedition_id))</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="do">## Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a><span class="do">## ℹ Please use `linewidth` instead.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="between-team-variability" class="level4">
+<h4 class="anchored" data-anchor-id="between-team-variability">Between-team variability</h4>
+<p>With linear regression in chapter 17, we had two forms of variability:</p>
+<ul>
+<li><span class="math inline">\(\sigma_y\)</span> for the variability within units nested in groups (i.e.&nbsp;the scale term in <span class="math inline">\(Y_{i_j} \sim \mathcal{N}(\mu_{i_j}, \sigma_{i_j})\)</span>)</li>
+<li><span class="math inline">\(\sigma_0\)</span> for the variability between groups (i.e.&nbsp;the variation around the random offsets in <span class="math inline">\(b_{0_j} \sim \mathcal{N}(0, \sigma_0)\)</span>)</li>
+</ul>
+<p>In logistic regression with a Bernoulli model for <span class="math inline">\(Y\)</span>, we don’t have a corresponding <span class="math inline">\(\sigma_y\)</span> term for variability within expedition teams. We do have a <span class="math inline">\(\sigma_0\)</span> term for variability between teams, so we can look at that:</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true">brms</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false">rstanarm</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>model_success_brms <span class="sc">|&gt;</span> </span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="fu">c</span>(<span class="st">"ran_pars"</span>), <span class="at">conf.level =</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>component)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 7</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   effect   group         term            estimate std.error conf.low conf.high</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;    &lt;chr&gt;         &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;</span></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 ran_pars expedition_id sd__(Intercept)     3.57     0.337     3.16      4.02</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>model_success_rstanarm <span class="sc">|&gt;</span> </span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="fu">c</span>(<span class="st">"ran_pars"</span>),</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">conf.int =</span> <span class="cn">TRUE</span>, <span class="at">conf.level =</span> <span class="fl">0.8</span>)</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 3</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a><span class="do">##   term                         group         estimate</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;chr&gt;                        &lt;chr&gt;            &lt;dbl&gt;</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 sd_(Intercept).expedition_id expedition_id     3.63</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
+</div>
+<p><span class="math inline">\(\sigma_0\)</span> (or <code>sd__(Intercept)</code> for the <code>expedition_id</code> group) is 3.57, which is the amount of variance in the log odds of the global intercept, so the average baseline log odds of success varies between teams with a standard deviation of 3.57 logits/log odds. We can see this if we look at all the team-specific intercepts on the log odds scale. The global average is -3.09, marked in yellow, and there’s a ton of variation around that average—a standard deviation of 3.57.</p>
+<p><a href="https://twitter.com/IsabellaGhement/status/1589490172533825536">According to Isabella Ghement</a>, the “<code>sd(Intercept)</code> term is a quantification of sorts of how ‘similar’ the intercepts for different [teams] … are”. If it’s a big value, the teams aren’t super similar; if it’s small, the teams are pretty similar. These teams are not similar at all.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>team_baselines_logit <span class="ot">&lt;-</span> model_success_brms <span class="sc">|&gt;</span> </span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">linpred_draws</span>(<span class="fu">tibble</span>(<span class="at">expedition_id =</span> <span class="fu">unique</span>(climbers<span class="sc">$</span>expedition_id),</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>                     <span class="at">age_c =</span> <span class="dv">0</span>, <span class="at">oxygen_used =</span> <span class="cn">FALSE</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">expedition_id =</span> <span class="fu">fct_reorder</span>(<span class="fu">factor</span>(expedition_id), .linpred, <span class="at">.fun =</span> mean))</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>global_baseline_logit <span class="ot">&lt;-</span> model_success_brms <span class="sc">|&gt;</span> </span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="fu">c</span>(<span class="st">"fixed"</span>), <span class="at">conf.level =</span> <span class="fl">0.8</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(term <span class="sc">==</span> <span class="st">"(Intercept)"</span>)</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>team_baselines_logit <span class="sc">|&gt;</span> </span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> .linpred, <span class="at">y =</span> expedition_id)) <span class="sc">+</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="at">geom =</span> <span class="st">"rect"</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> <span class="cn">Inf</span>,</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>           <span class="at">xmin =</span> global_baseline_logit<span class="sc">$</span>conf.low, <span class="at">xmax =</span> global_baseline_logit<span class="sc">$</span>conf.high,</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>           <span class="at">fill =</span> clrs[<span class="dv">2</span>], <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> global_baseline_logit<span class="sc">$</span>estimate, <span class="at">color =</span> clrs[<span class="dv">2</span>]) <span class="sc">+</span></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_pointinterval</span>(<span class="at">color =</span> clrs[<span class="dv">6</span>], <span class="at">size =</span> <span class="fl">0.1</span>,</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>                     <span class="at">point_interval =</span> <span class="st">"mean_qi"</span>) <span class="sc">+</span></span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Baseline log odds"</span>, <span class="at">y =</span> <span class="st">"Expedition team ID"</span>) <span class="sc">+</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(), <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>        <span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>To make this more interpretable, <a href="https://twitter.com/IsabellaGhement/status/1589486966663675907">according to Isabella Ghement</a> (and others in that super helpful Twitter thread), we can unlogit this with <code>plogis(Intercept ± 2*sd(Intercept))</code>. This gives us a <em>massive</em> range in probability land!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>model_success_brms <span class="sc">|&gt;</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tidy</span>(<span class="at">effects =</span> <span class="fu">c</span>(<span class="st">"fixed"</span>, <span class="st">"ran_pars"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(term, <span class="st">"Intercept"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(term, estimate) <span class="sc">|&gt;</span> </span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">term =</span> janitor<span class="sc">::</span><span class="fu">make_clean_names</span>(term)) <span class="sc">|&gt;</span> </span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> term, <span class="at">values_from =</span> estimate) <span class="sc">|&gt;</span> </span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">range_low =</span> <span class="fu">plogis</span>(intercept <span class="sc">-</span> (<span class="dv">2</span> <span class="sc">*</span> sd_intercept)),</span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">range_high =</span> <span class="fu">plogis</span>(intercept <span class="sc">+</span> (<span class="dv">2</span> <span class="sc">*</span> sd_intercept))) <span class="sc">|&gt;</span> </span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">starts_with</span>(<span class="st">"range"</span>), <span class="sc">~</span><span class="fu">label_percent</span>(<span class="at">accuracy =</span> <span class="fl">0.01</span>)(.)))</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 1 × 4</span></span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a><span class="do">##   intercept sd_intercept range_low range_high</span></span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a><span class="do">##       &lt;dbl&gt;        &lt;dbl&gt; &lt;chr&gt;     &lt;chr&gt;     </span></span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a><span class="do">## 1     -3.09         3.57 0.00%     98.29%</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>To see this better, we can look back look back at the plot with all 200 team baseline probabilities. There’s a ton of variation away from that thin yellow baseline average probability. We’ve got sizable variation here.</p>
+<p>But also, in the words of TJ Mahr, <a href="https://twitter.com/tjmahr/status/1589471602227679233">“don’t overthink it.”</a> :)</p>
+<p>We can get an ICC here like we did with Gaussian regression, but I’m not entirely sure what it means. In Gaussian land, this is the proportion of variability that is attributable to between-team differences. Here, we don’t have within-team differences, so I’m not sure what goes in the denominator of the ratio. But it feels like the ICC we used earlier, so it probably means something like 80ish% of the variability in success rates comes from between-team differences? I guess?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>performance<span class="sc">::</span><span class="fu">icc</span>(model_success_brms, <span class="at">by_group =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="do">## # ICC by Group</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="do">## </span></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="do">## Group         |   ICC</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="do">## ---------------------</span></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a><span class="do">## expedition_id | 0.795</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="posterior-classification" class="level3">
+<h3 class="anchored" data-anchor-id="posterior-classification">Posterior classification</h3>
+<p>To see how this model predict/classifies new climbers, we can create a set of simulated climbers with different combinations of ages and oxygen use:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>binary_prediction <span class="ot">&lt;-</span> model_success_brms <span class="sc">|&gt;</span> </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predicted_draws</span>(<span class="fu">expand_grid</span>(<span class="at">age_c =</span> <span class="fu">c</span>(<span class="dv">20</span>, <span class="dv">60</span>) <span class="sc">-</span> unscaled<span class="sc">$</span>age_c<span class="sc">$</span>scaled_center,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">oxygen_used =</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>), <span class="at">expedition_id =</span> <span class="st">"New"</span>),</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">allow_new_levels =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>binary_prediction <span class="sc">|&gt;</span> </span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean_qi</span>(.prediction) <span class="sc">|&gt;</span> </span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">age =</span> age_c <span class="sc">+</span> unscaled<span class="sc">$</span>age_c<span class="sc">$</span>scaled_center,</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">age =</span> glue<span class="sc">::</span><span class="fu">glue</span>(<span class="st">"{age} years old"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(.row), <span class="at">y =</span> .prediction, <span class="at">fill =</span> oxygen_used)) <span class="sc">+</span></span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(clrs[<span class="dv">3</span>], clrs[<span class="dv">1</span>])) <span class="sc">+</span></span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(age), <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Simulated climber"</span>, <span class="at">y =</span> <span class="st">"Posterior predicted probability of success"</span>,</span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">fill =</span> <span class="st">"Oxygen used"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-32-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="model-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="model-evaluation">Model evaluation</h3>
+<section id="how-fair-is-the-model" class="level4">
+<h4 class="anchored" data-anchor-id="how-fair-is-the-model">How fair is the model?</h4>
+<p>Great.</p>
+<blockquote class="blockquote">
+<p>The data we used are part of public record and we do not foresee our analysis having any negative impact on individuals or society. (Again, boring answers to the question of fairness are the best kind.)</p>
+</blockquote>
+</section>
+<section id="how-wrong-is-the-model" class="level4">
+<h4 class="anchored" data-anchor-id="how-wrong-is-the-model">How wrong is the model?</h4>
+<p>We can use <code>pp_check()</code> to compare the posterior predictions to the actual data, both with bars:</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true">brms</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false">rstanarm</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(model_success_brms, <span class="at">ndraws =</span> <span class="dv">100</span>, <span class="at">type =</span> <span class="st">"bars"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-33-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(model_success_rstanarm, <span class="at">n =</span> <span class="dv">100</span>, <span class="at">plotfun =</span> <span class="st">"bars"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<p>…and with a histogram that shows the proportion of successful climbers in each simulated dataset compared with the observed probability of success. Most simulated posterior datasets saw successful climbs ≈42ish% of the the time, with some as low as 36% and some as high as 42%. That seems good and reasonable.</p>
+<div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true">brms</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false">rstanarm</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(model_success_brms, <span class="at">type =</span> <span class="st">"stat"</span>) <span class="sc">+</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Probability of success"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-35-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(model_success_rstanarm, <span class="at">plotfun =</span> <span class="st">"stat"</span>) <span class="sc">+</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Probability of success"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="18-chapter_files/figure-html/unnamed-chunk-36-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="how-accurate-are-the-models-posterior-classifications" class="level4">
+<h4 class="anchored" data-anchor-id="how-accurate-are-the-models-posterior-classifications">How accurate are the model’s posterior classifications?</h4>
+<p>To check the accuracy of our predictions, we can find the overall classification accuracy rate, the true negative rate (specificity), and the true positive rate (sensitivity rate)</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: center;"><span class="math inline">\(\hat{Y} = 0\)</span></th>
+<th style="text-align: center;"><span class="math inline">\(\hat{Y} = 1\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(Y = 0\)</span></td>
+<td style="text-align: center;"><em>a</em></td>
+<td style="text-align: center;"><em>b</em></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(Y = 1\)</span></td>
+<td style="text-align: center;"><em>c</em></td>
+<td style="text-align: center;"><em>d</em></td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>Overall classification accuracy rate</strong> = <span class="math inline">\(\frac{a + d}{a + b + c + d}\)</span></li>
+<li><strong>True negative rate</strong>, or <strong>specificity</strong> = <span class="math inline">\(\frac{a}{a + b}\)</span></li>
+<li><strong>True positive rate</strong>, or <strong>sensitivity</strong> = <span class="math inline">\(\frac{c}{c + d}\)</span></li>
+</ul>
+<p>Let’s make predictions with the existing data and classify them using a 50% cutoff—if the probability is above 50%, we’ll call it successful.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>success_preds <span class="ot">&lt;-</span> model_success_brms <span class="sc">|&gt;</span> </span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">predicted_draws</span>(climbers)</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>success_classifications <span class="ot">&lt;-</span> success_preds <span class="sc">|&gt;</span> </span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(.row) <span class="sc">|&gt;</span> </span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">success_prob =</span> <span class="fu">mean</span>(.prediction),</span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">success_actual =</span> success[<span class="dv">1</span>]) <span class="sc">|&gt;</span> </span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">success_pred =</span> success_prob <span class="sc">&gt;=</span> <span class="fl">0.5</span>)</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a>success_classifications <span class="sc">|&gt;</span> </span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>(success_actual, success_pred) <span class="sc">|&gt;</span> </span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="st">"success_pred"</span>, <span class="at">values_from =</span> <span class="st">"n"</span>)</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a><span class="do">## # A tibble: 2 × 3</span></span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a><span class="do">##   success_actual `FALSE` `TRUE`</span></span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a><span class="do">##   &lt;lgl&gt;            &lt;int&gt;  &lt;int&gt;</span></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a><span class="do">## 1 FALSE             1173     96</span></span>
+<span id="cb39-17"><a href="#cb39-17" aria-hidden="true" tabindex="-1"></a><span class="do">## 2 TRUE                78    729</span></span>
+<span id="cb39-18"><a href="#cb39-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-19"><a href="#cb39-19" aria-hidden="true" tabindex="-1"></a>success_classifications <span class="sc">|&gt;</span> </span>
+<span id="cb39-20"><a href="#cb39-20" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">tabyl</span>(success_actual, success_pred) <span class="sc">|&gt;</span> </span>
+<span id="cb39-21"><a href="#cb39-21" aria-hidden="true" tabindex="-1"></a>  janitor<span class="sc">::</span><span class="fu">adorn_totals</span>(<span class="fu">c</span>(<span class="st">"row"</span>, <span class="st">"col"</span>))</span>
+<span id="cb39-22"><a href="#cb39-22" aria-hidden="true" tabindex="-1"></a><span class="do">##  success_actual FALSE TRUE Total</span></span>
+<span id="cb39-23"><a href="#cb39-23" aria-hidden="true" tabindex="-1"></a><span class="do">##           FALSE  1173   96  1269</span></span>
+<span id="cb39-24"><a href="#cb39-24" aria-hidden="true" tabindex="-1"></a><span class="do">##            TRUE    78  729   807</span></span>
+<span id="cb39-25"><a href="#cb39-25" aria-hidden="true" tabindex="-1"></a><span class="do">##           Total  1251  825  2076</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Based on these numbers, we have these accuracy rates:</p>
+<ul>
+<li>Overall accuracy (<span class="math inline">\(\frac{a + d}{a + b + c + d}\)</span>): <strong>91.6%</strong></li>
+<li>Specificity, or true negative rate (<span class="math inline">\(\frac{a}{a + b}\)</span>): <strong>92.4%</strong></li>
+<li>Sensitivity, or true positive rate (<span class="math inline">\(\frac{c}{c + d}\)</span>): <strong>90.3%</strong></li>
+</ul>
+<p>Wow, this is a fantastic model. Use oxygen!</p>
+<p>The model successfully predicts the outcomes for 91.6% of climbers. Because the consequences of failure are so high (injury and death), we should prioritize specificity here. We accurately predicted 92.4% of failed expeditions, which might not be great.</p>
+<p>We can boost that specificity if we increase the probability cutoff and make it harder to predict success. In the book they settle on 0.65 (so a predicted probability of 65% is necessary to be considered a success). This lowers the sensitivity to 80ish%, lowers the overall accuracy to 90ish%, but boosts the specificity to 95ish%.</p>
+<p>And that’s it! Complete analysis of a multilevel logistic regression model!</p>
+</section>
+</section>
+</section>
+<section id="hierarchical-poisson-and-negative-binomial" class="level2">
+<h2 class="anchored" data-anchor-id="hierarchical-poisson-and-negative-binomial">18.2: Hierarchical Poisson and negative binomial</h2>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../bayes-rules/17-chapter.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Reading notes</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
