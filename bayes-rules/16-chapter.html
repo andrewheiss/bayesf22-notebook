@@ -830,12 +830,12 @@ b_j &amp;\sim \mathcal{N}(0, \sigma_{\mu}) &amp; \text{Random artist offsets} \\
 <p>Since these multilevel/hierarchical/random effects/whatever-we-want-to-call-them models give us so much information about the variability within and between groups, we can do some neat things with that information.</p>
 <p>For instance, the total variance in individual song popularity within and between artists is the sum of the two <span class="math inline">\(\sigma\)</span> terms we’ve estimated:</p>
 <p><span class="math display">\[
-\operatorname{Var}(Y_{i, j}) = \sigma_y + \sigma_\mu
+\operatorname{Var}(Y_{i, j}) = \sigma^2_y + \sigma^2_\mu
 \]</span></p>
 <p>This means we can calculate some ratios and percentages:</p>
 <ul>
-<li><span class="math inline">\(\frac{\sigma_y}{\sigma_y + \sigma_\mu}\)</span>: Proportion of total variance that is explained by <strong>within-artist</strong> differences</li>
-<li><span class="math inline">\(\frac{\sigma_\mu}{\sigma_y + \sigma_\mu}\)</span>: Proportion of total variance that is explained by <strong>between-artist</strong> differences</li>
+<li><span class="math inline">\(\frac{\sigma^2_y}{\sigma^2_y + \sigma^2_\mu}\)</span>: Proportion of total variance that is explained by <strong>within-artist</strong> differences</li>
+<li><span class="math inline">\(\frac{\sigma^2_\mu}{\sigma^2_y + \sigma^2_\mu}\)</span>: Proportion of total variance that is explained by <strong>between-artist</strong> differences</li>
 </ul>
 </section>
 </section>
@@ -907,17 +907,17 @@ b_j &amp;\sim \mathcal{N}(0, \sigma_{\mu}) &amp; \text{Random artist offsets} \\
 </div>
 </div>
 </div>
-<p>(Weirdly rstanarm and brms give different results for the between-artist <span class="math inline">\(\sigma_mu\)</span> term <code>sd_(Intercept)</code>. I don’t know why—probably a prior thing?)</p>
+<p>(Weirdly rstanarm and brms give different results for the between-artist <span class="math inline">\(\sigma_\mu\)</span> term <code>sd_(Intercept)</code>. I don’t know why—probably a prior thing?)</p>
 <section id="global-parameters-fixed-effects" class="level3">
 <h3 class="anchored" data-anchor-id="global-parameters-fixed-effects">Global parameters (“fixed” effects)</h3>
 <p>At the global level of the model, we have these terms:</p>
 <ul>
 <li><span class="math inline">\(\mu\)</span> or <code>(Intercept)</code>: Global average artist-specific popularity</li>
-<li><span class="math inline">\(\sigma_y\)</span> or <code>sd__(Intercept)</code> for <code>artist</code>: Within-artist variability</li>
-<li><span class="math inline">\(\sigma^2_\mu\)</span> or <code>sd__Observation</code> for <code>Residual</code>: Between-artist variability</li>
+<li><span class="math inline">\(\sigma_y\)</span> or <code>sd__Observation</code> for <code>artist</code>: Within-artist variability</li>
+<li><span class="math inline">\(\sigma^2_\mu\)</span> or <code>sd__(Intercept)</code> for <code>Residual</code>: Between-artist variability</li>
 </ul>
 <p>The average artist has a posterior average (<span class="math inline">\(\mu\)</span>) of 52.5 popularity points, and there’s an 80% chance that their average popularity is between 49.8 and 55.3</p>
-<p>According to the posterior mean of <span class="math inline">\(\sigma_y\)</span> or <code>sd__(Intercept)</code>, the between-artist variability is 12.6, which means that popularity bounces around by 12ish points as we move <em>from artist to artist</em>. The posterior mean of <span class="math inline">\(\sigma^2_\mu\)</span> or <code>sd__Observation</code> shows that the within-artist variability is 14.1, which means that within any artist, popularity varies by 14ish points <em>from song to song</em>. Alternatively, this is the total residual variation, or the unexplained variation in song popularity.</p>
+<p>According to the posterior mean of <span class="math inline">\(\sigma_\mu\)</span> or <code>sd__(Intercept)</code>, the between-artist variability is 12.6, which means that popularity bounces around by 12ish points as we move <em>from artist to artist</em>. The posterior mean of <span class="math inline">\(\sigma_y\)</span> or <code>sd__Observation</code> shows that the within-artist variability is 14.1, which means that within any artist, popularity varies by 14ish points <em>from song to song</em>. Alternatively, this is the total residual variation, or the unexplained variation in song popularity.</p>
 <p>We can play with the ratios of these types of variance too:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Proportion of song popularity explained by differences *between* artists</span></span>
