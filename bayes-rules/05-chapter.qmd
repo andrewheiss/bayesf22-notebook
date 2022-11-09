@@ -1,6 +1,6 @@
 ---
-title: "Reading notes"
-subtitle: "Conjugate families"
+title: "5: Conjugate families"
+subtitle: "Reading notes"
 date: "September 6, 2022"
 ---
 

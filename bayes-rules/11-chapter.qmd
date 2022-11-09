@@ -1,6 +1,6 @@
 ---
-title: "Reading notes"
-subtitle: "Extending the normal regression model"
+title: "11: Extending the normal regression model"
+subtitle: "Reading notes"
 date: "October 5, 2022"
 ---
 

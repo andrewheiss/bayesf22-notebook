@@ -1,6 +1,6 @@
 ---
-title: "Reading notes"
-subtitle: "Poisson & negative binomial regression"
+title: "12: Poisson & negative binomial regression"
+subtitle: "Reading notes"
 date: "October 7, 2022"
 ---
 

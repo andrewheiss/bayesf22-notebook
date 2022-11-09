@@ -1,6 +1,6 @@
 ---
-title: "Reading notes"
-subtitle: "MCMC under the Hood"
+title: "7: MCMC under the Hood"
+subtitle: "Reading notes"
 date: "September 27, 2022"
 ---
 

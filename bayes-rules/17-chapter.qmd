@@ -1,6 +1,6 @@
 ---
-title: "Reading notes"
-subtitle: "Hierarchical models with predictors"
+title: "17: Hierarchical models with predictors"
+subtitle: "Reading notes"
 date: "November 2, 2022"
 ---
 

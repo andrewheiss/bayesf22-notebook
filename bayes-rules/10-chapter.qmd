@@ -1,6 +1,6 @@
 ---
-title: "Reading notes"
-subtitle: "Evaluating regression models"
+title: "10: Evaluating regression models"
+subtitle: "Reading notes"
 date: "October 4, 2022"
 ---
 

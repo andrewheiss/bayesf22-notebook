@@ -1,6 +1,6 @@
 ---
-title: "Reading notes"
-subtitle: "Posterior inference and prediction"
+title: "8: Posterior inference and prediction"
+subtitle: "Reading notes"
 date: "September 28, 2022"
 ---
 

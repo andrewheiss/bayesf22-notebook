@@ -71,52 +71,28 @@ website:
     - title: "Bayes Rules!"
       contents:
         - bayes-rules/index.qmd
-        - section: "2: Bayes' rule"
+        - section: "Reading notes"
           contents:
             - bayes-rules/02-chapter.qmd
-        - section: "3: The Beta-Binomial Bayesian model"
-          contents:
             - bayes-rules/03-chapter.qmd
-        - section: "4: Balance and sequentiality"
+            - bayes-rules/05-chapter.qmd
+            - bayes-rules/06-chapter.qmd
+            - bayes-rules/07-chapter.qmd
+            - bayes-rules/08-chapter.qmd
+            - bayes-rules/09-chapter.qmd
+            - bayes-rules/10-chapter.qmd
+            - bayes-rules/11-chapter.qmd
+            - bayes-rules/12-chapter.qmd
+            - bayes-rules/13-chapter.qmd
+            - bayes-rules/15-chapter.qmd
+            - bayes-rules/16-chapter.qmd
+            - bayes-rules/17-chapter.qmd
+            - bayes-rules/18-chapter.qmd
+            - bayes-rules/19-chapter.qmd
+        - section: "Exercises"
           contents:
             - bayes-rules/04-practice.qmd
-        - section: "5: Conjugate families"
-          contents:
-            - bayes-rules/05-chapter.qmd
             - bayes-rules/05-practice.qmd
-        - section: "6: Approximating the posterior"
-          contents:
-            - bayes-rules/06-chapter.qmd
-        - section: "7: MCMC under the hood"
-          contents:
-            - bayes-rules/07-chapter.qmd
-        - section: "8: Posterior inference and prediction"
-          contents:
-            - bayes-rules/08-chapter.qmd
-        - section: "9: Simple normal regression"
-          contents:
-            - bayes-rules/09-chapter.qmd
-        - section: "10: Evaluating regression models"
-          contents:
-            - bayes-rules/10-chapter.qmd
-        - section: "11: Extending the normal regression model"
-          contents:
-            - bayes-rules/11-chapter.qmd
-        - section: "12: Poisson and negative binomial regression"
-          contents:
-            - bayes-rules/12-chapter.qmd
-        - section: "13: Logistic regression"
-          contents:
-            - bayes-rules/13-chapter.qmd
-        - section: "15: Hierarchical models are exciting"
-          contents:
-            - bayes-rules/15-chapter.qmd
-        - section: "16: Hierarchical models without predictors"
-          contents:
-            - bayes-rules/16-chapter.qmd
-        - section: "17: Hierarchical models with predictors"
-          contents:
-            - bayes-rules/17-chapter.qmd
 
 format:
   html:

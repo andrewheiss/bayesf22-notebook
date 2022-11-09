@@ -1,6 +1,6 @@
 ---
-title: "Reading notes"
-subtitle: "Simple normal regression"
+title: "9: Simple normal regression"
+subtitle: "Reading notes"
 date: "October 4, 2022"
 ---
 
@@ -148,7 +148,7 @@ bike_rstanarm <- stan_glm(
 
 ### brms
 
-```{r model-bike-brms, cache=TRUE, results="hide"}
+```{r model-bike-brms, results="hide"}
 priors <- c(prior(normal(5000, 1000), class = Intercept),
             prior(normal(100, 40), class = b, coef = "temp_feel_c"),
             prior(exponential(0.0008), class = sigma))
@@ -159,7 +159,8 @@ bike_brms <- brm(
   family = gaussian(),
   prior = priors,
   chains = 4, iter = 5000*2, seed = BAYES_SEED, 
-  backend = "cmdstanr", refresh = 0
+  backend = "cmdstanr", refresh = 0,
+  file = "09-manual_cache/bike-brms"
 )
 ```
 
@@ -177,7 +178,8 @@ bike_stan <- cmdstan_model("09-stan/bike-simple.stan")
 bike_stan_samples <- bike_stan$sample(
   data = list(n = nrow(bikes), Y = bikes$rides, X = bikes$temp_feel_c),
   parallel_chains = 4, iter_warmup = 5000, iter_sampling = 5000, 
-  refresh = 0, seed = BAYES_SEED
+  refresh = 0, seed = BAYES_SEED,
+  output_dir = "09-stan"
 )
 ```
 

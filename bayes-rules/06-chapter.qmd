@@ -1,6 +1,6 @@
 ---
-title: "Reading notes"
-subtitle: "Approximating the posterior"
+title: "6: Approximating the posterior"
+sybtitle: "Reading notes"
 date: "September 27, 2022"
 ---
 

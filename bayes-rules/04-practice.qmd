@@ -1,6 +1,6 @@
 ---
-title: "Exercises"
-subtitle: "Balance and sequentiality in Bayesian Analyses"
+title: "4: Balance and sequentiality in Bayesian Analyses"
+subtitle: "Exercises"
 date: "September 5, 2022"
 ---
 

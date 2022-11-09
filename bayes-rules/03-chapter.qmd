@@ -1,6 +1,6 @@
 ---
-title: "Reading notes"
-subtitle: "The Beta-Binomial Bayesian Model"
+title: "3: The Beta-Binomial Bayesian Model"
+subtitle: "Reading notes"
 date: "September 5, 2022"
 ---
 

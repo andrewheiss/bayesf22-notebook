@@ -1,6 +1,6 @@
 ---
-title: "Reading notes"
-subtitle: "Hierarchical models are exciting"
+title: "15: Hierarchical models are exciting"
+subtitle: "Reading notes"
 date: "November 1, 2022"
 ---
 

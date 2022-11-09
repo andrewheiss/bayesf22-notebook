@@ -1,6 +1,6 @@
 ---
-title: "Reading notes"
-subtitle: "Bayes' Rule"
+title: "2: Bayes' Rule"
+subtitle: "Reading notes"
 date: "September 3, 2022"
 ---
 

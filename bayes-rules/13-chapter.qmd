@@ -1,6 +1,6 @@
 ---
-title: "Reading notes"
-subtitle: "Logistic regression"
+title: "13: Logistic regression"
+subtitle: "Reading notes"
 date: "October 12, 2022"
 ---
 
