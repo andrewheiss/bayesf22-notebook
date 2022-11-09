@@ -200,9 +200,9 @@ priors <- c(prior(normal(60, 10), class = Intercept),
 priors %>% 
   parse_dist() %>% 
   ggplot(aes(y = 0, dist = .dist, args = .args, fill = prior)) +
-  stat_slab() +
+  stat_slab(normalize = "panels") +
   scale_fill_manual(values = clrs[1:3]) +
-  facet_wrap(vars(prior), scales = "free")
+  facet_wrap(vars(prior), scales = "free_x")
 ```
 
 :::
