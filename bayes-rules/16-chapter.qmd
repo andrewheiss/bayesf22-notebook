@@ -518,13 +518,13 @@ Since these multilevel/hierarchical/random effects/whatever-we-want-to-call-them
 For instance, the total variance in individual song popularity within and between artists is the sum of the two $\sigma$ terms we've estimated:
 
 $$
-\operatorname{Var}(Y_{i, j}) = \sigma_y + \sigma_\mu
+\operatorname{Var}(Y_{i, j}) = \sigma^2_y + \sigma^2_\mu
 $$
 
 This means we can calculate some ratios and percentages:
 
-- $\frac{\sigma_y}{\sigma_y + \sigma_\mu}$: Proportion of total variance that is explained by **within-artist** differences
-- $\frac{\sigma_\mu}{\sigma_y + \sigma_\mu}$: Proportion of total variance that is explained by **between-artist** differences
+- $\frac{\sigma^2_y}{\sigma^2_y + \sigma^2_\mu}$: Proportion of total variance that is explained by **within-artist** differences
+- $\frac{\sigma^2_\mu}{\sigma^2_y + \sigma^2_\mu}$: Proportion of total variance that is explained by **between-artist** differences
 
 
 # 16.4: Posterior analysis
@@ -589,19 +589,19 @@ model_multilevel_rstanarm |>
 
 :::
 
-(Weirdly rstanarm and brms give different results for the between-artist $\sigma_mu$ term `sd_(Intercept)`. I don't know why—probably a prior thing?)
+(Weirdly rstanarm and brms give different results for the between-artist $\sigma_\mu$ term `sd_(Intercept)`. I don't know why—probably a prior thing?)
 
 ## Global parameters ("fixed" effects)
 
 At the global level of the model, we have these terms:
 
 - $\mu$ or `(Intercept)`: Global average artist-specific popularity
-- $\sigma_y$ or `sd__(Intercept)` for `artist`: Within-artist variability
-- $\sigma^2_\mu$ or `sd__Observation` for `Residual`: Between-artist variability
+- $\sigma_y$ or `sd__Observation` for `artist`: Within-artist variability
+- $\sigma^2_\mu$ or `sd__(Intercept)` for `Residual`: Between-artist variability
 
 The average artist has a posterior average ($\mu$) of `r round(m_mlm$intercept$estimate, 1)` popularity points, and there's an 80% chance that their average popularity is between `r round(m_mlm$intercept$conf.low, 1)` and `r round(m_mlm$intercept$conf.high, 1)`
 
-According to the posterior mean of $\sigma_y$ or `sd__(Intercept)`, the between-artist variability is `r round(m_mlm$sd_intercept$estimate, 1)`, which means that popularity bounces around by 12ish points as we move *from artist to artist*. The posterior mean of $\sigma^2_\mu$ or `sd__Observation` shows that the within-artist variability is `r round(m_mlm$sd_observation$estimate, 1)`, which means that within any artist, popularity varies by 14ish points *from song to song*. Alternatively, this is the total residual variation, or the unexplained variation in song popularity.
+According to the posterior mean of $\sigma_\mu$ or `sd__(Intercept)`, the between-artist variability is `r round(m_mlm$sd_intercept$estimate, 1)`, which means that popularity bounces around by 12ish points as we move *from artist to artist*. The posterior mean of $\sigma_y$ or `sd__Observation` shows that the within-artist variability is `r round(m_mlm$sd_observation$estimate, 1)`, which means that within any artist, popularity varies by 14ish points *from song to song*. Alternatively, this is the total residual variation, or the unexplained variation in song popularity.
 
 We can play with the ratios of these types of variance too:
 
